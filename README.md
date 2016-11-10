@@ -1,2 +1,2 @@
 # Bank
-Simpl Bank project
+Simple Bank project
