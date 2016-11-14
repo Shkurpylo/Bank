@@ -4,3 +4,9 @@ jspm_packages
 
 # Optional npm cache directory
 .npm
+
+# IntelliJ
+/out/
+.idea
+# mpeltonen/sbt-idea plugin
+.idea_modules/
