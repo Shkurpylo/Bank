@@ -1,4 +1,4 @@
-export {User} from './user';
-export {Card, CardSchema} from './card';
+export {User, Card} from './user';
+export {Transaction} from './transaction'
 
 

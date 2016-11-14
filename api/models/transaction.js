@@ -9,4 +9,4 @@ const TransactionSchema = new Schema({
   when   : {type: Date,   required: true}
 });
 
-const Transaction = mongoose.model("Transaction", TransactionSchema);
+export const Transaction = mongoose.model("Transaction", TransactionSchema);

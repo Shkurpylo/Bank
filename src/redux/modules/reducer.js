@@ -10,6 +10,7 @@ import info from './info';
 import widgets from './widgets';
 import signUp from './signUp';
 import welcomeButtons from './welcomeButtons';
+import cards from './cards';
 
 
 export default combineReducers({
@@ -25,5 +26,6 @@ export default combineReducers({
   info,
   widgets,
   signUp,
-  welcomeButtons
+  welcomeButtons,
+  cards
 });

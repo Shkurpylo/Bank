@@ -1,58 +1,84 @@
 import mongoose from 'mongoose';
-import generator from 'creditcard-generator';
-import {Card, CardSchema} from '../models';
-import {User} from '../models';
+import {User, Card} from '../models';
 
 
-export function getAllCards() {
+export function getCards(req) {  // get
+  const ownerId = mongoose.Types.ObjectId("582361bc6281c1d2d18854a6");
   return new Promise((resolve, reject) => {
-    const cardsMap = [];
-    const id = mongoose.Types.ObjectId("582361bc6281c1d2d18854a6");
-    const user = User.findById(id);
-    // user.cards.forEach(function(card) {
-    //   cardsMap.push(card);
-    // });
-
-    resolve(user.find('cards'));
-    reject('err');
+    setTimeout(() => {
+      let cards = req.session.cards;
+      if (!cards){
+        req.session.cards = cards;
+        resolve(cards = User.findById(ownerId).distinct('cards'));
+      }
+      reject('err');
+    },500);
   });
- // return (User.findById(id));
 }
 
-// export default deleteCard(cardID){
-//
-//
-// }
+export function addNewCard(req) {  // get
+  const ownerId = mongoose.Types.ObjectId("582361bc6281c1d2d18854a6"); // temporary
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      getUserById(ownerId).then(data => {
+        const newcard = new Card({
+          number: numberGenerator(req.body.type),
+          name: req.body.name,
+          pin: getPin(),
+          cvv: getCVV(),
+          explDate: getExplDate(),
+          owner: ownerId
+        });
+        const user = data;
+        user.cards.push(newcard);
+        resolve(user.save());
+        reject('err');
+      });
+    }, 500);
+  });
+}
 
-export function addNewCard(type) {
-  // return new Promise((resolve, reject) => {
-    const id = mongoose.Types.ObjectId("582361bc6281c1d2d18854a6");
-    const user = User.findById(id);
-    const card = new Card({
-      _id     : mongoose.Types.ObjectId(),
-      number  : 44444,
-      pin     : getPin(),
-      cvv     : getCVV(),
-      explDate: getExplDate(),
-      owner   : id
-    });
-    console.log(card);
-    user.cards.push(card);
-  return(user.save());
+export function updateCard(req) {  // post
+  return new Promise((resolve, reject) => {
+    User.update(
+      {'cards._id' : req.body._id },
+      {'$set': {
+        'cards.name': req.body.name
+      }},
+    );
+    resolve('ok');
+    reject('err');
+  });
+}
 
-    //resolve(user.cards.push(card));
-    // resolve(user.save());
-    // reject('err');
-    // })
+export function deleteCard(req){   // get
+  return new Promise((resolve, reject) => {
+    User.update(
+      {'$pull': {
+        'cards._id' : req.body._id
+      }},
+    );
+    resolve('ok');
+    reject('err');
+  });
+}
+
+
+function getUserById() {
+  const ownerId = mongoose.Types.ObjectId("582361bc6281c1d2d18854a6");
+  return User.findById(ownerId);
 }
 
 function numberGenerator(type) {
-  console.log('start generator');
-  if(type == 'VISA'){
-    return generator.GenCC('VISA');
+  const visaId = 401997;
+  const masterCardId = 551997;
+  const cardId = Math.floor(Math.random() * (10000000000 - 999999999)) + 999999999;
+  if(type){
+    return "" + visaId + cardId;
   } else {
-    return generator.GenCC('Mastercard');
+    return "" + masterCardId + cardId;
   }
+  //TODO: add Luhn algorithm
 }
 
 function getPin() {
@@ -67,4 +93,3 @@ function getExplDate() {
   let now = new Date;
   return(new Date(now.getMonth(), now.getFullYear() + 3));
 }
-

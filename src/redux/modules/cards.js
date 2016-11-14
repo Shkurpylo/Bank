@@ -1,24 +1,39 @@
 const LOAD = '/cards/LOAD';
 const LOAD_SUCCESS = '/cards/LOAD_SUCCESS';
 const LOAD_FAIL = '/cards/LOAD_FAIL';
-const DELETE_START = '/cards/DELETE_START';
-const DELETE_STOP = '/cards/DELETE_STOP';
+const DELETE = '/cards/DELETE';
+const DELETE_SUCCESS = '/cards/DELETE_SUCCESS';
+const DELETE_FAIL = '/cards/DELETE_FAIL';
 const SAVE = '/cards/SAVE';
 const SAVE_SUCCESS = '/cards/SAVE_SUCCESS';
 const SAVE_FAIL = '/cards/SAVE_FAIL';
+const REVIEW_CARD = '/cards/REVIEW_CARD';
+const SHOW_ADD_FORM = '/cards/SHOW_ADD_FORM';
 
 const initialState = {
   loaded: false,
-  editing: {},
-  saveError: {}
+  review: {},
+  saveError: {},
+  showAddForm: false,
 };
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+    case REVIEW_CARD:
+      return {
+        ...state,
+        review: action.review
+      };
+    case SHOW_ADD_FORM:
+      return {
+        ...state,
+        showAddForm: action.showAddForm
+      };
     case LOAD:
       return {
         ...state,
-        loading: true
+        loading: true,
+       // data: action.result // changed
       };
     case LOAD_SUCCESS:
       return {
@@ -36,19 +51,27 @@ export default function reducer(state = initialState, action = {}) {
         data: null,
         error: action.error
       };
-    case DELETE_START:
+    case DELETE:
       return {
         ...state,
         editing: {
-          ...state.editing,
+          ...state,
           [action.id]: true
         }
       };
-    case DELETE_STOP:
+    case DELETE_SUCCESS:
       return {
         ...state,
         editing: {
-          ...state.editing,
+          ...state.review,
+          [action.id]: false
+        }
+      };
+    case DELETE_FAIL:
+      return {
+        ...state,
+        editing: {
+          ...state.review,
           [action.id]: false
         }
       };
@@ -61,7 +84,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         data: data,
         editing: {
-          ...state.editing,
+          ...state.review,
           [action.id]: false
         },
         saveError: {
@@ -83,31 +106,42 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export function isLoaded(globalState) {
-  return globalState.widgets && globalState.widgets.loaded;
+  return globalState.cards && globalState.cards.loaded;
 }
 
 export function load() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/cards/getAllCards') // params not used, just shown as demonstration
+    promise: (client) => client.get('/cards/getCards')
   };
 }
 
-export function save(widget) {
+export function save(card) {
   return {
     types: [SAVE, SAVE_SUCCESS, SAVE_FAIL],
-    id: widget.id,
-    promise: (client) => client.post('/widget/update', {
-      data: widget
+    promise: (client) => client.post('/cards/addNewCard', {
+      data: card
     })
   };
 }
 
-export function editStart(id) {
-  return { type: EDIT_START, id };
+export function deleteCard(cardId) {
+  return {
+    types: [DELETE, DELETE_SUCCESS, DELETE_FAIL],
+    promise: (client) => client.get('/cards/deleteCard/' + cardId)
+  };
 }
 
-export function editStop(id) {
-  return { type: EDIT_STOP, id };
+export function reviewCard(cardId) {
+  return {
+    types: [LOAD],
+    promise: (client) => client.get('/cards/getCard/' + cardId)
+  };
 }
 
+export function addButton(showAddForm) {
+  return {
+    type: SHOW_ADD_FORM,
+    showAddForm
+  };
+}

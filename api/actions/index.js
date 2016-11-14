@@ -5,6 +5,4 @@ export logout from './logout';
 export * as widget from './widget/index';
 export * as survey from './survey/index';
 export createNewUser from './signUp';
-// export addUser from './addUser';
-export addUserTwo from './addUserTwo';
 export * as cards from './cards';

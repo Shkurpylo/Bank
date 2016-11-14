@@ -9,7 +9,7 @@ const SAVE_FAIL = 'redux-example/widgets/SAVE_FAIL';
 
 const initialState = {
   loaded: false,
-  editing: {},
+  review: {},
   saveError: {}
 };
 
@@ -40,7 +40,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         editing: {
-          ...state.editing,
+          ...state.review,
           [action.id]: true
         }
       };
@@ -48,7 +48,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         editing: {
-          ...state.editing,
+          ...state.review,
           [action.id]: false
         }
       };
@@ -61,7 +61,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         data: data,
         editing: {
-          ...state.editing,
+          ...state.review,
           [action.id]: false
         },
         saveError: {

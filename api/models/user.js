@@ -1,7 +1,15 @@
 import mongoose from 'mongoose';
-import {Card, CardSchema} from './card';
 
 const Schema = mongoose.Schema;
+
+const CardSchema = new Schema({
+  number  : {type: Number},
+  name    : {type: String},
+  pin     : {type: Number},
+  cvv     : {type: Number},
+  explDate: {type: Date},
+  owner   : {type: Schema.ObjectId}
+});
 
 const UserSchema = new Schema({
   firstName: {type: String, required: true},
@@ -13,4 +21,7 @@ const UserSchema = new Schema({
 });
 
 export const User = mongoose.model('users', UserSchema);
+export const Card = mongoose.model('cards', CardSchema);
+
+
 
