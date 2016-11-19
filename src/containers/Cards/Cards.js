@@ -1,11 +1,13 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
-import {isLoaded, addButton, load as loadCards} from 'redux/modules/cards';
-// import {isLoaded} from 'redux/modules/cards';
+import {isLoaded, getCards as loadCards} from 'redux/modules/cards';
 import Helmet from 'react-helmet';
 import {initializeWithKey} from 'redux-form';
+import {initialize} from 'redux-form';
 import * as cardsActions from 'redux/modules/cards';
+import {AddCardForm} from 'components';
+import {CardView} from 'components';
 
 @asyncConnect([{
   deferred: true,
@@ -18,32 +20,48 @@ import * as cardsActions from 'redux/modules/cards';
 @connect(
   state => ({
     cards: state.cards.data,
-    review: state.widgets.review,
-    error: state.widgets.error,
-    loading: state.cards.loading
+    review: state.cards.review,
+    error: state.cards.error,
+    loaded: state.cards.loaded,
+    loading: state.cards.loading,
+    showAddForm: state.cards.showAddForm,
+    showCardView: state.cards.showCardView,
+    addButton: state.cards.addButton,
+    createCard: state.cards.createCard,
   }),
-  {...cardsActions, addButton, initializeWithKey })
+  {...cardsActions, initialize, initializeWithKey })
 export default class Cards extends Component {
   static propTypes = {
+    initialize: PropTypes.func.isRequired,
     cards: PropTypes.array,
     // reviewCard: PropTypes.func,
     showAddForm: PropTypes.bool,
+    showCardView: PropTypes.bool,
+    createCard: PropTypes.func,
     addButton: PropTypes.func,
-    load: PropTypes.func.isRequired,
+    viewButton: PropTypes.func,
     initializeWithKey: PropTypes.func.isRequired,
     loading: PropTypes.bool,
     error: PropTypes.string
   };
 
-
   render() {
     const style = require('./Cards.scss');
-    const {cards, showAddForm} = this.props;
-
+    const {cards,
+      addButton,
+      viewButton,
+      showAddForm,
+      showCardView
+    } = this.props;
     return (
       <div className={style.widgets + ' container'}>
         <Helmet title="Cards"/>
         <h1 className={style}>My Cards</h1>
+        <div>
+          <button className="btn btn-primary" onClick={() => addButton(!showAddForm)}>
+            Add new card
+          </button>
+        </div>
         <div className="row">
           <div className="col-md-5">
             {cards && cards.length &&
@@ -64,8 +82,9 @@ export default class Cards extends Component {
                     <td className={style.colorCol} >{card.number}</td>
                     <td className={style.ownerCol} >{card.cvv}</td>
                     <td className={style.buttonCol} >
-                      <button key={card.id} className="btn btn-primary" >
-                        <i className="fa fa-pencil"/> Edit
+                      <button key={card.id} className="btn btn-info btn-sm"
+                              onClick={() => {viewButton(card);}}>
+                        <i className="fa fa-credit-card"/> select
                       </button>
                     </td>
                   </tr>)
@@ -73,17 +92,14 @@ export default class Cards extends Component {
               </tbody>
             </table> }
           </div>
-          <div className="col-md-7 pull-right">
-            <div>
-              <button className="btn btn-primary" onClick={()=>addButton(!showAddForm)} >
-                Add new card
-              </button>
-            </div>
-            { showAddForm && <div className="btn-group">
-              <button type="button" className="btn btn-success">Add Mastercard</button>
-              <button type="button" className="btn btn-success">Add VISA</button>
-            </div>
-            }
+          <div className="col-md-5 pull-right">
+
+            { showAddForm &&
+            <AddCardForm loadCards/>}
+
+            { showCardView &&
+            <CardView onClick={() => loadCards}/>}
+
           </div>
         </div>
       </div>

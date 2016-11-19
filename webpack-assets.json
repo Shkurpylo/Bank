@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:3001/dist/main-7236946cda45bc9ec0aa.js"
+    "main": "http://localhost:3001/dist/main-a0748eb33ebe181c956b.js"
   },
   "styles": {},
   "assets": {
@@ -58,6 +58,10 @@
     "./src/components/WelcomeButtons/WelcomeButtons.scss": {
       "buttons": "buttons___1yJbY",
       "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.buttons___1yJbY * {\n  margin: 10px;\n}\n"
+    },
+    "./src/components/CardView/CardView.scss": {
+      "panel": "panel___q9WqE",
+      "_style": "#panel___q9WqE {\n  text-align: center;\n}\n"
     },
     "./src/containers/Home/Home.scss": {
       "home": "home___1bkob",

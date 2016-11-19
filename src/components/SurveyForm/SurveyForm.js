@@ -15,7 +15,6 @@ function asyncValidate(data, dispatch, {isValidEmail}) {
   dispatch => bindActionCreators(surveyActions, dispatch)
 )
 
-
 @reduxForm({
   form: 'survey',
   fields: ['name', 'email', 'occupation', 'currentlyEmployed', 'sex'],
@@ -35,7 +34,7 @@ class SurveyForm extends Component {
     invalid: PropTypes.bool.isRequired,
     pristine: PropTypes.bool.isRequired,
     valid: PropTypes.bool.isRequired
-  }
+  };
 
   render() {
     const {

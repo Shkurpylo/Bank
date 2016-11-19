@@ -13,3 +13,5 @@ export WidgetForm from './WidgetForm/WidgetForm';
 export SignUpForm from './SignUpForm/SignUpForm';
 export LoginForm from './LoginForm/LoginForm';
 export WelcomeButtons from './WelcomeButtons/WelcomeButtons';
+export AddCardForm from './AddCardForm/AddCardForm';
+export CardView from './CardView/CardView';

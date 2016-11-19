@@ -7,29 +7,22 @@ import {mapUrl} from 'utils/url.js';
 import PrettyError from 'pretty-error';
 import http from 'http';
 import SocketIo from 'socket.io';
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 
 const pretty = new PrettyError();
 const app = express();
 
-const server = new http.Server(app);
+const mongoUrl = 'mongodb://localhost:27017/BankDB'; // local todo: make db non-local
 
-const mongoUrl = 'mongodb://localhost:27017/BankDB'; //local
+const server = new http.Server(app); // Event Emitter
 
-// const mongoUrl = 'mongodb://forBank:1bankPass@ds143777.mlab.com:43777/bank_db'; // mLab
-//const mongoUrl = 'mongodb://${config.db.user}:${config.db.pass}@${config.db.host}:{config.db.port}/{config.db.name}';
-
-
-//console.log(mongoUrl);
-
-
+mongoose.Promise = global.Promise;
 mongoose.connect(mongoUrl, (err) => {
   if (err) {
     console.log('Please make sure MongoDb is up and running');
-    throw error;
   }
-  console.log("==> DB is ready")
+  console.log('==> DB is ready');
 });
 
 const io = new SocketIo(server);

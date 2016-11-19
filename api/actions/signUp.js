@@ -4,7 +4,7 @@ export default function createNewUser(req) {
   return new Promise((resolve, reject) => {
     // write to database
     setTimeout(() => {
-      //const user = new User(req.body);
+      // const user = new User(req.body);
       const user = new User({
         firstName: req.body.name,
         lastName: req.body.lastName,

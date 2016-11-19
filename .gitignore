@@ -10,3 +10,7 @@ jspm_packages
 .idea
 # mpeltonen/sbt-idea plugin
 .idea_modules/
+
+# VS Code
+.vscode
+

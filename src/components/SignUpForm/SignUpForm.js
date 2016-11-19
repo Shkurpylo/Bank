@@ -4,6 +4,7 @@ import {reduxForm} from 'redux-form';
 import {bindActionCreators} from 'redux';
 import surveyValidation from './surveyValidation';
 import * as signUpActions from 'redux/modules/signUp';
+import { createNewUser } from 'redux/modules/signUp';
 
 function asyncValidate(data, dispatch, {isValidEmail}) {
   if (!data.email) {
@@ -14,7 +15,6 @@ function asyncValidate(data, dispatch, {isValidEmail}) {
 @connect(() => ({}),
   dispatch => bindActionCreators(signUpActions, dispatch)
 )
-
 
 @reduxForm({
   form: 'signUp',
@@ -32,21 +32,16 @@ export default class SignUpForm extends Component {
   };
 
   handleSubmit = (data) => {
-    window.alert('Data submitted! ' + JSON.stringify(data));
+    createNewUser(data);
   };
 
   render() {
     const {
       asyncValidating,
-     // dirty,
       fields: {name, lastName, email, pass, confirmPass},
-     // active,
-     handleSubmit,
-     // invalid,
       resetForm,
-     // pristine,
-     // valid
     } = this.props;
+
     const styles = require('./SignUpForm.scss');
     const renderInput = (field, label, showAsyncValidating) =>
       <div className={'form-group' + (field.error && field.touched ? ' has-error' : '')}>
@@ -68,7 +63,7 @@ export default class SignUpForm extends Component {
           {renderInput(confirmPass, 'Confirm Password')}
           <div className="form-group">
             <div className="col-sm-offset-2 col-sm-10">
-              <button className="btn btn-success" onClick={handleSubmit}>
+              <button className="btn btn-success" onClick={this.handleSubmit}>
                 <i className="fa fa-paper-plane"/> Submit
               </button>
               <button className="btn btn-warning" onClick={resetForm} style={{marginLeft: 15}}>
