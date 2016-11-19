@@ -1,16 +1,8 @@
-# Dependency directories
-node_modules
-jspm_packages
-
-# Optional npm cache directory
-.npm
-
-# IntelliJ
-/out/
-.idea
-# mpeltonen/sbt-idea plugin
-.idea_modules/
-
-# VS Code
+.idea/
+node_modules/
+dist/
 .vscode
-
+*.iml
+webpack-assets.json
+webpack-stats.json
+npm-debug.log

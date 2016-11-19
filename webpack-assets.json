@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:3001/dist/main-a0748eb33ebe181c956b.js"
+    "main": "http://localhost:3001/dist/main-f8156542f50d08637f7f.js"
   },
   "styles": {},
   "assets": {
@@ -17,33 +17,6 @@
       "brand": "brand____u4av",
       "appContent": "appContent___gsYlq",
       "_style": ".app___3sz-J .brand____u4av {\n  position: absolute;\n  top: 5px;\n  left: 5px;\n  display: inline-block;\n  background: url(http://localhost:3001/dist/9007a2d3e52358e63c45454126eeac4d.png) no-repeat center center;\n  width: 40px;\n  height: 40px;\n  background-size: 80%;\n  margin: 0 10px 0 0;\n}\n\n.app___3sz-J nav .fa {\n  font-size: 2em;\n  line-height: 20px;\n}\n\n.appContent___gsYlq {\n  margin: 50px 0;\n}\n"
-    },
-    "./src/components/InfoBar/InfoBar.scss": {
-      "infoBar": "infoBar___1lCH-",
-      "time": "time___vX6YJ",
-      "_style": ".infoBar___1lCH- {\n  font-variant: italics;\n}\n\n.time___vX6YJ {\n  margin: 0 30px;\n}\n"
-    },
-    "./src/components/SurveyForm/SurveyForm.scss": {
-      "inputGroup": "inputGroup___2c2S9",
-      "flags": "flags___L5Trs",
-      "active": "active___3juuq",
-      "dirty": "dirty___15qv3",
-      "visited": "visited___3wHfp",
-      "touched": "touched___3JYjk",
-      "radioLabel": "radioLabel___Zk2Ia",
-      "cog": "cog___WTV9k",
-      "_style": ".inputGroup___2c2S9 {\n  position: relative;\n}\n\n.flags___L5Trs {\n  position: absolute;\n  right: 20px;\n  top: 7px;\n}\n\n.flags___L5Trs > * {\n  margin: 0 2px;\n  width: 20px;\n  height: 20px;\n  border-radius: 20px;\n  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);\n  color: white;\n  float: right;\n  text-align: center;\n}\n\n.flags___L5Trs .active___3juuq {\n  background: linear-gradient(#cc0, #aa0);\n  color: black;\n}\n\n.flags___L5Trs .dirty___15qv3 {\n  background: linear-gradient(#090, #060);\n}\n\n.flags___L5Trs .visited___3wHfp {\n  background: linear-gradient(#009, #006);\n}\n\n.flags___L5Trs .touched___3JYjk {\n  background: linear-gradient(#099, #066);\n}\n\n.radioLabel___Zk2Ia {\n  margin: 0 25px 0 5px;\n}\n\n.cog___WTV9k {\n  position: absolute;\n  left: 0;\n  top: 10px;\n}\n"
-    },
-    "./src/containers/Transactions/Transactions.scss": {
-      "widgets": "widgets___fUxS6",
-      "refreshBtn": "refreshBtn___azjTA",
-      "idCol": "idCol___YVUjh",
-      "colorCol": "colorCol___3azeR",
-      "sprocketsCol": "sprocketsCol___30fI1",
-      "ownerCol": "ownerCol___2ixgg",
-      "buttonCol": "buttonCol___30l5g",
-      "saving": "saving___3GTma",
-      "_style": ".widgets___fUxS6 .refreshBtn___azjTA {\n  margin-left: 20px;\n}\n\n.widgets___fUxS6 .idCol___YVUjh {\n  width: 5%;\n}\n\n.widgets___fUxS6 .colorCol___3azeR {\n  width: 20%;\n}\n\n.widgets___fUxS6 .sprocketsCol___30fI1 {\n  width: 20%;\n  text-align: right;\n}\n\n.widgets___fUxS6 .sprocketsCol___30fI1 input {\n  text-align: right;\n}\n\n.widgets___fUxS6 .ownerCol___2ixgg {\n  width: 30%;\n}\n\n.widgets___fUxS6 .buttonCol___30l5g {\n  width: 25%;\n}\n\n.widgets___fUxS6 .buttonCol___30l5g .btn {\n  margin: 0 5px;\n}\n\n.widgets___fUxS6 tr.saving___3GTma {\n  opacity: 0.8;\n}\n\n.widgets___fUxS6 tr.saving___3GTma .btn[disabled] {\n  opacity: 1;\n}\n"
     },
     "./src/components/SignUpForm/SignUpForm.scss": {
       "inputGroup": "inputGroup___3qTIP",
@@ -70,6 +43,17 @@
       "humility": "humility___Bedqz",
       "buttons": "buttons___k8Im9",
       "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.home___1bkob dd {\n  margin-bottom: 15px;\n}\n\n.masthead___3qL9t {\n  background: #2d2d2d;\n  padding: 40px 20px;\n  color: white;\n  text-align: center;\n}\n\n.masthead___3qL9t .logo___1_SL2 {\n  margin: auto;\n  height: 256px;\n  width: 256px;\n  vertical-align: middle;\n}\n\n.masthead___3qL9t .logo___1_SL2 p {\n  line-height: 256px;\n  margin: 0px;\n}\n\n.masthead___3qL9t .logo___1_SL2 img {\n  width: 75%;\n  margin: auto;\n}\n\n.masthead___3qL9t h1 {\n  color: #33e0ff;\n  font-size: 4em;\n}\n\n.masthead___3qL9t h2 {\n  color: #ddd;\n  font-size: 2em;\n  margin: 20px;\n}\n\n.masthead___3qL9t a {\n  color: #ddd;\n}\n\n.masthead___3qL9t p {\n  margin: 10px;\n}\n\n.masthead___3qL9t .humility___Bedqz {\n  color: #777;\n}\n\n.masthead___3qL9t .humility___Bedqz a {\n  color: #777;\n}\n\n.masthead___3qL9t .buttons___k8Im9 * {\n  margin: 10px;\n}\n"
+    },
+    "./src/containers/Transactions/Transactions.scss": {
+      "widgets": "widgets___fUxS6",
+      "refreshBtn": "refreshBtn___azjTA",
+      "idCol": "idCol___YVUjh",
+      "colorCol": "colorCol___3azeR",
+      "sprocketsCol": "sprocketsCol___30fI1",
+      "ownerCol": "ownerCol___2ixgg",
+      "buttonCol": "buttonCol___30l5g",
+      "saving": "saving___3GTma",
+      "_style": ".widgets___fUxS6 .refreshBtn___azjTA {\n  margin-left: 20px;\n}\n\n.widgets___fUxS6 .idCol___YVUjh {\n  width: 5%;\n}\n\n.widgets___fUxS6 .colorCol___3azeR {\n  width: 20%;\n}\n\n.widgets___fUxS6 .sprocketsCol___30fI1 {\n  width: 20%;\n  text-align: right;\n}\n\n.widgets___fUxS6 .sprocketsCol___30fI1 input {\n  text-align: right;\n}\n\n.widgets___fUxS6 .ownerCol___2ixgg {\n  width: 30%;\n}\n\n.widgets___fUxS6 .buttonCol___30l5g {\n  width: 25%;\n}\n\n.widgets___fUxS6 .buttonCol___30l5g .btn {\n  margin: 0 5px;\n}\n\n.widgets___fUxS6 tr.saving___3GTma {\n  opacity: 0.8;\n}\n\n.widgets___fUxS6 tr.saving___3GTma .btn[disabled] {\n  opacity: 1;\n}\n"
     },
     "./src/containers/Cards/Cards.scss": {
       "widgets": "widgets___2DGoj",
