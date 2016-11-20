@@ -63,7 +63,7 @@ export default class TransactionForm extends Component {
                    id="amount" placeholder="100.00" {...amount} />
                    <div className="input-group-addon">$</div>
                    </div>
-                  <div>
+                  <div className="form-group">
                     <button className="btn btn-success" >
                       <i className="fa fa-plus"/> Send
                     </button>

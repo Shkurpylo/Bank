@@ -4,3 +4,5 @@ export logout from './logout';
 export createNewUser from './signUp';
 export {getCards, addNewCard, updateCard, deleteCard} from './cards';
 export * as transactionActions from './transaction';
+export * as survey from './survey/index';
+

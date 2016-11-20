@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
-import {
-  User,
-  Card
-} from '../models';
+import { User, Card } from '../../models';
+import { numberGenerator, getPin, getCVV, getExplDate } from './cardsHelpers';
 // import {getIncomingTransactions, getOutTransactions} from './transaction'
 
 
@@ -30,10 +28,14 @@ export function getCardByNumber(req) { // get
   });
 }
 
+function getUserById() {
+  const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
+  return User.findById(ownerId);
+}
 
 export function addNewCard(req) { // post
   return new Promise((resolve, reject) => {
-    const ownerId = mongoose.Types.ObjectId("582d63704852674bcde44df1"); // temporary
+    const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1'); // temporary
     console.log('starting addNewCard');
     getUserById(ownerId).then(data => {
       const newcard = new Card({
@@ -99,35 +101,3 @@ export function deleteCard(req) { // get
 //   };
 //
 // }
-
-
-function getUserById() {
-  const ownerId = mongoose.Types.ObjectId("582d63704852674bcde44df1");
-  return User.findById(ownerId);
-}
-
-function numberGenerator(type) {
-  const visaId = 401997;
-  const masterCardId = 551997;
-  const cardId = Math.floor(Math.random() * (10000000000 - 999999999)) +
-    999999999;
-  if (type === 'VISA') {
-    return '' + visaId + cardId;
-  }
-  return '' + masterCardId + cardId;
-
-  // TODO: add Luhn algorithm
-}
-
-function getPin() {
-  return Math.floor(Math.random() * (10000 - 999)) + 999;
-}
-
-function getCVV() {
-  return Math.floor(Math.random() * (1000 - 99)) + 99;
-}
-
-function getExplDate() {
-  let now = new Date;
-  return (new Date(now.getMonth(), now.getFullYear() + 3));
-}

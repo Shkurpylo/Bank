@@ -21,40 +21,30 @@ export default class LoginForm extends Component {
   };
 
   render() {
-    const {user, logout} = this.props;
+  //  const {user, logout} = this.props;
     const styles = require('./LoginForm.scss');
     return (
       <div className={styles.loginPage + 'container'}>
         <Helmet title="Login"/>
         <h3>Login</h3>
-        {!user &&
-        <div>
+
+        <div className="col-sm-4 col-md-offset-4">
           <form className="login-form form-horizontal" onSubmit={this.handleSubmit}>
             <div className="form-group">
-              <div className="col-sm-3">
+              <div>
                 <input type="text" ref="username" placeholder="Login" className="form-control"/>
               </div>
             </div>
             <div className="form-group">
-              <div className="col-sm-3">
+              <div>
                 <input type="text" ref="pass" placeholder="Password" className="form-control"/>
               </div>
             </div>
             <button className="btn btn-success" onClick={this.handleSubmit}><i className="fa fa-sign-in" />{' '}Login
             </button>
           </form>
-          <p>This will "log you in" as this user, storing the username in the session of the API server.</p>
+          <p>Log in, if you already registered.</p>
         </div>
-        }
-        {user &&
-        <div>
-          <p>You are currently logged in as {user.name}.</p>
-
-          <div>
-            <button className="btn btn-danger" onClick={logout}><i className="fa fa-sign-out"/>{' '}Log Out</button>
-          </div>
-        </div>
-        }
       </div>
     );
   }
