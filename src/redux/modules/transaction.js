@@ -9,10 +9,12 @@ const SAVE_SUCCESS = '/transaction/SAVE_SUCCESS';
 const SAVE_FAIL = '/transaction/SAVE_FAIL';
 
 const SHOW_CONFIRM_WINDOW = '/transaction/SHOW_CONFIRM_WINDOW';
+const TOGGLE_FORMS = '/transaction/TOGGLE_FORMS';
 
 const initialState = {
   transaction: [],
   showConfirmWindow: false,
+  showOwnForm: false,
   loaded: false,
   saveError: {},
 };
@@ -23,6 +25,11 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         showConfirmWindow: true
+      };
+    case TOGGLE_FORMS:
+      return {
+        ...state,
+        showOwnForm: action.showOwnForm,
       };
     case LOAD:
       return {
@@ -111,5 +118,12 @@ export function newTransaction(from, to, amount) {
 export function confirmButton() {
   return {
     type: SHOW_CONFIRM_WINDOW,
+  };
+}
+
+export function switchForms(showOwnForm) {
+  return {
+    type: TOGGLE_FORMS,
+    showOwnForm
   };
 }

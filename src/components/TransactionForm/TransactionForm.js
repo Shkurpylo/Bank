@@ -1,12 +1,13 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import * as transactionActions from 'redux/modules/transaction';
 
-
 @connect(state => ({
-  cards: state.cards.cards
+  cards: state.cards.cards,
+  loaded: state.cards.loaded,
+  loading: state.cards.loading,
 }),
   dispatch => bindActionCreators(transactionActions, dispatch)
 )
@@ -39,8 +40,9 @@ export default class TransactionForm extends Component {
 
 
     return (
-      <div className="panel panel-primary col-sm-5 col-md-offset-3">
-            <div className="panel-heading">
+      <div className="panel panel-primary col-sm-5 col-md-offset-3"
+            style={{paddingLeft: 0, paddingRight: 0}}>
+            <div className="panel-heading clearfix">
             Fast Transaction
             </div>
               <div className="col-sm-10 col-md-offset-1">
@@ -63,7 +65,7 @@ export default class TransactionForm extends Component {
                    id="amount" placeholder="100.00" {...amount} />
                    <div className="input-group-addon">$</div>
                    </div>
-                  <div className="form-group">
+                  <div className="form-group" style={{paddingTop: 15}}>
                     <button className="btn btn-success" >
                       <i className="fa fa-plus"/> Send
                     </button>
@@ -75,6 +77,7 @@ export default class TransactionForm extends Component {
                   </div>
               </div>
         </form>
+
             </div>
           </div>
     );

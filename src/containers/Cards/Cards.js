@@ -94,10 +94,10 @@ export default class Cards extends Component {
           <div className="col-md-5 pull-right">
 
             { showAddForm &&
-            <AddCardForm loadCards/>}
+            <AddCardForm/>}
 
             { showCardView &&
-            <CardView onClick={() => loadCards}/>}
+            <CardView/>}
 
           </div>
         </div>
