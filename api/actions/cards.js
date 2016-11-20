@@ -19,7 +19,19 @@ export function getCards(req) { // get
   });
 }
 
-export function addNewCard(req) { // get
+export function getCardByNumber(req) { // get
+  const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
+  return new Promise((resolve, reject) => {
+    const number = req.query.num;
+    if (!number) {
+      reject('err'); // todo if
+    }
+    resolve(User.findById(ownerId).findOne({ 'cards.number': number }));
+  });
+}
+
+
+export function addNewCard(req) { // post
   return new Promise((resolve, reject) => {
     const ownerId = mongoose.Types.ObjectId("582d63704852674bcde44df1"); // temporary
     console.log('starting addNewCard');
@@ -97,7 +109,8 @@ function getUserById() {
 function numberGenerator(type) {
   const visaId = 401997;
   const masterCardId = 551997;
-  const cardId = Math.floor(Math.random() * (10000000000 - 999999999)) + 999999999;
+  const cardId = Math.floor(Math.random() * (10000000000 - 999999999)) +
+    999999999;
   if (type === 'VISA') {
     return '' + visaId + cardId;
   }

@@ -2,7 +2,9 @@
 node_modules/
 dist/
 .vscode
+.jsbeautifyrc
 *.iml
 webpack-assets.json
 webpack-stats.json
 npm-debug.log
+

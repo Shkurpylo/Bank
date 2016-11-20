@@ -20,8 +20,8 @@ export default class AddCardForm extends Component {
     resetForm: PropTypes.func,
     createCard: PropTypes.func,
     values: PropTypes.object,
-    submitting: PropTypes.bool,
-    formKey: PropTypes.string,
+    // submitting: PropTypes.bool,
+    // formKey: PropTypes.string,
     saveError: PropTypes.object,
   };
 

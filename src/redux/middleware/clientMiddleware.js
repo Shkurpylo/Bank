@@ -7,7 +7,7 @@ export default function clientMiddleware(client) {
       // console.log('middleware' + action);
 
       const { promise, types, ...rest } = action; // eslint-disable-line no-redeclare
-      console.log('middleware: promise: ' + promise + ' types: ' + types + '...rest: ' + rest );
+      // console.log('middleware: promise: ' + promise + ' types: ' + types + '...rest: ' + rest );
       if (!promise) {
         return next(action);
       }

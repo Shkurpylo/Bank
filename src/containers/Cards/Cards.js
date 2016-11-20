@@ -1,13 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
-import {isLoaded, getCards as loadCards} from 'redux/modules/cards';
 import Helmet from 'react-helmet';
 import {initializeWithKey} from 'redux-form';
 import {initialize} from 'redux-form';
+import {isLoaded, getCards as loadCards} from 'redux/modules/cards';
 import * as cardsActions from 'redux/modules/cards';
-import {AddCardForm} from 'components';
-import {CardView} from 'components';
+import {AddCardForm, CardView} from 'components';
 
 @asyncConnect([{
   deferred: true,
@@ -19,7 +18,7 @@ import {CardView} from 'components';
 }])
 @connect(
   state => ({
-    cards: state.cards.data,
+    cards: state.cards.cards,
     review: state.cards.review,
     error: state.cards.error,
     loaded: state.cards.loaded,

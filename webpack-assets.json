@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:3001/dist/main-f8156542f50d08637f7f.js"
+    "main": "http://localhost:3001/dist/main-c7aa2f0e623ffb445ffd.js"
   },
   "styles": {},
   "assets": {
@@ -45,7 +45,9 @@
       "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.home___1bkob dd {\n  margin-bottom: 15px;\n}\n\n.masthead___3qL9t {\n  background: #2d2d2d;\n  padding: 40px 20px;\n  color: white;\n  text-align: center;\n}\n\n.masthead___3qL9t .logo___1_SL2 {\n  margin: auto;\n  height: 256px;\n  width: 256px;\n  vertical-align: middle;\n}\n\n.masthead___3qL9t .logo___1_SL2 p {\n  line-height: 256px;\n  margin: 0px;\n}\n\n.masthead___3qL9t .logo___1_SL2 img {\n  width: 75%;\n  margin: auto;\n}\n\n.masthead___3qL9t h1 {\n  color: #33e0ff;\n  font-size: 4em;\n}\n\n.masthead___3qL9t h2 {\n  color: #ddd;\n  font-size: 2em;\n  margin: 20px;\n}\n\n.masthead___3qL9t a {\n  color: #ddd;\n}\n\n.masthead___3qL9t p {\n  margin: 10px;\n}\n\n.masthead___3qL9t .humility___Bedqz {\n  color: #777;\n}\n\n.masthead___3qL9t .humility___Bedqz a {\n  color: #777;\n}\n\n.masthead___3qL9t .buttons___k8Im9 * {\n  margin: 10px;\n}\n"
     },
     "./src/containers/Transactions/Transactions.scss": {
-      "widgets": "widgets___fUxS6",
+      "transaction": "transaction___DnK4r",
+      "pull-right": "pull-right___F2IOq",
+      "col-md-4": "col-md-4___148q6",
       "refreshBtn": "refreshBtn___azjTA",
       "idCol": "idCol___YVUjh",
       "colorCol": "colorCol___3azeR",
@@ -53,7 +55,7 @@
       "ownerCol": "ownerCol___2ixgg",
       "buttonCol": "buttonCol___30l5g",
       "saving": "saving___3GTma",
-      "_style": ".widgets___fUxS6 .refreshBtn___azjTA {\n  margin-left: 20px;\n}\n\n.widgets___fUxS6 .idCol___YVUjh {\n  width: 5%;\n}\n\n.widgets___fUxS6 .colorCol___3azeR {\n  width: 20%;\n}\n\n.widgets___fUxS6 .sprocketsCol___30fI1 {\n  width: 20%;\n  text-align: right;\n}\n\n.widgets___fUxS6 .sprocketsCol___30fI1 input {\n  text-align: right;\n}\n\n.widgets___fUxS6 .ownerCol___2ixgg {\n  width: 30%;\n}\n\n.widgets___fUxS6 .buttonCol___30l5g {\n  width: 25%;\n}\n\n.widgets___fUxS6 .buttonCol___30l5g .btn {\n  margin: 0 5px;\n}\n\n.widgets___fUxS6 tr.saving___3GTma {\n  opacity: 0.8;\n}\n\n.widgets___fUxS6 tr.saving___3GTma .btn[disabled] {\n  opacity: 1;\n}\n"
+      "_style": ".transaction___DnK4r .pull-right___F2IOq {\n  float: right !important;\n}\n\n.transaction___DnK4r .col-md-4___148q6 {\n  color: #adadad;\n}\n\n.transaction___DnK4r .refreshBtn___azjTA {\n  margin-left: 20px;\n}\n\n.transaction___DnK4r .idCol___YVUjh {\n  width: 5%;\n}\n\n.transaction___DnK4r .colorCol___3azeR {\n  width: 20%;\n}\n\n.transaction___DnK4r .sprocketsCol___30fI1 {\n  width: 20%;\n  text-align: right;\n}\n\n.transaction___DnK4r .sprocketsCol___30fI1 input {\n  text-align: right;\n}\n\n.transaction___DnK4r .ownerCol___2ixgg {\n  width: 30%;\n}\n\n.transaction___DnK4r .buttonCol___30l5g {\n  width: 25%;\n}\n\n.transaction___DnK4r .buttonCol___30l5g .btn {\n  margin: 0 5px;\n}\n\n.transaction___DnK4r tr.saving___3GTma {\n  opacity: 0.8;\n}\n\n.transaction___DnK4r tr.saving___3GTma .btn[disabled] {\n  opacity: 1;\n}\n"
     },
     "./src/containers/Cards/Cards.scss": {
       "widgets": "widgets___2DGoj",

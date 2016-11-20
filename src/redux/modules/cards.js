@@ -47,14 +47,14 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loading: true,
-        data: action.result
+     //   cards: action.result
       };
     case LOAD_SUCCESS:
       return {
         ...state,
         loading: false,
         loaded: true,
-        data: action.result,
+        cards: action.result,
         error: null
 
       };
@@ -63,7 +63,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         loading: false,
         loaded: false,
-        data: null,
+        cards: null,
         error: action.error
       };
     case DELETE:
@@ -134,13 +134,20 @@ export function getCards() {
   };
 }
 
+export function getCardByNumber(number) {
+  return {
+    types: [LOAD],
+    promise: (client) => client.get('/getCardByNumber?num=' + number)
+  };
+}
+
 export function createCard(card) {
-  // console.log('In modules/createCard' + card.toString());
   console.log('In modules/createCard');
   return {
     types: [SAVE, SAVE_SUCCESS, SAVE_FAIL],
     promise: (client) => client.post('/addNewCard', {
-      data: card }),
+      cards: card
+    }),
     // todo: .then(getCards ) fix reject in api read apiclint and clientMiddleware
   };
 }

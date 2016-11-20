@@ -7,6 +7,7 @@ import {reducer as form} from 'redux-form';
 import signUp from './signUp';
 import welcomeButtons from './welcomeButtons';
 import cards from './cards';
+import transaction from './transaction';
 
 
 export default combineReducers({
@@ -16,5 +17,6 @@ export default combineReducers({
   form,
   signUp,
   welcomeButtons,
-  cards
+  cards,
+  transaction
 });
