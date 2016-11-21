@@ -11,3 +11,5 @@ export WelcomeButtons from './WelcomeButtons/WelcomeButtons';
 export AddCardForm from './AddCardForm/AddCardForm';
 export CardView from './CardView/CardView';
 export TransactionForm from './TransactionForm/TransactionForm';
+export TransactionFormBetweenOwn from './TransactionFormBetweenOwn/TransactionFormBetweenOwn';
+

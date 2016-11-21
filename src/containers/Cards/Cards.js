@@ -8,6 +8,11 @@ import {isLoaded, getCards as loadCards} from 'redux/modules/cards';
 import * as cardsActions from 'redux/modules/cards';
 import {AddCardForm, CardView} from 'components';
 
+const hideHumber = (number) => {
+  const stringCartNumber = number.toString();
+  return stringCartNumber.slice(0, 4) + '....' + stringCartNumber.slice(-4);
+};
+
 @asyncConnect([{
   deferred: true,
   promise: ({store: {dispatch, getState}}) => {
@@ -78,7 +83,7 @@ export default class Cards extends Component {
                 cards.map((card) =>
                   <tr key={card._id}>
                     <td className={style.idCol} >{card.name}</td>
-                    <td className={style.colorCol} >{card.number}</td>
+                    <td className={style.colorCol} >{hideHumber(card.number)}</td>
                     <td className={style.ownerCol} >{card.cvv}</td>
                     <td className={style.buttonCol} >
                       <button key={card.id} className="btn btn-info btn-sm"

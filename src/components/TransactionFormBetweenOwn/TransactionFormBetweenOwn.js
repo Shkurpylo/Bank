@@ -9,7 +9,6 @@ const hideHumber = (number) => {
   return stringCartNumber.slice(0, 4) + '....' + stringCartNumber.slice(-4);
 };
 
-
 @connect(state => ({
   cards: state.cards.cards,
   loaded: state.cards.loaded,
@@ -22,7 +21,7 @@ const hideHumber = (number) => {
   form: 'transaction',
   fields: ['sender', 'receiver', 'amount'],
 })
-export default class TransactionForm extends Component {
+export default class TransactionFormBetweenOwn extends Component {
   static propTypes = {
     fields: PropTypes.object,
     handleSubmit: PropTypes.func,
@@ -46,24 +45,24 @@ export default class TransactionForm extends Component {
 
 
     return (
-      <div className="panel panel-info col-sm-5 col-md-offset-3"
+      <div className="panel panel-success col-sm-5 col-md-offset-3"
             style={{paddingLeft: 0, paddingRight: 0}}>
             <div className="panel-heading clearfix">
-            Fast Transaction To Any Card
+            Fast Transaction Between Own Cards
             </div>
               <div className="col-sm-10 col-md-offset-1">
         <form >
           <div className="row">
               <div className="form-group">
-                   <label htmlFor="cardSelector">Choose your card:</label>
+                   <label htmlFor="cardSelector">From card:</label>
                    <select name="myCard" className="form-control" id="cardSelector" {...sender}>
-                   {cards.map(card => <option name={card.name} key={card._id}>{card.name + ',    ' + hideHumber(card.number)}</option>)}
+                   {cards.map(card => <option name={card.name} key={card._id}>{card.name + '   ' + hideHumber(card.number)}</option>)}
                    </select>
-                   <div className="input-group">
-                   <label htmlFor="cardName">Input card number of recipient:</label>
-                   <input type="name" className="col-xs-3 form-control"
-                   id="cardName" placeholder="0000 0000 0000 0000" {...receiver} />
-                   </div>
+
+                   <label htmlFor="cardSelector">To card:</label>
+                   <select name="myCard" className="form-control" id="cardSelector" {...receiver}>
+                   {cards.map(card => <option name={card.name} key={card._id}>{card.name + ',   ' + card.number}</option>)}
+                   </select>
 
                    <label htmlFor="amount">Amount:</label>
                    <div className="input-group">

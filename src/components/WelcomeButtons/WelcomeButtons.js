@@ -15,7 +15,10 @@ export default class WelcomeButtons extends Component {
 
   render() {
     const styles = require('./WelcomeButtons.scss');
-    const {showLoginForm, showSignUpForm, showForm} = this.props; // eslint-disable-line no-shadow
+    const {
+    showLoginForm,
+    showSignUpForm,
+    showForm} = this.props; // eslint-disable-line no-shadow
 
     return (
       <div className={styles.buttons}>

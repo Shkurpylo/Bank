@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 // import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { TransactionForm } from 'components';
+import { TransactionFormBetweenOwn } from 'components';
 import { switchForms } from 'redux/modules/transaction';
 
 import { asyncConnect } from 'redux-async-connect';
@@ -53,7 +54,8 @@ export default class Transactions extends Component {
 </div>
 <div className="row">
          {showOwnForm ?
-            <h4> temp</h4> : <TransactionForm/>
+            <TransactionFormBetweenOwn/> :
+            <TransactionForm/>
          }
     </div>
    </div>
