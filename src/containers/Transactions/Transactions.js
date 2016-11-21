@@ -17,8 +17,8 @@ import { isLoaded, getCards as loadCards } from 'redux/modules/cards';
 }])
 @connect(state => ({
   cards: state.cards.cards,
-  showOwnForm: state.transaction.showOwnForm,
-}), {...switchForms})
+  ...state.transaction,
+}), {switchForms})
 
 export default class Transactions extends Component {
   static propTypes = {
@@ -29,9 +29,7 @@ export default class Transactions extends Component {
 
   render() {
     const styles = require('./Transactions.scss');
-    const {
-      showOwnForm,
-    } = this.props;
+    const {showOwnForm, switchForms} = this.props;  // eslint-disable-line no-shadow
     return (
       <div className={styles.transaction + ' container'}>
         <h1>
