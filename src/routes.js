@@ -6,6 +6,8 @@ import {
     Cards,
     Home,
     Transactions,
+    History,
+    Profile,
     About,
     NotFound,
   } from 'containers';
@@ -40,7 +42,9 @@ export default (store) => {
       <Route onEnter={requireLogin}>
         <Route path="about" component={About}/>
         <Route path="cards" component={Cards}/>
+        <Route path="history" component={History}/>
         <Route path="home" component={Home}/>
+        <Route path="profile" component={Profile}/>
         <Route path="transactions" component={Transactions}/>
       </Route>
 

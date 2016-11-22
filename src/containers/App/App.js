@@ -75,17 +75,22 @@ export default class App extends Component {
               {user && <LinkContainer to="/cards">
                 <NavItem eventKey={1}>Cards</NavItem>
               </LinkContainer>}
-
               {user && <LinkContainer to="/transactions">
                 <NavItem eventKey={2}>Transaction</NavItem>
               </LinkContainer>}
+              {user && <LinkContainer to="/history">
+                <NavItem eventKey={3}>History</NavItem>
+              </LinkContainer>}
+              {user && <LinkContainer to="/profile">
+                <NavItem eventKey={4}>Profile</NavItem>
+              </LinkContainer>}
               {user && <LinkContainer to="/about">
-                <NavItem eventKey={4}>About Us</NavItem>
+                <NavItem eventKey={5}>About Us</NavItem>
               </LinkContainer>}
 
             </Nav>
             {user &&
-            <p className={styles.loggedInMessage + ' navbar-text'}>Hi! <strong>{user.name}</strong>.</p>}
+            <p className={styles.loggedInMessage + ' navbar-text'}><i>Hi! <strong>{user.name}</strong></i>.</p>}
             {user && <Nav navbar pullRight>
               <NavItem eventKey={1} className="logout-link" onClick={this.handleLogout}>
                 Log Out

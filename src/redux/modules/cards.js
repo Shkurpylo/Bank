@@ -21,7 +21,7 @@ const initialState = {
   loaded: false,
   review: false,
   saveError: {},
-  saveBalance: {},
+  balances: [],
   showAddForm: false,
   showCardView: false,
 };
@@ -122,9 +122,10 @@ export default function reducer(state = initialState, action = {}) {
         }
       } : state;
     case QUERY_BALANCE:
-      return {
-        
-      };
+      return state;
+    case QUERY_BALANCE_SUCCESS:
+     // const balance = action.result;
+      return state;
     default:
       return state;
   }

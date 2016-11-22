@@ -22,7 +22,7 @@ mongoose.connect(mongoUrl, (err) => {
   if (err) {
     console.log('Please make sure MongoDb is up and running');
   }
-  console.log('==> DB is ready');
+  console.log('==> MongoDB connection is up and ready');
 });
 
 const io = new SocketIo(server);
