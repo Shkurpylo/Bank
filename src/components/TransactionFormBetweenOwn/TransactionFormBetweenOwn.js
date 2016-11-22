@@ -23,26 +23,26 @@ const hideHumber = (number) => {
 })
 export default class TransactionFormBetweenOwn extends Component {
   static propTypes = {
-    fields: PropTypes.object,
-    handleSubmit: PropTypes.func,
-    resetForm: PropTypes.func,
-    newTransaction: PropTypes.func,
-    values: PropTypes.object,
-    saveError: PropTypes.object,
     cards: PropTypes.array,
+    saveError: PropTypes.object,
+    resetForm: PropTypes.func,
+    fields: PropTypes.object,
+    values: PropTypes.object,
+    handleSubmit: PropTypes.func,
+    newTransaction: PropTypes.func,
   };
   render() {
     const {
       fields: { sender, receiver, amount },
+      handleSubmit,
       resetForm,
-      cards
-      // values,
-      // newTransaction
+      cards,
+      values,
+      newTransaction
     } = this.props;
     console.log(cards);
 
     // const styles = require('./TransactionForm.scss');
-
 
     return (
       <div className="panel panel-success col-sm-5 col-md-offset-3"
@@ -54,14 +54,19 @@ export default class TransactionFormBetweenOwn extends Component {
         <form >
           <div className="row">
               <div className="form-group">
-                   <label htmlFor="cardSelector">From card:</label>
-                   <select name="myCard" className="form-control" id="cardSelector" {...sender}>
-                   {cards.map(card => <option name={card.name} key={card._id}>{card.name + '   ' + hideHumber(card.number)}</option>)}
+
+                   <label htmlFor="receiverCardSelector">To card:</label>
+                   <select name="mySenderCard" className="form-control"
+                   id="receiverCardSelector" {...receiver}>
+                   {cards.map(card => <option name={card.name} value={card._id} key={card._id}>
+                   {card.name + ',   ' + hideHumber(card.number)}</option>)}
                    </select>
 
-                   <label htmlFor="cardSelector">To card:</label>
-                   <select name="myCard" className="form-control" id="cardSelector" {...receiver}>
-                   {cards.map(card => <option name={card.name} key={card._id}>{card.name + ',   ' + card.number}</option>)}
+                   <label htmlFor="senderCardSelector">From card:</label>
+                   <select name="meReceiverCard" className="form-control"
+                   id="senderCardSelector" {...sender}>
+                   {cards.map(card => <option name={card.name} value={card._id} key={card._id}>
+                   {card.name + ',   ' + hideHumber(card.number)}</option>)}
                    </select>
 
                    <label htmlFor="amount">Amount:</label>
@@ -71,7 +76,9 @@ export default class TransactionFormBetweenOwn extends Component {
                    <div className="input-group-addon">$</div>
                    </div>
                   <div className="form-group" style={{paddingTop: 15}}>
-                    <button className="btn btn-success" >
+                    <button className="btn btn-success"
+                    onClick={handleSubmit(() => (newTransaction(values))
+                    .then(resetForm))}>
                       <i className="fa fa-plus"/> Send
                     </button>
                     <button className="btn btn-warning"
@@ -88,3 +95,6 @@ export default class TransactionFormBetweenOwn extends Component {
     );
   }
 }
+
+
+// console.log('=>>>>' + JSON.stringify(values)).then

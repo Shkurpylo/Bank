@@ -57,7 +57,8 @@ export default class TransactionForm extends Component {
               <div className="form-group">
                    <label htmlFor="cardSelector">Choose your card:</label>
                    <select name="myCard" className="form-control" id="cardSelector" {...sender}>
-                   {cards.map(card => <option name={card.name} key={card._id}>{card.name + ',    ' + hideHumber(card.number)}</option>)}
+                   {cards.map(card => <option name={card.name} key={card._id}>
+                   {card.name + ',    ' + hideHumber(card.number)}</option>)}
                    </select>
                    <div className="input-group">
                    <label htmlFor="cardName">Input card number of recipient:</label>

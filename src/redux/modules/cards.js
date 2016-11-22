@@ -7,6 +7,9 @@ const DELETE_FAIL = '/cards/DELETE_FAIL';
 const SAVE = '/cards/SAVE';
 const SAVE_SUCCESS = '/cards/SAVE_SUCCESS';
 const SAVE_FAIL = '/cards/SAVE_FAIL';
+const QUERY_BALANCE = '/cards/QUERY_BALANCE';
+const QUERY_BALANCE_SUCCESS = '/cards/QUERY_BALANCE_SUCCESS';
+const QUERY_BALANCE_FAIL = '/cards/QUERY_BALANCE_FAIL';
 
 const SHOW_ADD_FORM = '/cards/SHOW_ADD_FORM';
 const SHOW_CARD_VIEW = '/cards/SHOW_CARD_VIEW';
@@ -18,6 +21,7 @@ const initialState = {
   loaded: false,
   review: false,
   saveError: {},
+  saveBalance: {},
   showAddForm: false,
   showCardView: false,
 };
@@ -47,7 +51,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loading: true,
-     //   cards: action.result
+        //   cards: action.result
       };
     case LOAD_SUCCESS:
       return {
@@ -100,7 +104,6 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         data: data,
-        loaded: false,
         editing: {
           ...state.review,
           [action.id]: false
@@ -118,6 +121,10 @@ export default function reducer(state = initialState, action = {}) {
           [action.id]: action.error
         }
       } : state;
+    case QUERY_BALANCE:
+      return {
+        
+      };
     default:
       return state;
   }
@@ -146,7 +153,7 @@ export function createCard(card) {
   return {
     types: [SAVE, SAVE_SUCCESS, SAVE_FAIL],
     promise: (client) => client.post('/addNewCard', {
-      cards: card
+      data: card
     }),
     // todo: .then(getCards ) fix reject in api read apiclint and clientMiddleware
   };
@@ -166,6 +173,13 @@ export function reviewCard(cardId) {
   };
 }
 
+export function getBalance(cardId) {
+  return {
+    types: [QUERY_BALANCE, QUERY_BALANCE_SUCCESS, QUERY_BALANCE_FAIL],
+    promise: (client) => client.get('/countBalance?id=' + cardId),
+  };
+}
+
 export function addButton(showAddForm) {
   return {
     type: SHOW_ADD_FORM,
@@ -174,7 +188,6 @@ export function addButton(showAddForm) {
 }
 
 export function viewButton(card) {
-  console.log(card);
   return {
     type: VIEW_CARD,
     card,

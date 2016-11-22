@@ -101,15 +101,16 @@ export function getTransactions() {
   };
 }
 
-export function newTransaction(from, to, amount) {
-  const transaction = {
-    sender: from,
-    receiver: to,
-    amount: amount
-  };
+export function newTransaction(transaction) {
+  // const transaction = {
+  //   sender: from,
+  //   receiver: to,
+  //   amount: amount
+  // };
+  console.log(transaction);
   return {
     types: [SAVE, SAVE_SUCCESS, SAVE_FAIL],
-    promise: (client) => client.post('/addNewCard', {
+    promise: (client) => client.post('/addTransaction', {
       data: transaction
     }),
   };

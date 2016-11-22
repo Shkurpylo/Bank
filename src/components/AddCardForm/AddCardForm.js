@@ -1,11 +1,13 @@
-import React, {Component, PropTypes} from 'react';
-import {reduxForm} from 'redux-form';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React, { Component, PropTypes } from 'react';
+import { reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as cardsActions from 'redux/modules/cards';
 // import { createCard } from 'redux/modules/cards';
 
-@connect(() => ({}),
+@connect((state) => ({
+  saveError: state.cards.saveError
+}),
   dispatch => bindActionCreators(cardsActions, dispatch)
 )
 
@@ -27,11 +29,11 @@ export default class AddCardForm extends Component {
 
   render() {
     const {
-      fields: {cardName, cardType},
+      fields: { cardName, cardType },
       handleSubmit,
       resetForm,
       values,
-      createCard,
+      createCard,  // eslint-disable-line no-shadow
     } = this.props;
 
     return (
@@ -62,8 +64,7 @@ export default class AddCardForm extends Component {
 
 
             <button className="btn btn-success" onClick={handleSubmit(() => createCard(values)
-              .then(resetForm)
-            )}>
+            .then(resetForm))}>
               <i className="fa fa-plus"/> Add
             </button>
             <button className="btn btn-warning" onClick={resetForm} style={{marginLeft: 20}}>

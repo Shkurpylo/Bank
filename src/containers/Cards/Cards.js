@@ -1,21 +1,20 @@
-import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
 import Helmet from 'react-helmet';
-import {initializeWithKey} from 'redux-form';
-import {initialize} from 'redux-form';
-import {isLoaded, getCards as loadCards} from 'redux/modules/cards';
+import { initializeWithKey } from 'redux-form';
+import { isLoaded, getCards as loadCards } from 'redux/modules/cards';
 import * as cardsActions from 'redux/modules/cards';
-import {AddCardForm, CardView} from 'components';
+import { AddCardForm, CardView } from 'components';
 
 const hideHumber = (number) => {
   const stringCartNumber = number.toString();
-  return stringCartNumber.slice(0, 4) + '....' + stringCartNumber.slice(-4);
+  return stringCartNumber.slice(0, 4) + '........' + stringCartNumber.slice(-4);
 };
 
 @asyncConnect([{
   deferred: true,
-  promise: ({store: {dispatch, getState}}) => {
+  promise: ({ store: { dispatch, getState } }) => {
     if (!isLoaded(getState())) {
       return dispatch(loadCards());
     }
@@ -32,11 +31,10 @@ const hideHumber = (number) => {
     showCardView: state.cards.showCardView,
     addButton: state.cards.addButton,
     createCard: state.cards.createCard,
-  }),
-  {...cardsActions, initialize, initializeWithKey })
+  }), {...cardsActions, initializeWithKey })
 export default class Cards extends Component {
   static propTypes = {
-    initialize: PropTypes.func.isRequired,
+    // initialize: PropTypes.func.isRequired,
     cards: PropTypes.array,
     // reviewCard: PropTypes.func,
     showAddForm: PropTypes.bool,
@@ -51,7 +49,8 @@ export default class Cards extends Component {
 
   render() {
     const style = require('./Cards.scss');
-    const {cards,
+    const {
+      cards,
       addButton,
       viewButton,
       showAddForm,
@@ -99,10 +98,10 @@ export default class Cards extends Component {
           <div className="col-md-5 pull-right">
 
             { showAddForm &&
-            <AddCardForm/>}
+            <AddCardForm />}
 
             { showCardView &&
-            <CardView/>}
+            <CardView />}
 
           </div>
         </div>

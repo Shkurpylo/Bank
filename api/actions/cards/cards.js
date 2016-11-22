@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { User, Card } from '../../models';
 import { numberGenerator, getPin, getCVV, getExplDate } from './cardsHelpers';
-// import {getIncomingTransactions, getOutTransactions} from './transaction'
+import { getIncomingSum, getOutgoingSum } from '../transaction';
 
 
 export function getCards(req) { // get
@@ -37,23 +37,23 @@ export function addNewCard(req) { // post
   return new Promise((resolve, reject) => {
     const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1'); // temporary
     console.log('starting addNewCard');
-    getUserById(ownerId).then(data => {
-      const newcard = new Card({
-        number: numberGenerator(req.body.cardType),
-        name: req.body.cardName,
-        pin: getPin(),
-        cvv: getCVV(),
-        explDate: getExplDate(),
-        owner: ownerId
+    getUserById(ownerId)
+      .then(data => {
+        const newcard = new Card({
+          number: numberGenerator(req.body.cardType),
+          name: req.body.cardName,
+          pin: getPin(),
+          cvv: getCVV(),
+          explDate: getExplDate(),
+          owner: ownerId
+        });
+        const user = data;
+        user.cards.push(newcard);
+        console.log(newcard + '  is pushed and ready to save');
+        resolve(user.save());
+      }, err => {
+        reject(err);
       });
-      const user = data;
-      user.cards.push(newcard);
-      console.log(newcard + '  is pushed and ready to save');
-      if (!user) {
-        reject('err');
-      }
-      resolve(user.save());
-    });
   });
 }
 
@@ -93,11 +93,22 @@ export function deleteCard(req) { // get
     }
   });
 }
-//
-// export function countBalance(cardId){
-//   return new Promise ((resolve, reject) => {
-//     const incomingList =  getIncomingTransactions(cardId);
-//     const outList = getOutTransactions(cardId);
-//   };
-//
-// }
+
+export function countBalance(req) {
+  return new Promise((resolve, reject) => {
+    const cardId = mongoose.Types.ObjectId(req.query.id); // eslint-disable-line new-cap
+    let balance = 0;
+    getIncomingSum(cardId)
+      .then(result => {
+        console.log('result first: ' + result);
+        balance += result;
+      });
+    getOutgoingSum(cardId)
+      .then(result => {
+        console.log('resultSecond: ' + result);
+        balance -= result;
+        resolve({cardId: balance});
+      },
+        err => reject(err));
+  });
+}

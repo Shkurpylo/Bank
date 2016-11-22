@@ -1,7 +1,4 @@
-// import mongoose from 'mongoose';
-import {
-  Transaction
-} from '../models';
+import { Transaction } from '../models';
 
 export function addTransaction(req) {
   return new Promise((resolve, reject) => {
@@ -20,40 +17,51 @@ export function addTransaction(req) {
   });
 }
 
-export function getIncomingTransactions(receiverId) {
+export function getTransactions() {
+  return new Promise((resolve, reject) =>
+    Transaction.find({}).then(result => {
+      resolve(result);
+    }, err => reject(err))
+  );
+}
+
+export function getIncomingSum(receiverId) {
   return new Promise((resolve, reject) => {
-    if (!receiverId) {
-      reject('err');
-    }
-    resolve(Transaction.find({
-      receiver: receiverId
-    }));
+    Transaction.aggregate([{
+      $match: { receiver: receiverId }},
+    {
+      $group: {
+        _id: null,
+        total: { $sum: '$amount' }
+      }
+    }]).then(result => {
+      if (!result[0]) {
+        resolve(0);
+      } else {
+        resolve(result[0].total);
+      }
+    }, err => reject(err));
   });
 }
 
-export function getOutTransactions(senderId) {
+export function getOutgoingSum(senderId) {
   return new Promise((resolve, reject) => {
-    if (!senderId) {
-      reject('err');
-    }
-    resolve(Transaction.find({
-      receiver: senderId
-    }));
+    Transaction.aggregate([{
+      $match: { sender: senderId }},
+    {
+      $group: {
+        _id: null,
+        total: { $sum: '$amount' }
+      }
+    }]
+    ).then(result => {
+      if (!result[0]) {
+        resolve(0);
+      } else {
+        resolve(result[0].total);
+      }
+    }, err => reject(err));
   });
 }
 
 
-// export function getCards(req) { // get
-//   const ownerId = mongoose.Types.ObjectId("582d63704852674bcde44df1");
-//   return new Promise((resolve, reject) => {
-//     console.log('getCards from actions/cards');
-//     setTimeout(() => {
-//       let cards = req.session.cards;
-//       if (!cards) {
-//         req.session.cards = cards;
-//         resolve(cards = User.findById(ownerId).distinct('cards'));
-//       }
-//       reject('err'); // todo if
-//     }, 500);
-//   });
-// }

@@ -5,20 +5,20 @@ import * as cardsActions from 'redux/modules/cards';
 
 @connect((state) => ({
   card: state.cards.card,
-  deleteCard: state.cards.deleteCard
+  deleteCard: state.cards.deleteCard,
 }),
   dispatch => bindActionCreators(cardsActions, dispatch)
 )
 export default class CardView extends Component {
   static propTypes = {
     card: PropTypes.object,
-    deleteCard: PropTypes.func
+    deleteCard: PropTypes.func,
   };
 
   render() {
     const {
       card,
-      deleteCard
+      deleteCard,
     } = this.props;
     const style = require('./CardView.scss');
     return (
