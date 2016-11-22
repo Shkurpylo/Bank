@@ -31,7 +31,8 @@ export default class Home extends Component {
       <div className={styles.home}>
         <Helmet title="Home"/>
         <div className={styles.masthead}>
-          <div className="container">
+          {!user &&
+            <div className="container">
             <div className={styles.logo}>
               <p>
                 <img src={logoImage}/>
@@ -40,7 +41,7 @@ export default class Home extends Component {
             <h1>{config.app.title}</h1>
             <h2>{config.app.description}</h2>
 
-            {!user && <div>
+            <div>
               <WelcomeButtons />
               {showLoginForm && <div>
                 < LoginForm />
@@ -48,9 +49,21 @@ export default class Home extends Component {
               {showSignUpForm && <div>
                 < SignUpForm />
               </div>}
+              </div>
             </div> }
+            {user &&
+            <div className="container">
+            <h1>Welcome, {user.name} !</h1>
 
-          </div>
+            <div>
+              <h2> Some nice animation will be here soon</h2>
+            </div>
+            <div>
+              <h3> Did you seen this site? </h3>
+              <h3> It is amazing! </h3>
+            </div>
+          </div>}
+
         </div>
       </div>
     );
