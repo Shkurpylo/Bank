@@ -13,9 +13,10 @@ export function getCards(req) { // get
       req.session.cards = cards;
       resolve(cards = User.findById(ownerId).distinct('cards'));
     }
-    reject('err'); // todo if
+    reject('err');
   });
 }
+
 
 export function getCardByNumber(req) { // get
   const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
@@ -29,33 +30,53 @@ export function getCardByNumber(req) { // get
 }
 
 function getUserById() {
-  const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
-  return User.findById(ownerId);
+  return new Promise((resolve, reject) => {
+    const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
+    if (!ownerId) {
+      reject('user ID is not defined');
+    }
+    resolve(User.findById(ownerId));
+  });
+}
+
+function createCard(ownerId, cardName, cardType) {
+  return new Promise((resolve, reject) => {
+    const newCard = new Card();
+    newCard.owner = ownerId;
+    if (!ownerId) {
+      reject('smth wrong with id');
+    }
+    newCard.name = cardName ? cardName : 'default Name';
+    newCard.number = numberGenerator(cardType);
+    newCard.pin = getPin();
+    newCard.cvv = getCVV();
+    newCard.explDate = getExplDate();
+
+    resolve(newCard);
+  });
 }
 
 export function addNewCard(req) { // post
   return new Promise((resolve, reject) => {
     const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1'); // temporary
     console.log('starting addNewCard');
-    getUserById(ownerId)
-      .then(data => {
-        const newcard = new Card({
-          number: numberGenerator(req.body.cardType),
-          name: req.body.cardName,
-          pin: getPin(),
-          cvv: getCVV(),
-          explDate: getExplDate(),
-          owner: ownerId
-        });
-        const user = data;
-        user.cards.push(newcard);
-        console.log(newcard + '  is pushed and ready to save');
-        resolve(user.save());
-      }, err => {
-        reject(err);
-      });
+    Promise.all([
+      getUserById(ownerId),
+      createCard(ownerId, req.body.cardName, req.body.cardType)
+    ]).then(result => {
+      console.log(result);
+      const user = result[0];
+      const newCard = result[1];
+      user.cards.push(newCard);
+      user.save();
+    },
+      resolve('ok'),
+      err => reject(err),
+    );
   });
 }
+
+
 
 export function updateCard(req) { // post
   return new Promise((resolve, reject) => {
@@ -107,8 +128,8 @@ export function countBalance(req) {
       .then(result => {
         console.log('resultSecond: ' + result);
         balance -= result;
-        resolve({cardId: balance});
-      },
-        err => reject(err));
+        resolve({ cardId: balance });
+      })
+      .catch(err => reject(err));
   });
 }
