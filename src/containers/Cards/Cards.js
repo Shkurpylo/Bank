@@ -48,7 +48,7 @@ export default class Cards extends Component {
   };
 
   render() {
-    const style = require('./Cards.scss');
+    const styles = require('./Cards.scss');
     const {
       cards,
       addButton,
@@ -57,9 +57,9 @@ export default class Cards extends Component {
       showCardView
     } = this.props;
     return (
-      <div className={style.widgets + ' container'}>
+      <div className={styles.widgets + ' container'}>
         <Helmet title="Cards"/>
-        <h1 className={style}>My Cards</h1>
+        <h1 className={styles}>My Cards</h1>
         <div>
           <button className="btn btn-primary" onClick={() => addButton(!showAddForm)}>
             Add new card
@@ -71,20 +71,20 @@ export default class Cards extends Component {
             <table className="table table-hover">
               <thead>
               <tr>
-                <th className={style.colorCol}>Type</th>
-                <th className={style.sprocketsCol}>Number</th>
-                <th className={style.ownerCol}>Bal</th>
-                <th className={style.buttonCol}>Button</th>
+                <th className={styles.colorCol}>Type</th>
+                <th className={styles.sprocketsCol}>Number</th>
+                <th className={styles.ownerCol}>Bal</th>
+                <th className={styles.buttonCol}>Button</th>
               </tr>
               </thead>
               <tbody>
               {
                 cards.map((card) =>
                   <tr key={card._id}>
-                    <td className={style.idCol} >{card.name}</td>
-                    <td className={style.colorCol} >{hideHumber(card.number)}</td>
-                    <td className={style.ownerCol} >{card.cvv}</td>
-                    <td className={style.buttonCol} >
+                    <td className={styles.idCol} >{card.name}</td>
+                    <td className={styles.colorCol} >{hideHumber(card.number)}</td>
+                    <td className={styles.ownerCol} >{card.cvv}</td>
+                    <td className={styles.buttonCol} >
                       <button key={card.id} className="btn btn-info btn-sm"
                               onClick={() => {viewButton(card);}}>
                         <i className="fa fa-credit-card"/> select

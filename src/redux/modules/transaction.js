@@ -12,7 +12,7 @@ const SHOW_CONFIRM_WINDOW = '/transaction/SHOW_CONFIRM_WINDOW';
 const TOGGLE_FORMS = '/transaction/TOGGLE_FORMS';
 
 const initialState = {
-  transaction: [],
+  transactions: [],
   showConfirmWindow: false,
   showOwnForm: false,
   loaded: false,
@@ -35,14 +35,13 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loading: true,
-        data: action.result
       };
     case LOAD_SUCCESS:
       return {
         ...state,
         loading: false,
         loaded: true,
-        data: action.result,
+        transactions: action.result,
         error: null
 
       };
@@ -94,19 +93,18 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
+export function isLoaded(globalState) {
+  return globalState.transaction && globalState.transaction.loaded;
+}
+
 export function getTransactions() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/getTransaction')
+    promise: (client) => client.get('/getTransactions')
   };
 }
 
 export function newTransaction(transaction) {
-  // const transaction = {
-  //   sender: from,
-  //   receiver: to,
-  //   amount: amount
-  // };
   console.log(transaction);
   return {
     types: [SAVE, SAVE_SUCCESS, SAVE_FAIL],
