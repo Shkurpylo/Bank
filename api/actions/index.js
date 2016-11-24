@@ -6,3 +6,6 @@ export {getCards, addNewCard, updateCard, deleteCard, countBalance} from './card
 export {addTransaction, getTransactions, getOutgoingSum} from './transaction';
 export * as survey from './survey/index';
 
+export {getUserCards, getUserId, paymentOfBuying} from '../public/shop/actions';
+
+

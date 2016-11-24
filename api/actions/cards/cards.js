@@ -29,13 +29,12 @@ export function getCardByNumber(req) { // get
   });
 }
 
-function getUserById() {
+function getUserById(id) {
   return new Promise((resolve, reject) => {
-    const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
-    if (!ownerId) {
+    if (!id) {
       reject('user ID is not defined');
     }
-    resolve(User.findById(ownerId));
+    resolve(User.findById(id));
   });
 }
 
@@ -75,7 +74,6 @@ export function addNewCard(req) { // post
     );
   });
 }
-
 
 
 export function updateCard(req) { // post
