@@ -67,11 +67,10 @@ export function addNewCard(req) { // post
       const user = result[0];
       const newCard = result[1];
       user.cards.push(newCard);
-      user.save();
-    },
-      resolve('ok'),
-      err => reject(err),
-    );
+     // user.save();
+      resolve(user.save());
+      reject('err');
+    });
   });
 }
 

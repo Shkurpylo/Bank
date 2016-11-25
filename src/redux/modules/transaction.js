@@ -94,7 +94,7 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export function isLoaded(globalState) {
-  return globalState.transaction && globalState.transaction.loaded;
+  return globalState.transactions && globalState.transaction.loaded;
 }
 
 export function getTransactions() {

@@ -97,21 +97,14 @@ export default function reducer(state = initialState, action = {}) {
         }
       };
     case SAVE:
-      return state; // 'saving' flag handled by redux-form
+
+      return state;
+
     case SAVE_SUCCESS:
-      const data = [...state.data];
-      data[action.result.id - 1] = action.result;
       return {
         ...state,
-        data: data,
-        editing: {
-          ...state.review,
-          [action.id]: false
-        },
-        saveError: {
-          ...state.saveError,
-          [action.id]: null
-        }
+        loaded: false,
+        cards: action.result.cards
       };
     case SAVE_FAIL:
       return typeof action.error === 'string' ? {
@@ -124,7 +117,7 @@ export default function reducer(state = initialState, action = {}) {
     case QUERY_BALANCE:
       return state;
     case QUERY_BALANCE_SUCCESS:
-     // const balance = action.result;
+      // const balance = action.result;
       return state;
     default:
       return state;
@@ -155,8 +148,8 @@ export function createCard(card) {
     types: [SAVE, SAVE_SUCCESS, SAVE_FAIL],
     promise: (client) => client.post('/addNewCard', {
       data: card
-    }),
-    // todo: .then(getCards ) fix reject in api read apiclint and clientMiddleware
+    }) // .then(getCards())
+      // todo: .then(getCards ) fix reject in api read apiclint and clientMiddleware
   };
 }
 
