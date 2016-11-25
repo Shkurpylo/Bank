@@ -1,4 +1,4 @@
-import { User } from '../models';
+import { User } from '../../models';
 
 export default function createNewUser(req) {
   console.log('addUser' + JSON.stringify(req.body));

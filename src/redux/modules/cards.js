@@ -51,7 +51,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loading: true,
-        //   cards: action.result
+        loaded: false
       };
     case LOAD_SUCCESS:
       return {
@@ -60,7 +60,6 @@ export default function reducer(state = initialState, action = {}) {
         loaded: true,
         cards: action.result,
         error: null
-
       };
     case LOAD_FAIL:
       return {
@@ -96,8 +95,8 @@ export default function reducer(state = initialState, action = {}) {
           [action.id]: false,
         }
       };
-    case SAVE:
 
+    case SAVE:
       return state;
 
     case SAVE_SUCCESS:

@@ -3,15 +3,16 @@ import Helmet from 'react-helmet';
 import {connect} from 'react-redux';
 import {reduxForm} from 'redux-form';
 import {bindActionCreators} from 'redux';
-import surveyValidation from './surveyValidation';
+import signupValidation from './signupValidation';
 import * as signUpActions from 'redux/modules/signUp';
 
-// function asyncValidate(data, dispatch, {isValidEmail}) {
-//   if (!data.email) {
-//     return Promise.resolve({});
-//   }
-//   return isValidEmail(data);
-// }
+function asyncValidate(data, dispatch, {isValidEmail}) {
+  console.log(data);
+  if (!data.email) {
+    return Promise.resolve({});
+  }
+  return isValidEmail(data);
+}
 @connect(() => ({}),
   () => dispatch => bindActionCreators(signUpActions, dispatch)
 )
@@ -19,8 +20,8 @@ import * as signUpActions from 'redux/modules/signUp';
 @reduxForm({
   form: 'signUp',
   fields: ['name', 'lastName', 'email', 'pass', 'confirmPass'],
-  validate: surveyValidation,
- // asyncValidate,
+  validate: signupValidation,
+  asyncValidate,
   asyncBlurFields: ['email']
 })
 export default class SignUpForm extends Component {

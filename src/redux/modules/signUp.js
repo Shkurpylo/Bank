@@ -1,4 +1,4 @@
-const ADD_NEW_USER = '/signUp/ADD_NEW_USER';
+
 const IS_VALID = '/signUp/IS_VALID';
 const IS_VALID_SUCCESS = '/signUp/IS_VALID_SUCCESS';
 const IS_VALID_FAIL = '/signUp/IS_VALID_FAIL';
@@ -7,24 +7,21 @@ const SAVE_SUCCESS = '/signUp/SAVE_SUCCESS';
 const SAVE_FAIL = '/signUp/SAVE_FAIL';
 
 const initialState = {
-  addError: null
+  saveError: null,
+  data: []
 };
 
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case ADD_NEW_USER:
-      return {
-        ...state,
-      };
     case IS_VALID:
       return state; // 'saving' flag handled by redux-form
     case IS_VALID_SUCCESS:
-      const values = [...state.values];
-      values[action.result.id - 1] = action.result;
+      // const data = [...state.data];
+      // values[action.result.id - 1] = action.result;
       return {
         ...state,
-        values: values,
+        data: state.data,
         saveError: null,
       };
     case IS_VALID_FAIL:
@@ -36,15 +33,11 @@ export default function reducer(state = initialState, action = {}) {
     case SAVE:
       return state; // 'saving' flag handled by redux-form
     case SAVE_SUCCESS:
-      const data = [...state.data];
-      data[action.result.id - 1] = action.result;
+    //  data = [...state.data];
       return {
         ...state,
-        data: data,
-        saveError: {
-          ...state.saveError,
-          [action.id]: null
-        }
+        data: state.data,
+        saveError: null
       };
     case SAVE_FAIL:
       return typeof action.error === 'string' ? {
@@ -60,12 +53,12 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
-export function isValidEmail(values) {
-  console.log('=============>>>>>>' + JSON.stringify(values));
+export function isValidEmail(data) {
+  console.log('=============>>>>>>' + JSON.stringify(data));
   return {
     types: [IS_VALID, IS_VALID_SUCCESS, IS_VALID_FAIL],
-    promise: (client) => client.post('/survey/isValid', {
-      values: values
+    promise: (client) => client.post('/signUp/isValid', {
+      data
     })
   };
 }
@@ -74,7 +67,7 @@ export function createNewUser(user) {
   console.log('=============>>>>>>' + JSON.stringify(user));
   return {
     types: [SAVE, SAVE_SUCCESS, SAVE_FAIL],
-    promise: (client) => client.post('/createNewUser', {
+    promise: (client) => client.post('/signUp/createNewUser', {
       data: user
     })
   };

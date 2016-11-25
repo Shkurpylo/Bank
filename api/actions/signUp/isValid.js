@@ -1,11 +1,9 @@
-export default function survey(req) {
-  console.log('============================>>> starting survey');
-  console.log('============================>>>' + req.body);
+export default function isValid(req) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       const errors = {};
       let valid = true;
-      if (~['bobby@gmail.com', 'timmy@microsoft.com'].indexOf(req.body)) {
+      if (~['bobby@gmail.com', 'timmy@microsoft.com'].indexOf(req.body.email)) {
         errors.email = 'Email address already used';
         valid = false;
       }
@@ -14,6 +12,6 @@ export default function survey(req) {
       } else {
         reject(errors);
       }
-    }, 2000);
+    }, 1000);
   });
 }
