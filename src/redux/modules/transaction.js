@@ -35,6 +35,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loading: true,
+        loaded: false
       };
     case LOAD_SUCCESS:
       return {
@@ -43,14 +44,13 @@ export default function reducer(state = initialState, action = {}) {
         loaded: true,
         transactions: action.result,
         error: null
-
       };
     case LOAD_FAIL:
       return {
         ...state,
         loading: false,
         loaded: false,
-        data: null,
+        transactions: null,
         error: action.error
       };
     case DELETE:

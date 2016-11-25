@@ -4,16 +4,44 @@ import { numberGenerator, getPin, getCVV, getExplDate } from './cardsHelpers';
 import { getIncomingSum, getOutgoingSum } from '../transaction';
 
 
+function getUserById(id) {
+  return new Promise((resolve, reject) => {
+    User.findById(id, (err, user) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(user);
+    });
+  });
+}
+// export function getCards(req) { // get
+//   const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
+//   return new Promise((resolve, reject) => {
+//     console.log('getCards from actions/cards');
+//     let cards = req.session.cards;
+//     if (!cards) {
+//       req.session.cards = cards;
+//       resolve(cards = User.findById(ownerId).distinct('cards'));
+//     }
+//     reject('err');
+//   });
+// }
+
 export function getCards(req) { // get
   const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
   return new Promise((resolve, reject) => {
-    console.log('getCards from actions/cards');
-    let cards = req.session.cards;
+    const cards = req.session.cards;
     if (!cards) {
       req.session.cards = cards;
-      resolve(cards = User.findById(ownerId).distinct('cards'));
+      User.findById(ownerId).distinct('cards', (err, result) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(result);
+      });
+
+      // User.findById(ownerId, (err, user)).distinct('cards')
     }
-    reject('err');
   });
 }
 
@@ -22,21 +50,13 @@ export function getCardByNumber(req) { // get
   const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
   return new Promise((resolve, reject) => {
     const number = req.query.num;
-    if (!number) {
-      reject('err'); // todo if
-    }
-    resolve(User.findById(ownerId).findOne({ 'cards.number': number }));
+    User.findById(ownerId).findOne({ 'cards.number': number }, (err, card) => {
+      if (err) { reject(err); }
+      resolve(card);
+    });
   });
 }
 
-function getUserById(id) {
-  return new Promise((resolve, reject) => {
-    if (!id) {
-      reject('user ID is not defined');
-    }
-    resolve(User.findById(id));
-  });
-}
 
 function createCard(ownerId, cardName, cardType) {
   return new Promise((resolve, reject) => {
@@ -45,7 +65,7 @@ function createCard(ownerId, cardName, cardType) {
     if (!ownerId) {
       reject('smth wrong with id');
     }
-    newCard.name = cardName ? cardName : 'default Name';
+    newCard.name = cardName ? cardName : 'My ' + cardType;
     newCard.number = numberGenerator(cardType);
     newCard.pin = getPin();
     newCard.cvv = getCVV();
@@ -67,10 +87,10 @@ export function addNewCard(req) { // post
       const user = result[0];
       const newCard = result[1];
       user.cards.push(newCard);
-     // user.save();
+      // user.save();
       resolve(user.save());
-      reject('err');
-    });
+    })
+    .catch(err => reject(err));
   });
 }
 
@@ -85,30 +105,32 @@ export function updateCard(req) { // post
       '$set': {
         'cards.name': req.body.cardName
       }
-    }, );
-    resolve('ok');
-    reject('err');
+    }, (err, ok) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(ok);
+    });
   });
 }
 
 export function deleteCard(req) { // get
   return new Promise((resolve, reject) => {
-    console.log('=============>>>>>>' + req.query.id);
     const id = req.query.id;
-
-    resolve(
-      User.update({}, {
-        '$pull': {
-          cards: {
-            '_id': id
-          }
+    User.update({}, {
+      '$pull': {
+        cards: {
+          '_id': id
         }
-      }, {
-        multi: true
-      }));
-    if (false === true) {
-      reject('err');
-    }
+      }
+    }, {
+      multi: true
+    }, (err, ok) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(ok);
+    });
   });
 }
 

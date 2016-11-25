@@ -17,24 +17,33 @@ export function addTransaction(req) {
   });
 }
 
+// export function getTransactions() {
+//   return new Promise((resolve, reject) => {
+//     Transaction.find({}).then(result => {
+//       resolve(result);
+//     }, err => reject(err));
+//   });
+// }
+
 export function getTransactions() {
-  return new Promise((resolve, reject) =>
-    Transaction.find({}).then(result => {
-      resolve(result);
-    }, err => reject(err))
-  );
+  return new Promise((resolve, reject) => {
+    resolve(Transaction.find({}));
+    reject('err');
+  });
 }
 
 export function getIncomingSum(receiverId) {
   return new Promise((resolve, reject) => {
     Transaction.aggregate([{
-      $match: { receiver: receiverId }},
+      $match: { receiver: receiverId }
+    },
     {
       $group: {
         _id: null,
         total: { $sum: '$amount' }
       }
-    }]).then(result => {
+    }
+    ]).then(result => {
       if (!result[0]) {
         resolve(0);
       } else {
@@ -47,14 +56,15 @@ export function getIncomingSum(receiverId) {
 export function getOutgoingSum(senderId) {
   return new Promise((resolve, reject) => {
     Transaction.aggregate([{
-      $match: { sender: senderId }},
-    {
-      $group: {
-        _id: null,
-        total: { $sum: '$amount' }
+        $match: { sender: senderId }
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: '$amount' }
+        }
       }
-    }]
-    ).then(result => {
+    ]).then(result => {
       if (!result[0]) {
         resolve(0);
       } else {
@@ -63,5 +73,3 @@ export function getOutgoingSum(senderId) {
     }, err => reject(err));
   });
 }
-
-
