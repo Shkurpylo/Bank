@@ -37,7 +37,7 @@ export default class LoginForm extends Component {
             </div>
             <div className="form-group">
               <div>
-                <input type="text" ref="pass" placeholder="Password" className="form-control"/>
+                <input type="password" ref="pass" placeholder="Password" className="form-control"/>
               </div>
             </div>
             <button className="btn btn-success" onClick={this.handleSubmit}><i className="fa fa-sign-in" />{' '}Login
