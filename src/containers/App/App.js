@@ -90,7 +90,7 @@ export default class App extends Component {
 
             </Nav>
             {user &&
-            <p className={styles.loggedInMessage + ' navbar-text'}><i>Hi! <strong>{user.name}</strong></i>.</p>}
+            <p className={styles.loggedInMessage + ' navbar-text'}><i>Hi! <strong>{user.firstName}</strong></i>.</p>}
             {user && <Nav navbar pullRight>
               <NavItem eventKey={1} className="logout-link" onClick={this.handleLogout}>
                 Log Out

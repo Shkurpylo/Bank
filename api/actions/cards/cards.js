@@ -14,18 +14,6 @@ function getUserById(id) {
     });
   });
 }
-// export function getCards(req) { // get
-//   const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
-//   return new Promise((resolve, reject) => {
-//     console.log('getCards from actions/cards');
-//     let cards = req.session.cards;
-//     if (!cards) {
-//       req.session.cards = cards;
-//       resolve(cards = User.findById(ownerId).distinct('cards'));
-//     }
-//     reject('err');
-//   });
-// }
 
 export function getCards(req) { // get
   const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
@@ -39,8 +27,6 @@ export function getCards(req) { // get
         }
         resolve(result);
       });
-
-      // User.findById(ownerId, (err, user)).distinct('cards')
     }
   });
 }

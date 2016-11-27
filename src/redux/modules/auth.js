@@ -1,12 +1,12 @@
-const LOAD = 'redux-example/auth/LOAD';
-const LOAD_SUCCESS = 'redux-example/auth/LOAD_SUCCESS';
-const LOAD_FAIL = 'redux-example/auth/LOAD_FAIL';
-const LOGIN = 'redux-example/auth/LOGIN';
+const LOAD = 'bank/auth/LOAD';
+const LOAD_SUCCESS = 'bank/auth/LOAD_SUCCESS';
+const LOAD_FAIL = 'bank/auth/LOAD_FAIL';
+const LOGIN = 'bank/auth/LOGIN';
 const LOGIN_SUCCESS = '/auth/LOGIN_SUCCESS';
-const LOGIN_FAIL = 'redux-example/auth/LOGIN_FAIL';
-const LOGOUT = 'redux-example/auth/LOGOUT';
-const LOGOUT_SUCCESS = 'redux-example/auth/LOGOUT_SUCCESS';
-const LOGOUT_FAIL = 'redux-example/auth/LOGOUT_FAIL';
+const LOGIN_FAIL = 'bank/auth/LOGIN_FAIL';
+const LOGOUT = 'bank/auth/LOGOUT';
+const LOGOUT_SUCCESS = 'bank/auth/LOGOUT_SUCCESS';
+const LOGOUT_FAIL = 'bank/auth/LOGOUT_FAIL';
 
 const initialState = {
   loaded: false
@@ -42,7 +42,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loggingIn: false,
-        user: action.result
+        user: action.result.user
       };
     case LOGIN_FAIL:
       return {
@@ -84,13 +84,13 @@ export function load() {
   };
 }
 
-export function login(name) {
+export function login(data) {
   return {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
     promise: (client) => client.post('/login', {
       data: {
-        name: name,
-        login: login
+        email: data.login,
+        password: data.password
       }
     })
   };

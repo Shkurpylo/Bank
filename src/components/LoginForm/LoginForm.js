@@ -1,10 +1,10 @@
-import React, {Component, PropTypes} from 'react';
-import {connect} from 'react-redux';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import * as authActions from 'redux/modules/auth';
 
 @connect(
-  state => ({user: state.auth.user}),
+  state => ({ user: state.auth.user }),
   authActions)
 export default class LoginForm extends Component {
   static propTypes = {
@@ -14,14 +14,21 @@ export default class LoginForm extends Component {
   };
 
   handleSubmit = (event) => {
-    event.preventDefault();
-    const input = this.refs.username;
-    this.props.login(input.value);
-    input.value = '';
+    const login = this.refs.login;
+    const password = this.refs.password;
+    if (login.value && password.value) {
+      event.preventDefault();
+      this.props.login({ login: login.value, password: password.value });
+      login.value = '';
+      password.value = '';
+    } else {
+      this.refs.errorMsg.value = 'Smth wrong. try again';
+    }
   };
 
+
   render() {
-  //  const {user, logout} = this.props;
+    //  const {user, logout} = this.props;
     const styles = require('./LoginForm.scss');
     return (
       <div className={styles.loginPage + 'container'}>
@@ -32,13 +39,14 @@ export default class LoginForm extends Component {
           <form className="login-form form-horizontal" onSubmit={this.handleSubmit}>
             <div className="form-group">
               <div>
-                <input type="text" ref="username" placeholder="Login" className="form-control"/>
+                <input type="text" ref="login" placeholder="Login" className="form-control" required/>
               </div>
             </div>
             <div className="form-group">
               <div>
-                <input type="password" ref="pass" placeholder="Password" className="form-control"/>
+                <input type="password" ref="password" placeholder="Password" className="form-control" required/>
               </div>
+              <label className="help-block" ref="errorMsg"></label>
             </div>
             <button className="btn btn-success" onClick={this.handleSubmit}><i className="fa fa-sign-in" />{' '}Login
             </button>

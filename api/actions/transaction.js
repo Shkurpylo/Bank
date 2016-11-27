@@ -27,8 +27,12 @@ export function addTransaction(req) {
 
 export function getTransactions() {
   return new Promise((resolve, reject) => {
-    resolve(Transaction.find({}));
-    reject('err');
+    Transaction.find({}, (err, result) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
   });
 }
 
@@ -56,14 +60,14 @@ export function getIncomingSum(receiverId) {
 export function getOutgoingSum(senderId) {
   return new Promise((resolve, reject) => {
     Transaction.aggregate([{
-        $match: { sender: senderId }
-      },
-      {
-        $group: {
-          _id: null,
-          total: { $sum: '$amount' }
-        }
+      $match: { sender: senderId }
+    },
+    {
+      $group: {
+        _id: null,
+        total: { $sum: '$amount' }
       }
+    }
     ]).then(result => {
       if (!result[0]) {
         resolve(0);
