@@ -17,8 +17,6 @@ export default function reducer(state = initialState, action = {}) {
     case IS_VALID:
       return state; // 'saving' flag handled by redux-form
     case IS_VALID_SUCCESS:
-      // const data = [...state.data];
-      // values[action.result.id - 1] = action.result;
       return {
         ...state,
         data: state.data,

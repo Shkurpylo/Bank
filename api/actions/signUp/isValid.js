@@ -1,17 +1,19 @@
+import { User } from '../../models';
+
 export default function isValid(req) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const errors = {};
-      let valid = true;
-      if (~['bobby@gmail.com', 'timmy@microsoft.com'].indexOf(req.body.email)) {
-        errors.email = 'Email address already used';
-        valid = false;
-      }
-      if (valid) {
-        resolve();
-      } else {
-        reject(errors);
-      }
-    }, 1000);
+      const email = req.body.email;
+      const errorMassage = {};
+      User.findOne({ email: email }, (err, user) => {
+        if (err) throw err;
+        if (user) {
+          errorMassage.email = 'Email address already used';
+          reject(errorMassage);
+        } else {
+          resolve();
+        }
+      });
+    }, 500);
   });
 }
