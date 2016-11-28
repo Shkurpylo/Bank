@@ -54,28 +54,29 @@ export default class TransactionFormBetweenOwn extends Component {
         <form >
           <div className="row">
               <div className="form-group">
-
                    <label htmlFor="receiverCardSelector">To card:</label>
-                   <select name="mySenderCard" className="form-control"
+                   <select name="myReceiverCard" className="form-control"
                    id="receiverCardSelector" {...receiver}>
                    {cards.map(card => <option name={card.name} value={card._id} key={card._id}>
                    {card.name + ',   ' + hideHumber(card.number)}</option>)}
                    </select>
-
+             </div>
+              <div className="form-group">
                    <label htmlFor="senderCardSelector">From card:</label>
-                   <select name="meReceiverCard" className="form-control"
+                   <select name="mySenderCard" className="form-control"
                    id="senderCardSelector" {...sender}>
                    {cards.map(card => <option name={card.name} value={card._id} key={card._id}>
                    {card.name + ',   ' + hideHumber(card.number)}</option>)}
                    </select>
-
+             </div>
+             <div className="input-group">
                    <label htmlFor="amount">Amount:</label>
-                   <div className="input-group">
                    <input type="name" className="col-xs-3 form-control"
                    id="amount" placeholder="100.00" {...amount} />
                    <div className="input-group-addon">$</div>
-                   </div>
-                  <div className="form-group" style={{paddingTop: 15}}>
+             </div>
+
+            <div className="form-group" style={{paddingTop: 15}}>
                     <button className="btn btn-success"
                     onClick={handleSubmit(() => (newTransaction(values))
                     .then(resetForm))}>
@@ -86,10 +87,8 @@ export default class TransactionFormBetweenOwn extends Component {
                       <i className="fa fa-undo"/> Reset
                     </button>
                   </div>
-                  </div>
-              </div>
+             </div>
         </form>
-
             </div>
           </div>
     );

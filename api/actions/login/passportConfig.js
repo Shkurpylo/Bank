@@ -5,12 +5,12 @@ const LocalStrategy = passportLocal.Strategy;
 
 export default function configPassport(passport) {
   passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user._id);
     return null;
   });
 
   passport.deserializeUser((id, done) => {
-    User.findOne({ where: { id: id } }).then((user) => {
+    User.findOne({ _id: id }).then((user) => {
       done(null, user);
       return null;
     }).catch((err) => {

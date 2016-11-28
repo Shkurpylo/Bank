@@ -69,15 +69,15 @@ export default function reducer(state = initialState, action = {}) {
     case SAVE:
       return state; // 'saving' flag handled by redux-form
     case SAVE_SUCCESS:
-      const data = [...state.data];
-      data[action.result.id - 1] = action.result;
+      // const data = [...state.data];
+      // data[action.result.id - 1] = action.result;
       return {
         ...state,
-        data: data,
+        // data: data,
         loaded: false,
         saveError: {
           ...state.saveError,
-          [action.id]: null
+          // [action.id]: null
         }
       };
     case SAVE_FAIL:
@@ -105,11 +105,15 @@ export function getTransactions() {
 }
 
 export function newTransaction(transaction) {
-  console.log(transaction);
+  console.log('transaction data:' + JSON.stringify(transaction));
   return {
     types: [SAVE, SAVE_SUCCESS, SAVE_FAIL],
     promise: (client) => client.post('/addTransaction', {
-      data: transaction
+      data: {
+        receiver: transaction.receiver,
+        sender: transaction.sender,
+        amount: transaction.amount
+      }
     }),
   };
 }

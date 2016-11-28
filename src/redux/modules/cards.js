@@ -127,10 +127,10 @@ export function isLoaded(globalState) {
   return globalState.cards && globalState.cards.loaded;
 }
 
-export function getCards() {
+export function getCards(userId) {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/getCards')
+    promise: (client) => client.get('/getCards/' + userId)
   };
 }
 

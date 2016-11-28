@@ -9,7 +9,8 @@ const CardSchema = mongoose.Schema({ // eslint-disable-line new-cap
   pin: { type: Number },
   cvv: { type: Number },
   explDate: { type: Date },
-  owner: { type: Schema.ObjectId }
+  owner: { type: Schema.ObjectId },
+  active: {type: Boolean, default: true}
 });
 
 const UserSchema = mongoose.Schema({ // eslint-disable-line new-cap

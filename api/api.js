@@ -18,9 +18,10 @@ const app = express();
 
 const server = new http.Server(app); // Event Emitter
 
-const mongoUrl = 'mongodb://localhost:27017/BankDB'; // local todo: make db non-local
+// const mongoUrl = 'mongodb://localhost:27017/BankDB'; // local todo: make db non-local
+const mLab = 'mongodb://forBank:1997bankBANK@ds143777.mlab.com:43777/bank_db';
 mongoose.Promise = global.Promise;
-mongoose.connect(mongoUrl, err => {
+mongoose.connect(mLab, err => {
   if (err) {
     console.log('Please make sure MongoDb is up and running');
   }

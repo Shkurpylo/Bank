@@ -22,6 +22,7 @@ const hideHumber = (number) => {
 }])
 @connect(
   state => ({
+    user: state.auth.user,
     cards: state.cards.cards,
     review: state.cards.review,
     error: state.cards.error,
@@ -44,7 +45,8 @@ export default class Cards extends Component {
     viewButton: PropTypes.func,
     initializeWithKey: PropTypes.func.isRequired,
     loading: PropTypes.bool,
-    error: PropTypes.string
+    error: PropTypes.string,
+    user: PropTypes.object
   };
 
   render() {

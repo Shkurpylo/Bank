@@ -36,9 +36,10 @@ export default class TransactionForm extends Component {
     const {
       fields: { sender, receiver, amount },
       resetForm,
-      cards
-      // values,
-      // newTransaction
+      cards,
+      values,
+      handleSubmit,
+      newTransaction
     } = this.props;
     console.log(cards);
 
@@ -73,7 +74,9 @@ export default class TransactionForm extends Component {
                    <div className="input-group-addon">$</div>
                    </div>
                   <div className="form-group" style={{paddingTop: 15}}>
-                    <button className="btn btn-success" >
+                    <button className="btn btn-success"
+                    onClick={handleSubmit(() => (newTransaction(values))
+                    .then(resetForm))}>
                       <i className="fa fa-plus"/> Send
                     </button>
                     <button className="btn btn-warning"

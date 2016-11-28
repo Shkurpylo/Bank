@@ -53,7 +53,7 @@ export default class Home extends Component {
             </div> }
             {user &&
             <div className="container">
-            <h1>Welcome, {user.name} !</h1>
+            <h1>Welcome, {user.firstName} !</h1>
 
             <div>
               <h2> Some nice animation will be here soon</h2>

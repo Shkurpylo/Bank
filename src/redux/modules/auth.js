@@ -41,7 +41,7 @@ export default function reducer(state = initialState, action = {}) {
     case LOGIN_SUCCESS:
       return {
         ...state,
-        loggingIn: false,
+        loggingIn: true,
         user: action.result.user
       };
     case LOGIN_FAIL:
