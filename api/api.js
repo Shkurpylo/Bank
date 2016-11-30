@@ -130,7 +130,7 @@ const bufferSize = 100;
 const messageBuffer = new Array(bufferSize);
 let messageIndex = 0;
 
-const apiPort = process.env.PORT || config.apiPort;
+const apiPort = process.env.PORT;
 
 if (apiPort) {
   const runnable = app.listen(config.apiPort, (err) => {
