@@ -52,8 +52,7 @@
       "command": "node ./bin/api.js",
       "env": {
         "NODE_PATH": "./api",
-        "NODE_ENV": "public_api",
-        "APIPORT": 3030
+        "NODE_ENV": "public_api"
       }
     },
   "api": {
