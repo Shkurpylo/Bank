@@ -25,7 +25,7 @@
   "main": "bin/server.js",
   "scripts": {
     "api": "better-npm-run api",    
-    "start": "concurrent --kill-others \"npm run start-prod\" \"npm run start-prod-api\"",
+    "start": "concurrent --kill-others \"npm run start-prod-api\"",
     "start-prod": "better-npm-run start-prod",
     "start-prod-api": "better-npm-run start-prod-api",
     "build": "better-npm-run build",
@@ -48,19 +48,20 @@
         "APIPORT": 3030
       }
     },
+    "start-prod-api": {
+      "command": "node ./bin/api.js",
+      "env": {
+        "NODE_PATH": "./api",
+        "NODE_ENV": "public_api",
+        "APIPORT": 3030
+      }
+    },
   "api": {
       "command": "node ./bin/api.js",
       "env": {
         "NODE_PATH": "./api",
         "NODE_ENV": "public_api",
         "APIPORT": 3300
-      }
-    },
-    "start-prod-api": {
-      "command": "node ./bin/api.js",
-      "env": {
-        "NODE_PATH": "./api",
-        "NODE_ENV": "public_api"
       }
     },
     "start-dev": {
