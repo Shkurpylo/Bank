@@ -1,13 +1,13 @@
-// import { User } from '../../models';
+import { User } from '../../models';
 
 export default function isValid(req) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       const email = req.body.email;
       const errorMassage = {};
-     // User.findOne({ email: email }, (err, user) => {
-      //  if (err) throw err;
-        if (!email) {
+      User.findOne({ email: email }, (err, user) => {
+        if (err) throw err;
+        if (user) {
           errorMassage.email = 'Email address already used';
           reject(errorMassage);
         } else {
@@ -15,5 +15,5 @@ export default function isValid(req) {
         }
       });
     }, 500);
- // });
+  });
 }

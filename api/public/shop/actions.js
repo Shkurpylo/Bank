@@ -5,7 +5,7 @@ import { User } from '../../models';
 
 export function getUserCards() {
   return new Promise((resolve, reject) => {
-    const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1'); // eslint-disable-line new-cap
+    const ownerId = mongoose.Types.ObjectId('583c89cee9b0ff599bfda427'); // eslint-disable-line new-cap
     const cards = User.findById(ownerId).distinct('cards');
     // TODO: add balance check
     if (!cards) {

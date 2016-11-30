@@ -31,7 +31,6 @@ module.exports = Object.assign({
         {name: 'description', content: 'All the modern best practices in one example.'},
         {charset: 'utf-8'},
         {property: 'og:site_name', content: 'Bank'},
-        {property: 'og:image', content: 'https://react-redux.herokuapp.com/logo.jpg'},
         {property: 'og:locale', content: 'en_US'},
         {property: 'og:title', content: 'Bank'},
         {property: 'og:image:width', content: '200'},

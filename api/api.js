@@ -3,19 +3,19 @@ import session from 'express-session';
 import bodyParser from 'body-parser';
 import config from '../src/config';
 import * as actions from './actions/index';
+import * as publicActions from './public';
 import { mapUrl } from 'utils/url.js';
 import PrettyError from 'pretty-error';
 import http from 'http';
 import SocketIo from 'socket.io';
 import mongoose from 'mongoose';
-
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import { login, configPassport } from './actions/login';
+import passportBearer from 'passport-http-bearer';
 
 const pretty = new PrettyError();
 const app = express();
-
 const server = new http.Server(app); // Event Emitter
 
 // const mongoUrl = 'mongodb://localhost:27017/BankDB'; // local todo: make db non-local
@@ -44,35 +44,84 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(passport.initialize());
 app.use(passport.session());
-configPassport(passport);
-login(app, passport);
 
-app.use((req, res) => {
-  const splittedUrlPath = req.url.split('?')[0].split('/').slice(1);
 
-  const { action, params } = mapUrl(actions, splittedUrlPath);
+if (process.env.NODE_ENV === 'public_api') {
+  // if running as Public API server
+  const BearerStrategy = passportBearer.Strategy;
 
-  if (action) {
-    action(req, params)
-      .then((result) => {
-        if (result instanceof Function) {
-          result(res);
-        } else {
-          res.json(result);
+  passport.use(
+    new BearerStrategy(
+      (token, done) => {
+        if (token === 'multipassport') {
+          return done(null, true, { scope: 'all' });
         }
-      }, (reason) => {
-        if (reason && reason.redirect) {
-          res.redirect(reason.redirect);
-        } else {
-          console.error('API ERROR:', pretty.render(reason));
-          res.status(reason.status || 500).json(reason);
-        }
-      });
-  } else {
-    res.status(404).end('NOT FOUND');
-  }
-});
+        return done(null, false);
+      }
+    )
+  );
 
+
+  app.use(
+    passport.authenticate('bearer', { session: false }),
+    (req, res) => {
+      const splittedUrlPath = req.url.split('?')[0].split('/').slice(1);
+
+      const { action, params } = mapUrl(publicActions, splittedUrlPath);
+
+      if (action) {
+        action(req, params)
+          .then((result) => {
+            if (result instanceof Function) {
+              result(res);
+            } else {
+              res.json(result);
+            }
+          }, (reason) => {
+            if (reason && reason.redirect) {
+              res.redirect(reason.redirect);
+            } else {
+              console.error('API ERROR:', pretty.render(reason));
+              res.status(reason.status || 500).json(reason);
+            }
+          });
+      } else {
+        res.status(404).end('NOT FOUND');
+      }
+    });
+} else {
+  // if running as Bank API server
+  configPassport(passport);
+
+  login(app, passport);
+
+  app.use(
+    (req, res) => {
+      const splittedUrlPath = req.url.split('?')[0].split('/').slice(1);
+
+      const { action, params } = mapUrl(actions, splittedUrlPath);
+
+      if (action) {
+        action(req, params)
+          .then((result) => {
+            if (result instanceof Function) {
+              result(res);
+            } else {
+              res.json(result);
+            }
+          }, (reason) => {
+            if (reason && reason.redirect) {
+              res.redirect(reason.redirect);
+            } else {
+              console.error('API ERROR:', pretty.render(reason));
+              res.status(reason.status || 500).json(reason);
+            }
+          });
+      } else {
+        res.status(404).end('NOT FOUND');
+      }
+    });
+}
 
 const bufferSize = 100;
 const messageBuffer = new Array(bufferSize);

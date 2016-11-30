@@ -1,1 +1,1 @@
-export {getUserCards} from './shop/actions';
+export {getUserCards, getUserId, paymentOfBuying} from './shop/actions';
