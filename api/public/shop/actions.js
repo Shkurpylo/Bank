@@ -15,18 +15,24 @@ export function getUserCards() {
   });
 }
 
+
 export function getUserId(req) { // post
+  const email = req.body.email;
+  const password = req.body.password;
   return new Promise((resolve, reject) => {
-    const user = User.find({ 'email': req.body.email });
-    // console.log(req.body.email);
-    // if (!user) {
-    //   reject('wrong email');
-    // }
-    // if (!user.password === req.body.password) {
-    //   reject('wrong password');
-    // }
-    resolve(user._id);
-    reject('wrong password');
+    User.findOne({ 'email': email }, (err, user) => {
+      if (user === null) {
+        reject('wrong email');
+        return null;
+      }
+      if (!user.validPassword(password)) {
+        reject('wrong pass');
+        console.log(req.body.email + ' pass: ' + req.body.password);
+        return null;
+      }
+      resolve(user._id);
+      return null;
+    });
   });
 }
 
