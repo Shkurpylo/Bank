@@ -133,7 +133,7 @@ let messageIndex = 0;
 const apiPort = process.env.PORT;
 
 if (apiPort) {
-  const runnable = app.listen(config.apiPort, (err) => {
+  const runnable = app.listen(apiPort, (err) => {
     if (err) {
       console.error(err);
     }
