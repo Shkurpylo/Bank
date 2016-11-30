@@ -13,13 +13,16 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import { login, configPassport } from './actions/login';
 import passportBearer from 'passport-http-bearer';
+import util from 'util';
 
 const pretty = new PrettyError();
 const app = express();
 const server = new http.Server(app); // Event Emitter
 
 // const mongoUrl = 'mongodb://localhost:27017/BankDB'; // local todo: make db non-local
-const mLab = 'mongodb://forBank:1997bankBANK@ds143777.mlab.com:43777/bank_db';
+const db = config.db;
+const mLab = util.format('mongodb://%s:%s@%s:%s/%s', db.user, db.password, db.host, db.port, db.name);
+
 mongoose.Promise = global.Promise;
 mongoose.connect(mLab, err => {
   if (err) {

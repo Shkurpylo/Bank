@@ -14,12 +14,13 @@ module.exports = Object.assign({
   port: process.env.PORT,
   apiHost: process.env.APIHOST || 'localhost',
   apiPort: process.env.APIPORT,
+
   db: {
     name: 'bank_db',
     host: 'ds143777.mlab.com',
     port: 43777,
     user: 'forBank',
-    pass: '1bankPass'
+    password: '1997bankBANK'
   },
 
   app: {
