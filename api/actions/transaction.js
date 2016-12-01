@@ -93,22 +93,37 @@ export function getOutgoingSum(senderId) {
 }
 
 export function countBalance(req) {
+  const cardId = mongoose.Types.ObjectId(req.query.id); // eslint-disable-line new-cap
   return new Promise((resolve, reject) => {
-    const cardId = mongoose.Types.ObjectId(req.query.id); // eslint-disable-line new-cap
-    let balance = 0;
-    getIncomingSum(cardId)
-      .then(result => {
-        console.log('result first: ' + result);
-        balance += result;
-      });
-    getOutgoingSum(cardId)
-      .then(result => {
-        console.log('resultSecond: ' + result);
-        balance -= result;
-        resolve({ cardId: balance });
-      })
-      .catch(err => reject(err));
+    Promise.all([
+      getIncomingSum(cardId),
+      getOutgoingSum(cardId)
+    ])
+    .then(result => {
+      console.log(result);
+      let balance = 0;
+      balance += result[0];
+      balance -= result[1];
+      console.log('balance in then: ' + balance);
+      resolve(balance);
+    }).catch(err => reject(err));
   });
+  // return new Promise((resolve, reject) => {
+  //   const cardId = mongoose.Types.ObjectId(req.query.id); // eslint-disable-line new-cap
+  //   let balance = 0;
+  //   getIncomingSum(cardId)
+  //     .then(result => {
+  //       console.log('result first: ' + result);
+  //       balance += result;
+  //     });
+  //   getOutgoingSum(cardId)
+  //     .then(result => {
+  //       console.log('resultSecond: ' + result);
+  //       balance -= result;
+  //       resolve({ cardId: balance });
+  //     })
+  //     .catch(err => reject(err));
+  // });
 }
 
 export function abstractPaymentTerminal(req) {

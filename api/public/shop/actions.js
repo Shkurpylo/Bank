@@ -52,8 +52,10 @@ export function paymentOfBuying(req) {
     const amount = req.body.amount || reject('wrong request, \'amount\' is not defined');
     checkBalance(cardId)
       .then(balance => {
-        if (balance < amount) reject('insufficient funds');
-        console.log('why why why they do it?? balance:' + balance);
+        if (balance < amount) {
+          reject('insufficient funds');
+          return null;
+        }
         User.findOne({ 'cards._id': cardId })
           .then(user => {
             const card = user.cards.id(cardId);
@@ -72,14 +74,10 @@ export function paymentOfBuying(req) {
               amount: amount,
               date: new Date(),
             });
-            transaction.save((saveErr, result) => {
-              if (saveErr) reject(saveErr);
-              if (result) {
-                resolve('payment success');
-              }
-            });
-          });
-      })
-      .catch(err => reject(err));
+            return transaction.save();
+          })
+          .then(resolve('payment success'))
+          .catch(err => reject(err));
+      });
   });
 }
