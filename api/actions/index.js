@@ -3,7 +3,7 @@ export login from './login';
 export logout from './logout';
 export * as signUp from './signUp/';
 export {getCards, addNewCard, updateCard, deleteCard, countBalance} from './cards';
-export {addTransaction, getTransactions, getOutgoingSum} from './transaction';
+export {addTransaction, getTransactions, getOutgoingSum, abstractPaymentTerminal} from './transaction';
 
 
 

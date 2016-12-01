@@ -51,6 +51,7 @@ export function paymentOfBuying(req) {
     User.findOne({ 'cards._id': cardId})
       .then(user => {
         const card = user.cards.id(cardId);
+        // todo: add balance checker
         const transaction = new Transaction({
           message: 'payment for shopping in TrueShop1997',
           sender: {
