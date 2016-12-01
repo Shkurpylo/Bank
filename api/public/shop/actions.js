@@ -6,10 +6,9 @@ import { hideNumber } from './helpers';
 
 export function getUserCards(req) {
   return new Promise((resolve, reject) => {
-    const ownerId = req.body.id;
+    const ownerId = req.body.id || reject('wrong request! ownerId is not defined');
     User.findById(ownerId).distinct('cards', (err, array) => {
       if (err) reject(err);
-      console.log(JSON.stringify(array));
       const cards = array.map(function(card) {
         const cardObj = {};
         cardObj._id = card._id;
@@ -22,18 +21,16 @@ export function getUserCards(req) {
   });
 }
 
-
 export function getUserId(req) { // post
-  const email = req.body.email;
-  const password = req.body.password;
   return new Promise((resolve, reject) => {
+    const email = req.body.email || reject('wrong request! \'email\' paramether is not define');
+    const password = req.body.password + '' || reject('wrong request! \'password\' paramether is not define');
     User.findOne({ 'email': email }, (err, user) => {
       console.log(JSON.stringify(user));
       if (!user) {
         reject('wrong email');
         return null;
       }
-      if (typeof password !== 'string') reject('password must be string');
       if (!user.validPassword(password)) {
         reject('wrong pass');
         return null;
@@ -49,29 +46,33 @@ export function paymentOfBuying(req) {
   const receiverCardId = mongoose.Types.ObjectId('583f3fcecefa2b0db2b77d26'); // eslint-disable-line new-cap
   const receiverCardNumber = 4019975145166519;
   return new Promise((resolve, reject) => {
-    User.findOne({ 'cards._id': req.body.id }, 'cards': { $elemMatch: { '_id': req.body.id } }, (err, user) => {
-      const card = user.cards[0];
-      const transaction = new Transaction({
-        message: 'payment for shopping in TrueShop1997',
-        sender: {
-          userId: card.owner,
-          cardId: req.body.id,
-          cardNumber: card.number
-        },
-        receiver: {
-          userId: receiverId,
-          cardId: receiverCardId,
-          cardNumber: receiverCardNumber
-        },
-        amount: req.body.amount,
-        date: new Date(),
-      });
-      transaction.save((saveErr, result) => {
-        if (saveErr) reject(saveErr);
-        if (result) {
-          resolve('payment success');
-        }
-      });
-    });
+    const cardId = req.body.cardId || reject('wrong request, \'cardId\' is not defined');
+    const amount = req.body.amount || reject('wrong request, \'amount\' is not defined');
+    User.findOne({ 'cards._id': cardId})
+      .then(user => {
+        const card = user.cards.id(cardId);
+        const transaction = new Transaction({
+          message: 'payment for shopping in TrueShop1997',
+          sender: {
+            userId: card.owner,
+            cardId: cardId,
+            cardNumber: card.number
+          },
+          receiver: {
+            userId: receiverId,
+            cardId: receiverCardId,
+            cardNumber: receiverCardNumber
+          },
+          amount: amount,
+          date: new Date(),
+        });
+        transaction.save((saveErr, result) => {
+          if (saveErr) reject(saveErr);
+          if (result) {
+            resolve('payment success');
+          }
+        });
+      })
+      .catch(err => reject(err));
   });
 }
