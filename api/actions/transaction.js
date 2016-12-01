@@ -53,9 +53,10 @@ export function getTransactions() {
 }
 
 export function getIncomingSum(receiverId) {
+  const cardId = mongoose.Types.ObjectId(receiverId); // eslint-disable-line new-cap
   return new Promise((resolve, reject) => {
     Transaction.aggregate([{
-      $match: { receiver: receiverId }
+      $match: { 'receiver.cardId': cardId }
     }, {
       $group: {
         _id: null,
@@ -72,9 +73,10 @@ export function getIncomingSum(receiverId) {
 }
 
 export function getOutgoingSum(senderId) {
+  const cardId = mongoose.Types.ObjectId(senderId); // eslint-disable-line new-cap
   return new Promise((resolve, reject) => {
     Transaction.aggregate([{
-      $match: { sender: senderId }
+      $match: { 'sender.cardId': cardId }
     }, {
       $group: {
         _id: null,
@@ -90,6 +92,25 @@ export function getOutgoingSum(senderId) {
   });
 }
 
+export function countBalance(req) {
+  return new Promise((resolve, reject) => {
+    const cardId = mongoose.Types.ObjectId(req.query.id); // eslint-disable-line new-cap
+    let balance = 0;
+    getIncomingSum(cardId)
+      .then(result => {
+        console.log('result first: ' + result);
+        balance += result;
+      });
+    getOutgoingSum(cardId)
+      .then(result => {
+        console.log('resultSecond: ' + result);
+        balance -= result;
+        resolve({ cardId: balance });
+      })
+      .catch(err => reject(err));
+  });
+}
+
 export function abstractPaymentTerminal(req) {
   const senderId = mongoose.Types.ObjectId('58402a9a1469cf12a51fe61c'); // eslint-disable-line new-cap
   const senderCardId = mongoose.Types.ObjectId('58402ac31469cf12a51fe61e'); // eslint-disable-line new-cap
@@ -100,7 +121,6 @@ export function abstractPaymentTerminal(req) {
     User.findOne({ 'cards._id': cardId })
       .then(user => {
         const card = user.cards.id(cardId);
-        // todo: add balance checker
         const transaction = new Transaction({
           message: 'from abstractPaymentTerminal',
           sender: {

@@ -48,11 +48,11 @@ export function getCardByNumber(req) { // get
 
 function createCard(ownerId, cardName, cardType) {
   return new Promise((resolve, reject) => {
-    const newCard = new Card();
-    newCard.owner = ownerId;
     if (!ownerId) {
       reject('smth wrong with id');
     }
+    const newCard = new Card();
+    newCard.owner = ownerId;
     newCard.name = cardName ? cardName : 'My ' + cardType;
     newCard.number = numberGenerator(cardType);
     newCard.pin = getPin();
@@ -71,15 +71,16 @@ export function addNewCard(req) { // post
     Promise.all([
       getUserById(ownerId),
       createCard(ownerId, req.body.cardName, req.body.cardType)
-    ]).then(result => {
-      console.log(result);
-      const user = result[0];
-      const newCard = result[1];
-      user.cards.push(newCard);
-      // user.save();
-      resolve(user.save());
-    })
-    .catch(err => reject(err));
+    ])
+      .then(result => {
+        console.log(result);
+        const user = result[0];
+        const newCard = result[1];
+        user.cards.push(newCard);
+        // user.save();
+        resolve(user.save());
+      })
+      .catch(err => reject(err));
   });
 }
 
