@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:3001/dist/main-b98d3cfe95f0a63e2f91.js"
+    "main": "http://localhost:3001/dist/main-c553b46b55f82791633a.js"
   },
   "styles": {},
   "assets": {
@@ -20,9 +20,10 @@
     },
     "./src/components/SignUpForm/SignUpForm.scss": {
       "inputGroup": "inputGroup___3qTIP",
+      "labels": "labels___37u6N",
       "flags": "flags___vS3jP",
       "cog": "cog___35v4z",
-      "_style": ".inputGroup___3qTIP {\n  position: relative;\n}\n\n.flags___vS3jP {\n  position: absolute;\n  right: 20px;\n  top: 7px;\n}\n\n.flags___vS3jP > * {\n  margin: 0 2px;\n  width: 20px;\n  height: 20px;\n  border-radius: 20px;\n  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);\n  color: white;\n  float: right;\n  text-align: center;\n}\n\n.cog___35v4z {\n  position: absolute;\n  left: 0;\n  top: 164px;\n}\n"
+      "_style": "@charset \"UTF-8\";\n.inputGroup___3qTIP {\n  position: relative;\n}\n\n.labels___37u6N {\n  position: absolute;\n  display: inline-block;\n  width: 140px;\n  text-align: right;\n}\n\n​\n.flags___vS3jP {\n  position: absolute;\n  right: 20px;\n  top: 7px;\n}\n\n​\n.flags___vS3jP > * {\n  margin: 0 2px;\n  width: 20px;\n  height: 20px;\n  border-radius: 20px;\n  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);\n  color: white;\n  float: right;\n  text-align: center;\n}\n\n.cog___35v4z {\n  position: absolute;\n  left: 0;\n  top: 164px;\n}\n"
     },
     "./src/components/LoginForm/LoginForm.scss": {
       "signUpForm": "signUpForm___2hifx",
@@ -31,6 +32,11 @@
     "./src/components/WelcomeButtons/WelcomeButtons.scss": {
       "buttons": "buttons___1yJbY",
       "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.buttons___1yJbY * {\n  margin: 10px;\n}\n"
+    },
+    "./src/components/AddCardForm/AddCardForm.scss": {
+      "AddCardForm": "AddCardForm___2PP8f",
+      "centered": "centered___BPkUM",
+      "_style": ".AddCardForm___2PP8f input {\n  padding: 5px 10px;\n  border-radius: 5px;\n  border: 1px solid #ccc;\n}\n\n.AddCardForm___2PP8f form {\n  margin: 30px 0;\n}\n\n.AddCardForm___2PP8f form .btn {\n  margin-left: 10px;\n}\n\n.centered___BPkUM {\n  float: none;\n  margin: 0 auto;\n}\n"
     },
     "./src/components/CardView/CardView.scss": {
       "panel": "panel___q9WqE",
@@ -80,11 +86,6 @@
       "buttonCol": "buttonCol___2bw5g",
       "saving": "saving___3chDx",
       "_style": ".history___3XdfK .pull-right___YHKIg {\n  float: right !important;\n}\n\n.history___3XdfK .col-md-4___3vRUF {\n  color: #adadad;\n}\n\n.history___3XdfK .refreshBtn___fa3kh {\n  margin-left: 20px;\n}\n\n.history___3XdfK .idCol___2K95t {\n  width: 5%;\n}\n\n.history___3XdfK .colorCol___15qCI {\n  width: 20%;\n}\n\n.history___3XdfK .sprocketsCol___1tcxN {\n  width: 20%;\n  text-align: right;\n}\n\n.history___3XdfK .sprocketsCol___1tcxN input {\n  text-align: right;\n}\n\n.history___3XdfK .ownerCol___1yEvw {\n  width: 30%;\n}\n\n.history___3XdfK .buttonCol___2bw5g {\n  width: 25%;\n}\n\n.history___3XdfK .buttonCol___2bw5g .btn {\n  margin: 0 5px;\n}\n\n.history___3XdfK tr.saving___3chDx {\n  opacity: 0.8;\n}\n\n.history___3XdfK tr.saving___3chDx .btn[disabled] {\n  opacity: 1;\n}\n"
-    },
-    "./src/components/AddCardForm/AddCardForm.scss": {
-      "AddCardForm": "AddCardForm___2PP8f",
-      "centered": "centered___BPkUM",
-      "_style": ".AddCardForm___2PP8f input {\n  padding: 5px 10px;\n  border-radius: 5px;\n  border: 1px solid #ccc;\n}\n\n.AddCardForm___2PP8f form {\n  margin: 30px 0;\n}\n\n.AddCardForm___2PP8f form .btn {\n  margin-left: 10px;\n}\n\n.centered___BPkUM {\n  float: none;\n  margin: 0 auto;\n}\n"
     }
   }
 }
