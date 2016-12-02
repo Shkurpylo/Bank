@@ -66,7 +66,9 @@ export default class Cards extends Component {
         <h1 className={styles}>My Cards</h1>
       </div>
       <div className="col-md-4">
-          <button className={styles.addButton + ' btn btn-primary pull-right'} onClick={() => addButton(!showAddForm)}>
+          <button className=
+          {styles.addButton + (showAddForm ? ' btn btn-primary active' : ' btn btn-primary') + ' pull-right'}
+           onClick={() => addButton(!showAddForm)}>
             Add new card
           </button>
       </div>
@@ -104,7 +106,8 @@ export default class Cards extends Component {
               }
               </tbody>
             </table>
-            || <div className={styles.loadingDiv}> <i className={styles.loading + ' fa fa-refresh fa-spin fa-3x fa-fw'}></i> </div>}
+            || <div className={styles.loadingDiv}> <i className={styles.loading + ' fa fa-refresh fa-spin fa-3x fa-fw'}></i> </div>
+          }
           </div>
           <div className="col-md-5 pull-right">
 

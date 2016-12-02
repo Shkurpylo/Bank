@@ -28,8 +28,9 @@ export default class AddCardForm extends Component {
   };
 
   render() {
+    const styles = require('./AddCardForm.scss');
     const {
-      fields: { cardName, cardType },
+      fields: { cardName, cardType = 'VISA' },
       handleSubmit,
       resetForm,
       values,
@@ -38,10 +39,11 @@ export default class AddCardForm extends Component {
 
     return (
       <form >
-        <div className="center-block">
+        <div className="center-block jumbotron">
+        <div className = {styles.centered + ' col-sm-9'}>
           <div className="row">
             <div className="form-group">
-              <div className="col-sm-9">
+              <div className={styles.centered + ' col-sm-12'}>
                 <label htmlFor="cardName">Cards name:</label>
                 <input type="name" className="col-xs-3 form-control" id="cardName" placeholder="name" {...cardName} />
               </div>
@@ -49,6 +51,8 @@ export default class AddCardForm extends Component {
           </div>
 
           <div className="row">
+          <div className="col-md-8">
+          <label htmlFor="radio" style={{paddingTop: 20, marginBottom: 1}}>Select type:</label>
             <div className="radio">
               <label>
                 <input type="radio" {...cardType} value="VISA" checked={cardType.value === 'VISA'}/>
@@ -57,19 +61,20 @@ export default class AddCardForm extends Component {
             </div>
             <div className="radio">
               <label>
-                <input type="radio" {...cardType} value="Mastercard" checked={cardType.value === 'Mastercard'} />
+                <input type="radio" {...cardType} value="Mastercard" checked={cardType.value !== 'VISA'} />
                    Mastercard
               </label>
             </div>
+            </div>
 
-
-            <button className="btn btn-success" onClick={handleSubmit(() => createCard(values)
+            <button className="btn btn-success pull-right" style={{marginRight: 20}} onClick={handleSubmit(() => createCard(values)
             .then(resetForm))}>
               <i className="fa fa-plus"/> Add
             </button>
-            <button className="btn btn-warning" onClick={resetForm} style={{marginLeft: 20}}>
+            <button className="btn btn-warning pull-right" style={{marginRight: 20}} onClick={resetForm} >
               <i className="fa fa-undo"/> Reset
             </button>
+          </div>
           </div>
         </div>
       </form>
