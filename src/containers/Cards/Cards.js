@@ -59,23 +59,30 @@ export default class Cards extends Component {
       showCardView
     } = this.props;
     return (
-      <div className={styles.widgets + ' container'}>
+      <div className={styles.cards + ' container'}>
+      <div className ="row">
+      <div className={styles.title + ' col-md-2'}>
         <Helmet title="Cards"/>
         <h1 className={styles}>My Cards</h1>
-        <div>
-          <button className="btn btn-primary" onClick={() => addButton(!showAddForm)}>
+      </div>
+      <div className="col-md-4">
+          <button className={styles.addButton + ' btn btn-primary pull-right'} onClick={() => addButton(!showAddForm)}>
             Add new card
           </button>
+      </div>
+      </div>
+        <div>
         </div>
         <div className="row">
-          <div className="col-md-5">
+          <div className="col-md-6 panel panel-default">
             {cards && cards.length &&
-            <table className="table table-hover">
+            <table className="table table-hover ">
               <thead>
               <tr>
                 <th className={styles.colorCol}>Type</th>
-                <th className={styles.sprocketsCol}>Number</th>
-                <th className={styles.ownerCol}>Bal</th>
+                <th className={styles.sprocketsCol}>Name</th>
+                <th className={styles.ownerCol}>Number</th>
+                <th className={styles.ownerCol}>Balance</th>
                 <th className={styles.buttonCol}>Button</th>
               </tr>
               </thead>
@@ -83,8 +90,9 @@ export default class Cards extends Component {
               {
                 cards.map((card) =>
                   <tr key={card._id}>
-                    <td className={styles.idCol} >{card.name}</td>
-                    <td className={styles.colorCol} >{hideHumber(card.number)}</td>
+                    <td className={styles.idCol} ><i className="fa fa-cc-visa fa-2x"></i></td>
+                    <td className={styles.colorCol} >{card.name}</td>
+                    <td className={styles.ownerCol} >{hideHumber(card.number)}</td>
                     <td className={styles.ownerCol} >{card.cvv}</td>
                     <td className={styles.buttonCol} >
                       <button key={card.id} className="btn btn-info btn-sm"
@@ -95,7 +103,8 @@ export default class Cards extends Component {
                   </tr>)
               }
               </tbody>
-            </table> }
+            </table>
+            || <div className={styles.loadingDiv}> <i className={styles.loading + ' fa fa-refresh fa-spin fa-3x fa-fw'}></i> </div>}
           </div>
           <div className="col-md-5 pull-right">
 

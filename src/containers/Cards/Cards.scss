@@ -1,41 +1,29 @@
-.widgets {
+@import "../../theme/variables.scss";
+.addButton {
+  margin-top: 7%;
+  margin-right: 5%;
+  }
+.title {
+  font-size: 4em;
+  color: grey;
+  font-weight: bold;
+}
+.table th {
+   text-align: center;   
+}
+.loadingDiv{
+  text-align: center;
+}
+.loading{
+  color: grey;
+  margin-top: 10%;
+}
+.panel-default{
+  border-radius: 5px;
+}
+.cards {
   .pull-right {
     float: right !important;
   }
-  .col-md-4 {
-    color: #adadad;
-  }
-  .refreshBtn {
-    margin-left: 20px;
-  }
-  .idCol {
-    width: 5%;
-  }
-  .colorCol {
-    width: 20%;
-  }
-  .sprocketsCol {
-    width: 20%;
-    text-align: right;
-    input {
-      text-align: right;
-    }
-  }
-  .ownerCol {
-    width: 30%;
-  }
-  .buttonCol {
-    width: 25%;
-    :global(.btn) {
-      margin: 0 5px;
-    }
-  }
-  tr.saving {
-    opacity: 0.8;
-    :global(.btn) {
-      &[disabled] {
-        opacity: 1;
-      }
-    }
-  }
+
 }
