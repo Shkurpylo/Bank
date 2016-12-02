@@ -137,8 +137,8 @@ if (apiPort) {
     if (err) {
       console.error(err);
     }
-    console.info('----\n==> 🌎  API is running on port %s', config.apiPort);
-    console.info('==> 💻  Send requests to http://%s:%s', config.apiHost, config.apiPort);
+    console.info('----\n==> 🌎  API is running on port %s', apiPort);
+    console.info('==> 💻  Send requests to http://%s:%s', apiPort);
   });
 
   io.on('connection', (socket) => {

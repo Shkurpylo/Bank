@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { Transaction } from '../../models';
 import { User } from '../../models';
-import { hideNumber } from './helpers';
+import { hideNumber, checkBalance } from './helpers';
 
 
 export function getUserCards(req) {
@@ -42,37 +42,41 @@ export function getUserId(req) { // post
 }
 
 export function paymentOfBuying(req) {
+  // move to dataBase own storess collection
   const receiverId = mongoose.Types.ObjectId('583627c13b8ce854fa11e21e'); // eslint-disable-line new-cap
   const receiverCardId = mongoose.Types.ObjectId('583f3fcecefa2b0db2b77d26'); // eslint-disable-line new-cap
   const receiverCardNumber = 4019975145166519;
   return new Promise((resolve, reject) => {
     const cardId = req.body.cardId || reject('wrong request, \'cardId\' is not defined');
     const amount = req.body.amount || reject('wrong request, \'amount\' is not defined');
-    User.findOne({ 'cards._id': cardId})
-      .then(user => {
-        const card = user.cards.id(cardId);
-        const transaction = new Transaction({
-          message: 'payment for shopping in TrueShop1997',
-          sender: {
-            userId: card.owner,
-            cardId: cardId,
-            cardNumber: card.number
-          },
-          receiver: {
-            userId: receiverId,
-            cardId: receiverCardId,
-            cardNumber: receiverCardNumber
-          },
-          amount: amount,
-          date: new Date(),
-        });
-        transaction.save((saveErr, result) => {
-          if (saveErr) reject(saveErr);
-          if (result) {
-            resolve('payment success');
-          }
-        });
-      })
-      .catch(err => reject(err));
+    checkBalance(cardId)
+      .then(balance => {
+        if (balance < amount) {
+          reject('insufficient funds');
+          return null;
+        }
+        User.findOne({ 'cards._id': cardId })
+          .then(user => {
+            const card = user.cards.id(cardId);
+            const transaction = new Transaction({
+              message: 'payment for shopping in TrueShop1997',
+              sender: {
+                userId: card.owner,
+                cardId: cardId,
+                cardNumber: card.number
+              },
+              receiver: {
+                userId: receiverId,
+                cardId: receiverCardId,
+                cardNumber: receiverCardNumber
+              },
+              amount: amount,
+              date: new Date(),
+            });
+            return transaction.save();
+          })
+          .then(resolve('payment success'))
+          .catch(err => reject(err));
+      });
   });
 }
