@@ -70,7 +70,7 @@ export default class SignUpForm extends Component {
           {renderInput(confirmPass, 'Confirm Password', false, true)}
           <div className="form-group">
             <div className="col-sm-offset-1 col-sm-10">
-              <button className="btn btn-success" onClick={handleSubmit(() => createNewUser(values))}>
+              <button className="btn btn-success" onClick={handleSubmit(() => (createNewUser(values)))}>
                 <i className="fa fa-paper-plane"/> Submit
               </button>
               <button className="btn btn-warning" onClick={resetForm} style={{marginLeft: 15}}>

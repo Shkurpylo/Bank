@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 import { User, Card } from '../../models';
 import { numberGenerator, getPin, getCVV, getExplDate } from './cardsHelpers';
-import { getIncomingSum, getOutgoingSum } from '../transaction';
+// import { getIncomingSum, getOutgoingSum } from '../transaction';
 
 
 function getUserById(id) {
@@ -19,16 +19,16 @@ export function getCards(req) { // get
   // const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
   const ownerId = req.session.passport.user;
   return new Promise((resolve, reject) => {
-    const cards = req.session.cards;
-    if (!cards) {
-      req.session.cards = cards;
-      User.findById(ownerId).distinct('cards', (err, result) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(result);
-      });
-    }
+    // const cards = req.session.cards;
+    // if (!cards) {
+    //   req.session.cards = cards;
+    User.findById(ownerId).distinct('cards', (err, result) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+    // }
   });
 }
 
@@ -69,9 +69,9 @@ export function addNewCard(req) { // post
     const ownerId = req.session.passport.user;
     console.log('starting addNewCard');
     Promise.all([
-      getUserById(ownerId),
-      createCard(ownerId, req.body.cardName, req.body.cardType)
-    ])
+        getUserById(ownerId),
+        createCard(ownerId, req.body.cardName, req.body.cardType)
+      ])
       .then(result => {
         console.log(result);
         const user = result[0];
@@ -125,21 +125,21 @@ export function deleteCard(req) { // get
   });
 }
 
-export function countBalance(req) {
-  return new Promise((resolve, reject) => {
-    const cardId = mongoose.Types.ObjectId(req.query.id); // eslint-disable-line new-cap
-    let balance = 0;
-    getIncomingSum(cardId)
-      .then(result => {
-        console.log('result first: ' + result);
-        balance += result;
-      });
-    getOutgoingSum(cardId)
-      .then(result => {
-        console.log('resultSecond: ' + result);
-        balance -= result;
-        resolve({ cardId: balance });
-      })
-      .catch(err => reject(err));
-  });
-}
+// export function countBalance(req) {
+//   return new Promise((resolve, reject) => {
+//     const cardId = mongoose.Types.ObjectId(req.query.id); // eslint-disable-line new-cap
+//     let balance = 0;
+//     getIncomingSum(cardId)
+//       .then(result => {
+//         console.log('result first: ' + result);
+//         balance += result;
+//       });
+//     getOutgoingSum(cardId)
+//       .then(result => {
+//         console.log('resultSecond: ' + result);
+//         balance -= result;
+//         resolve({ cardId: balance });
+//       })
+//       .catch(err => reject(err));
+//   });
+// }
