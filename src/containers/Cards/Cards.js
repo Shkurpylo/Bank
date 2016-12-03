@@ -95,7 +95,7 @@ export default class Cards extends Component {
                     <td className={styles.idCol} ><i className="fa fa-cc-visa fa-2x"></i></td>
                     <td className={styles.colorCol} >{card.name}</td>
                     <td className={styles.ownerCol} >{hideHumber(card.number)}</td>
-                    <td className={styles.ownerCol} >{card.cvv}</td>
+                    <td className={styles.ownerCol} >{card.balance + '$'}</td>
                     <td className={styles.buttonCol} >
                       <button key={card.id} className="btn btn-info btn-sm"
                               onClick={() => {viewButton(card);}}>

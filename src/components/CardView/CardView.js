@@ -39,7 +39,7 @@ export default class CardView extends Component {
         explDate: {card.explDate}
       </div>
       <div className="row">
-        Balance: not yet
+        Balance: {card.balance + '$'}
       </div>
       <div className="row">
         <div className={style.buttons}>

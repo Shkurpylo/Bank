@@ -51,7 +51,7 @@ export function getTransactions() {
   });
 }
 
-export function getIncomingSum(receiverId) {
+function getIncomingSum(receiverId) {
   const cardId = mongoose.Types.ObjectId(receiverId); // eslint-disable-line new-cap
   return new Promise((resolve, reject) => {
     Transaction.aggregate([{
@@ -71,7 +71,7 @@ export function getIncomingSum(receiverId) {
   });
 }
 
-export function getOutgoingSum(senderId) {
+function getOutgoingSum(senderId) {
   const cardId = mongoose.Types.ObjectId(senderId); // eslint-disable-line new-cap
   return new Promise((resolve, reject) => {
     Transaction.aggregate([{
@@ -120,8 +120,8 @@ export function getBalances(req) {
           return countBalance(card._id);
         })
         .then((result) => {
-          const cardObj = {};
-          cardObj._id = card._id;
+          let cardObj = {};
+          cardObj = card;
           cardObj.balance = result;
           return (cardObj);
         });

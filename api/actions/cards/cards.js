@@ -1,7 +1,7 @@
-// import mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { User, Card } from '../../models';
 import { numberGenerator, getPin, getCVV, getExplDate } from './cardsHelpers';
-// import { getIncomingSum, getOutgoingSum } from '../transaction';
+import { countBalance } from '../transaction';
 
 
 function getUserById(id) {
@@ -15,22 +15,48 @@ function getUserById(id) {
   });
 }
 
-export function getCards(req) { // get
-  // const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
-  const ownerId = req.session.passport.user;
+// export function getCards(req) { // get
+//   // const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
+//   const ownerId = req.session.passport.user;
+//   return new Promise((resolve, reject) => {
+//     // const cards = req.session.cards;
+//     // if (!cards) {
+//     //   req.session.cards = cards;
+//     User.findById(ownerId).distinct('cards', (err, result) => {
+//       if (err) {
+//         reject(err);
+//       }
+//       resolve(result);
+//     });
+//     // }
+//   });
+// }
+
+export function getCards(req) {
+  // const userId = mongoose.Types.ObjectId(req.body.id);
+  const userId = req.session.passport.user;
   return new Promise((resolve, reject) => {
-    // const cards = req.session.cards;
-    // if (!cards) {
-    //   req.session.cards = cards;
-    User.findById(ownerId).distinct('cards', (err, result) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(result);
+    User.findById(userId).distinct('cards', (err, cards) => {
+      if (err) reject(err);
+      let current = Promise.resolve();
+      Promise.all(cards.map((card) => {
+        current = current.then(() => {
+          return countBalance(card._id);
+        })
+        .then((result) => {
+          let cardObj = {};
+          cardObj = card;
+          cardObj.balance = result.toFixed(2);
+          return (cardObj);
+        });
+        return current;
+      }))
+      .then(results => resolve(results));
     });
-    // }
   });
 }
+
+
 
 
 export function getCardByNumber(req) { // get
