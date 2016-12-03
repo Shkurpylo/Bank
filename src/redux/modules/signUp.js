@@ -31,11 +31,10 @@ export default function reducer(state = initialState, action = {}) {
     case SAVE:
       return state; // 'saving' flag handled by redux-form
     case SAVE_SUCCESS:
-    //  data = [...state.data];
+      // data = [...state.data];
       return {
         ...state,
-        data: state.data,
-        saveError: null
+        user: action.result.user,
       };
     case SAVE_FAIL:
       return typeof action.error === 'string' ? {

@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:3001/dist/main-c553b46b55f82791633a.js"
+    "main": "http://localhost:3001/dist/main-ecfba49a5d82959d1481.js"
   },
   "styles": {},
   "assets": {
@@ -20,10 +20,9 @@
     },
     "./src/components/SignUpForm/SignUpForm.scss": {
       "inputGroup": "inputGroup___3qTIP",
-      "labels": "labels___37u6N",
       "flags": "flags___vS3jP",
       "cog": "cog___35v4z",
-      "_style": "@charset \"UTF-8\";\n.inputGroup___3qTIP {\n  position: relative;\n}\n\n.labels___37u6N {\n  position: absolute;\n  display: inline-block;\n  width: 140px;\n  text-align: right;\n}\n\n​\n.flags___vS3jP {\n  position: absolute;\n  right: 20px;\n  top: 7px;\n}\n\n​\n.flags___vS3jP > * {\n  margin: 0 2px;\n  width: 20px;\n  height: 20px;\n  border-radius: 20px;\n  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);\n  color: white;\n  float: right;\n  text-align: center;\n}\n\n.cog___35v4z {\n  position: absolute;\n  left: 0;\n  top: 164px;\n}\n"
+      "_style": ".inputGroup___3qTIP {\n  position: relative;\n}\n\n.flags___vS3jP {\n  position: absolute;\n  right: 20px;\n  top: 7px;\n}\n\n.flags___vS3jP > * {\n  margin: 0 2px;\n  width: 20px;\n  height: 20px;\n  border-radius: 20px;\n  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);\n  color: white;\n  float: right;\n  text-align: center;\n}\n\n.cog___35v4z {\n  position: absolute;\n  left: 0;\n  top: 164px;\n}\n"
     },
     "./src/components/LoginForm/LoginForm.scss": {
       "signUpForm": "signUpForm___2hifx",

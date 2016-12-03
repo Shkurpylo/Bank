@@ -5,7 +5,11 @@ const LocalStrategy = passportLocal.Strategy;
 
 export default function configPassport(passport) {
   passport.serializeUser((user, done) => {
-    done(null, user._id);
+    console.log('!!!IN SERIALIZE USER ' + JSON.stringify(user));
+    const userSerialized = {};
+    userSerialized._id = user._id;
+    userSerialized.name = user.firstName;
+    done(null, userSerialized);
     return null;
   });
 

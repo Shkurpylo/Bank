@@ -12,6 +12,12 @@ export default function createNewUser(req) {
     });
     user.save((err, result) => {
       if (err) reject('user save fail');
+      req.login(result, (errLogin) => {
+        if (errLogin) {
+          console.log(errLogin);
+        }
+        return user;
+      });
       resolve(result);
     });
     console.log('addUser end');
