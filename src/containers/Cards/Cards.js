@@ -12,6 +12,11 @@ const hideHumber = (number) => {
   return stringCartNumber.slice(0, 4) + '........' + stringCartNumber.slice(-4);
 };
 
+const isVisa = (number) => {
+  const firstDigit = (number + '')[0];
+  return firstDigit === '4' ? true : false;
+};
+
 @asyncConnect([{
   deferred: true,
   promise: ({ store: { dispatch, getState } }) => {
@@ -56,7 +61,8 @@ export default class Cards extends Component {
       addButton,
       viewButton,
       showAddForm,
-      showCardView
+      showCardView,
+      loading
     } = this.props;
     return (
       <div className={styles.cards + ' container'}>
@@ -67,7 +73,8 @@ export default class Cards extends Component {
       </div>
       <div className="col-md-4">
           <button className=
-          {styles.addButton + (showAddForm ? ' btn btn-primary active' : ' btn btn-primary') + ' pull-right'}
+          {styles.addButton +
+            (showAddForm ? ' btn btn-primary active' : ' btn btn-primary') + ' pull-right'}
            onClick={() => addButton(!showAddForm)}>
             Add new card
           </button>
@@ -92,7 +99,8 @@ export default class Cards extends Component {
               {
                 cards.map((card) =>
                   <tr key={card._id}>
-                    <td className={styles.idCol} ><i className="fa fa-cc-visa fa-2x"></i></td>
+                    <td className={styles.idCol} ><i classID="cardIcons" className=
+                    {isVisa(card.number) ? 'fa fa-cc-visa fa-2x' : 'fa fa-cc-mastercard fa-2x' }></i></td>
                     <td className={styles.colorCol} >{card.name}</td>
                     <td className={styles.ownerCol} >{hideHumber(card.number)}</td>
                     <td className={styles.ownerCol} >{card.balance + '$'}</td>
@@ -106,7 +114,10 @@ export default class Cards extends Component {
               }
               </tbody>
             </table>
-            || <div className={styles.loadingDiv}> <i className={styles.loading + ' fa fa-refresh fa-spin fa-3x fa-fw'}></i> </div>
+            || loading && <div className={styles.loadingDiv}>
+            <i className={styles.loading + ' fa fa-refresh fa-spin fa-3x fa-fw'}></i> </div>
+            || <div className={styles.loadingDiv}>
+            <i className={styles.nocards}>You have not cards yet</i> </div>
           }
           </div>
           <div className="col-md-5 pull-right">

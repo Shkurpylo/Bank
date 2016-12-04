@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:3001/dist/main-b9749b93cc83faa790f0.js"
+    "main": "http://localhost:3001/dist/main-56c0f7fa2d1458e16b38.js"
   },
   "styles": {},
   "assets": {
@@ -68,10 +68,12 @@
       "table": "table___1ib8G",
       "loadingDiv": "loadingDiv___yxa8Y",
       "loading": "loading___Y7E8Y",
+      "nocards": "nocards___3PgwC",
       "panel-default": "panel-default___2dA1f",
       "cards": "cards___30KUc",
       "pull-right": "pull-right___1B9mI",
-      "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.addButton___363Ei {\n  margin-top: 7%;\n  margin-right: 5%;\n}\n\n.title___c9cRa {\n  font-size: 4em;\n  color: grey;\n  font-weight: bold;\n}\n\n.table___1ib8G th {\n  text-align: center;\n}\n\n.loadingDiv___yxa8Y {\n  text-align: center;\n}\n\n.loading___Y7E8Y {\n  color: grey;\n  margin-top: 10%;\n}\n\n.panel-default___2dA1f {\n  border-radius: 5px;\n}\n\n.cards___30KUc .pull-right___1B9mI {\n  float: right !important;\n}\n"
+      "cardIcons": "cardIcons___2axLm",
+      "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.addButton___363Ei {\n  margin-top: 7%;\n  margin-right: 5%;\n}\n\n.title___c9cRa {\n  font-size: 4em;\n  color: grey;\n  font-weight: bold;\n}\n\n.table___1ib8G th {\n  text-align: center;\n}\n\n.loadingDiv___yxa8Y {\n  box-sizing: border-box;\n  text-align: center;\n  margin: 100px;\n}\n\n.loading___Y7E8Y {\n  color: grey;\n  margin-top: 10%;\n}\n\n.nocards___3PgwC {\n  color: grey;\n  font-size: 200%;\n}\n\n.panel-default___2dA1f {\n  border-radius: 5px;\n}\n\n.cards___30KUc .pull-right___1B9mI {\n  float: right !important;\n}\n\n.cardIcons___2axLm {\n  color: #333;\n  text-shadow: 1px 1px 1px #ccc;\n  font-size: 1.5em;\n}\n"
     },
     "./src/containers/History/History.scss": {
       "history": "history___3XdfK",

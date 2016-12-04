@@ -12,11 +12,18 @@
    text-align: center;   
 }
 .loadingDiv{
+  box-sizing: border-box;
   text-align: center;
+  margin: 100px;
 }
 .loading{
   color: grey;
   margin-top: 10%;
+}
+.nocards{
+  color: grey;
+  font-size: 200%;
+
 }
 .panel-default{
   border-radius: 5px;
@@ -26,4 +33,10 @@
     float: right !important;
   }
 
+}
+
+.cardIcons {
+  color: #333;
+  text-shadow: 1px 1px 1px #ccc;
+  font-size: 1.5em;
 }

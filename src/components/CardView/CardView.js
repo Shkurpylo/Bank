@@ -3,6 +3,15 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as cardsActions from 'redux/modules/cards';
 
+const dateFormat = (date) => {
+  const formatingDate = new Date(date);
+  const options = {
+    year: 'numeric',
+    month: 'numeric',
+  };
+  return (formatingDate.toLocaleString('en-US', options));
+};
+
 @connect((state) => ({
   card: state.cards.card,
   deleteCard: state.cards.deleteCard,
@@ -25,21 +34,44 @@ export default class CardView extends Component {
     <div className="panel panel-info" id={style.panel}>
       <div className="panel-heading">Card</div>
       <div className="row">
-        Name: {card.name}
-        <button className="btn btn-success"
-                 >Change Name</button>
+        <div className="col-md-4">
+        </div>
+        <div className="col-md-6">
+         {card.name}
+        <button className="btn btn-link">Change Name</button>
+        </div>
       </div>
       <div className="row">
-        Number: {card.number}
+        <div className="col-md-4">
+          Number:
+        </div>
+        <div className="col-md-6">
+          {card.number}
+        </div>
       </div>
       <div className="row">
-        cvv: {card.cvv}
+        <div className="col-md-4">
+          cvv:
+        </div>
+        <div className="col-md-6">
+          {card.cvv}
+        </div>
       </div>
       <div className="row">
-        explDate: {card.explDate}
+        <div className="col-md-4">
+          explDate:
+          </div>
+        <div className="col-md-6">
+           {dateFormat(card.explDate)}
+        </div>
       </div>
       <div className="row">
-        Balance: {card.balance + '$'}
+        <div className="col-md-4">
+          Balance:
+        </div>
+        <div className="col-md-6">
+          {card.balance + '$'}
+        </div>
       </div>
       <div className="row">
         <div className={style.buttons}>
