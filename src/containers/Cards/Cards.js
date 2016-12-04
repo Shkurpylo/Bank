@@ -84,7 +84,10 @@ export default class Cards extends Component {
         </div>
         <div className="row">
           <div className="col-md-6 panel panel-default">
-            {cards && cards.length &&
+            {
+              loading && <div className={styles.loadingDiv}>
+            <i className={styles.loading + ' fa fa-refresh fa-spin fa-3x fa-fw'}></i> </div> ||
+              cards && cards.length &&
             <table className="table table-hover ">
               <thead>
               <tr>
@@ -114,8 +117,6 @@ export default class Cards extends Component {
               }
               </tbody>
             </table>
-            || loading && <div className={styles.loadingDiv}>
-            <i className={styles.loading + ' fa fa-refresh fa-spin fa-3x fa-fw'}></i> </div>
             || <div className={styles.loadingDiv}>
             <i className={styles.nocards}>You have not cards yet</i> </div>
           }

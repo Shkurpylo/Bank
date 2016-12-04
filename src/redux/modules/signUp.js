@@ -51,7 +51,6 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export function isValidEmail(data) {
-  console.log('=============>>>>>>' + JSON.stringify(data));
   return {
     types: [IS_VALID, IS_VALID_SUCCESS, IS_VALID_FAIL],
     promise: (client) => client.post('/signUp/isValid', {
@@ -61,7 +60,6 @@ export function isValidEmail(data) {
 }
 
 export function createNewUser(user) {
-  console.log('=============>>>>>>' + JSON.stringify(user));
   return {
     types: [SAVE, SAVE_SUCCESS, SAVE_FAIL],
     promise: (client) => client.post('/signUp/createNewUser', {

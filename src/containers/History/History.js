@@ -24,9 +24,7 @@ const dateFormat = (date) => {
 @asyncConnect([{
   deferred: true,
   promise: ({ store: { dispatch, getState } }) => {
-    console.log('in asyncConnect');
     if (!isLoaded(getState())) {
-      console.log('in if body');
       return dispatch(loadTransactions());
     }
   }

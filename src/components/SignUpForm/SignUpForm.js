@@ -7,7 +7,6 @@ import signupValidation from './signupValidation';
 import * as signUpActions from 'redux/modules/signUp';
 
 function asyncValidate(data, dispatch, {isValidEmail}) {
-  console.log(data);
   if (!data.email) {
     return Promise.resolve({});
   }

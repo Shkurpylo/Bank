@@ -21,7 +21,6 @@ const initialState = {
   loaded: false,
   review: false,
   saveError: {},
-  balances: [],
   showAddForm: false,
   showCardView: false,
 };
@@ -103,7 +102,6 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loaded: false,
-        cards: action.result.cards
       };
     case SAVE_FAIL:
       return typeof action.error === 'string' ? {

@@ -22,12 +22,14 @@ export default class CardView extends Component {
   static propTypes = {
     card: PropTypes.object,
     deleteCard: PropTypes.func,
+    getCards: PropTypes.func
   };
 
   render() {
     const {
       card,
       deleteCard,
+      getCards
     } = this.props;
     const style = require('./CardView.scss');
     return (
@@ -76,7 +78,9 @@ export default class CardView extends Component {
       <div className="row">
         <div className={style.buttons}>
           <button className="btn btn-danger"
-                  onClick={() => deleteCard(card._id)} >Delete Card</button>
+                  onClick={() => deleteCard(card._id)
+                    .then(getCards())}>
+                    Delete Card</button>
         </div>
       </div>
     </div>

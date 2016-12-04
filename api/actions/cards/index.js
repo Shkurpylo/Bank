@@ -1,3 +1,11 @@
-import * as cards from './cards';
+// import * as cards from './cards';
+export {
+  getCardByNumber,
+  getCards,
+  addNewCard,
+  updateCard,
+  deleteCard
+}
+from './cards';
 
-export default cards;
+// export default cards;

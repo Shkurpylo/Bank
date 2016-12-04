@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 import { User, Card } from '../../models';
 import { numberGenerator, getPin, getCVV, getExplDate } from './cardsHelpers';
 import { countBalance } from '../transaction';
@@ -40,36 +40,54 @@ export function getCards(req) {
       if (err) reject(err);
       let current = Promise.resolve();
       Promise.all(cards.map((card) => {
-        current = current.then(() => {
-          return countBalance(card._id);
-        })
-        .then((result) => {
-          let cardObj = {};
-          cardObj = card;
-          cardObj.balance = result.toFixed(2);
-          return (cardObj);
-        });
-        return current;
-      }))
-      .then(results => resolve(results));
+          current = current
+            .then(() => {
+              return countBalance(card._id);
+            })
+            .then((result) => {
+              let cardObj = {};
+              cardObj = card;
+              cardObj.balance = result.toFixed(2);
+              return (cardObj);
+            });
+          return current;
+        }))
+        .then(results => resolve(results));
     });
   });
 }
 
 
+// export function getCardByNumber(req) { // get
+//   return new Promise((resolve, reject) => {
+//     const number = req.query.num;
+//     User.findOne({ 'cards.number': number })
+//       .then(user => {
+//         user.cards.filter(card => {
+//           if (card.number == number) resolve(card);
+//         });
+//       })
+//       .catch(err => reject(err));
+//   });
+// }
 
 
-export function getCardByNumber(req) { // get
-  // const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
-  const ownerId = req.session.passport.user;
+export function getCardByNumber(number) { // get
   return new Promise((resolve, reject) => {
-    const number = req.query.num;
-    User.findById(ownerId).findOne({ 'cards.number': number }, (err, card) => {
-      if (err) { reject(err); }
-      resolve(card);
-    });
+    console.log('in getCardById');
+    // const number = req.query.num;
+    User.findOne({ 'cards.number': number }, { cards: { $elemMatch: { number: number } } })
+      .then(user => {
+        console.log(user);
+        if (user.cards[0]) resolve(user.cards[0]);
+      })
+      .catch(err => reject(err));
   });
 }
+
+// db.parents.find(
+//     {'children.age': {$gte: 18}},
+//     {children:{$elemMatch:{age: {$gte: 18}}}})
 
 
 function createCard(ownerId, cardName, cardType) {
@@ -94,8 +112,7 @@ export function addNewCard(req) { // post
     // const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1'); // temporary
     const ownerId = req.session.passport.user;
     console.log('starting addNewCard');
-    Promise.all([
-        getUserById(ownerId),
+    Promise.all([getUserById(ownerId),
         createCard(ownerId, req.body.cardName, req.body.cardType)
       ])
       .then(result => {

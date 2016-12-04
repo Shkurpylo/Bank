@@ -58,7 +58,7 @@ export default class TransactionFormBetweenOwn extends Component {
                    <select name="myReceiverCard" className="form-control"
                    id="receiverCardSelector" {...receiver}>
                    {cards.map(card => <option name={card.name} value={card._id} key={card._id}>
-                   {card.name + ',   ' + hideHumber(card.number)}</option>)}
+                   {card.name + ',   ' + hideHumber(card.number) + ', balance: ' + card.balance + '$'}</option>)}
                    </select>
              </div>
               <div className="form-group">
@@ -66,7 +66,7 @@ export default class TransactionFormBetweenOwn extends Component {
                    <select name="mySenderCard" className="form-control"
                    id="senderCardSelector" {...sender}>
                    {cards.map(card => <option name={card.name} value={card._id} key={card._id}>
-                   {card.name + ',   ' + hideHumber(card.number)}</option>)}
+                   {card.name + ',   ' + hideHumber(card.number) + ', balance: ' + card.balance + '$'}</option>)}
                    </select>
              </div>
              <div className="input-group">

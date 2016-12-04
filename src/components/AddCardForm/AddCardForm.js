@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as cardsActions from 'redux/modules/cards';
 // import { createCard } from 'redux/modules/cards';
+// import { getCards as loadCards } from 'redux/modules/cards';
 
 @connect((state) => ({
   saveError: state.cards.saveError
@@ -25,16 +26,19 @@ export default class AddCardForm extends Component {
     // submitting: PropTypes.bool,
     // formKey: PropTypes.string,
     saveError: PropTypes.object,
+    getCards: PropTypes.func
   };
 
   render() {
     const styles = require('./AddCardForm.scss');
     const {
-      fields: { cardName, cardType = 'VISA' },
+      fields: { cardName,
+      cardType = 'VISA' },
       handleSubmit,
       resetForm,
       values,
-      createCard,  // eslint-disable-line no-shadow
+      createCard,
+      getCards
     } = this.props;
 
     return (
@@ -67,7 +71,9 @@ export default class AddCardForm extends Component {
             </div>
             </div>
 
-            <button className="btn btn-success pull-right" style={{marginRight: 20}} onClick={handleSubmit(() => createCard(values)
+            <button className="btn btn-success pull-right" style={{marginRight: 20}}
+            onClick={handleSubmit(() => createCard(values)
+            .then(getCards)
             .then(resetForm))}>
               <i className="fa fa-plus"/> Add
             </button>
