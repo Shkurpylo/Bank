@@ -12,4 +12,5 @@ export AddCardForm from './AddCardForm/AddCardForm';
 export CardView from './CardView/CardView';
 export TransactionForm from './TransactionForm/TransactionForm';
 export TransactionFormBetweenOwn from './TransactionFormBetweenOwn/TransactionFormBetweenOwn';
+export TransactionConfirm from './TransactionConfirm/TransactionConfirm';
 

@@ -4,7 +4,8 @@ export {
   getCards,
   addNewCard,
   updateCard,
-  deleteCard
+  deleteCard,
+  getReceiverInfo
 }
 from './cards';
 

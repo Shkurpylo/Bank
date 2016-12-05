@@ -57,21 +57,6 @@ export function getCards(req) {
   });
 }
 
-
-// export function getCardByNumber(req) { // get
-//   return new Promise((resolve, reject) => {
-//     const number = req.query.num;
-//     User.findOne({ 'cards.number': number })
-//       .then(user => {
-//         user.cards.filter(card => {
-//           if (card.number == number) resolve(card);
-//         });
-//       })
-//       .catch(err => reject(err));
-//   });
-// }
-
-
 export function getCardByNumber(number) { // get
   return new Promise((resolve, reject) => {
     console.log('in getCardById');
@@ -85,9 +70,21 @@ export function getCardByNumber(number) { // get
   });
 }
 
-// db.parents.find(
-//     {'children.age': {$gte: 18}},
-//     {children:{$elemMatch:{age: {$gte: 18}}}})
+export function getReceiverInfo(req) {
+  return new Promise((resolve, reject) => {
+    console.log('HERE IS PARAMS: ' + JSON.stringify(req.query));
+    const receiverCardNumber = req.query.cardNumber;
+    User.findOne({ 'cards.number': receiverCardNumber })
+      .then(user => {
+        const receiverInfo = {
+          receiverName: user.firstName,
+          receiverLastname: user.lastName,
+        };
+        resolve(receiverInfo);
+      })
+      .catch(err => reject(err));
+  });
+}
 
 
 function createCard(ownerId, cardName, cardType) {
@@ -167,22 +164,3 @@ export function deleteCard(req) { // get
     });
   });
 }
-
-// export function countBalance(req) {
-//   return new Promise((resolve, reject) => {
-//     const cardId = mongoose.Types.ObjectId(req.query.id); // eslint-disable-line new-cap
-//     let balance = 0;
-//     getIncomingSum(cardId)
-//       .then(result => {
-//         console.log('result first: ' + result);
-//         balance += result;
-//       });
-//     getOutgoingSum(cardId)
-//       .then(result => {
-//         console.log('resultSecond: ' + result);
-//         balance -= result;
-//         resolve({ cardId: balance });
-//       })
-//       .catch(err => reject(err));
-//   });
-// }

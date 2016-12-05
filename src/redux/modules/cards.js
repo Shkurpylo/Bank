@@ -7,12 +7,12 @@ const DELETE_FAIL = '/cards/DELETE_FAIL';
 const SAVE = '/cards/SAVE';
 const SAVE_SUCCESS = '/cards/SAVE_SUCCESS';
 const SAVE_FAIL = '/cards/SAVE_FAIL';
-const QUERY_BALANCE = '/cards/QUERY_BALANCE';
-const QUERY_BALANCE_SUCCESS = '/cards/QUERY_BALANCE_SUCCESS';
-const QUERY_BALANCE_FAIL = '/cards/QUERY_BALANCE_FAIL';
+// const QUERY_BALANCE = '/cards/QUERY_BALANCE';
+// const QUERY_BALANCE_SUCCESS = '/cards/QUERY_BALANCE_SUCCESS';
+// const QUERY_BALANCE_FAIL = '/cards/QUERY_BALANCE_FAIL';
 
 const SHOW_ADD_FORM = '/cards/SHOW_ADD_FORM';
-const SHOW_CARD_VIEW = '/cards/SHOW_CARD_VIEW';
+// const SHOW_CARD_VIEW = '/cards/SHOW_CARD_VIEW';
 const VIEW_CARD = '/cards/VIEW_CARD';
 
 const initialState = {
@@ -40,12 +40,12 @@ export default function reducer(state = initialState, action = {}) {
         showCardView: true,
         showAddForm: false
       };
-    case SHOW_CARD_VIEW:
-      return {
-        ...state,
-        showCardView: action.showCardView,
-        showAddForm: false
-      };
+    // case SHOW_CARD_VIEW:
+    //   return {
+    //     ...state,
+    //     showCardView: action.showCardView,
+    //     showAddForm: false
+    //   };
     case LOAD:
       return {
         ...state,
@@ -111,11 +111,11 @@ export default function reducer(state = initialState, action = {}) {
           [action.id]: action.error
         }
       } : state;
-    case QUERY_BALANCE:
-      return state;
-    case QUERY_BALANCE_SUCCESS:
-      // const balance = action.result;
-      return state;
+    // case QUERY_BALANCE:
+    //   return state;
+    // case QUERY_BALANCE_SUCCESS:
+    //   // const balance = action.result;
+    //   return state;
     default:
       return state;
   }
@@ -164,12 +164,12 @@ export function reviewCard(cardId) {
   };
 }
 
-export function getBalance(cardId) {
-  return {
-    types: [QUERY_BALANCE, QUERY_BALANCE_SUCCESS, QUERY_BALANCE_FAIL],
-    promise: (client) => client.get('/countBalance?id=' + cardId),
-  };
-}
+// export function getBalance(cardId) {
+//   return {
+//     types: [QUERY_BALANCE, QUERY_BALANCE_SUCCESS, QUERY_BALANCE_FAIL],
+//     promise: (client) => client.get('/countBalance?id=' + cardId),
+//   };
+// }
 
 export function addButton(showAddForm) {
   return {

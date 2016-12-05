@@ -14,6 +14,7 @@ const hideHumber = (number) => {
   cards: state.cards.cards,
   loaded: state.cards.loaded,
   loading: state.cards.loading,
+  ...state.transactions
 }),
   dispatch => bindActionCreators(transactionActions, dispatch)
 )
@@ -31,6 +32,7 @@ export default class TransactionForm extends Component {
     values: PropTypes.object,
     saveError: PropTypes.object,
     cards: PropTypes.array,
+    confirmButton: PropTypes.func
   };
   render() {
     const {
@@ -39,9 +41,9 @@ export default class TransactionForm extends Component {
       cards,
       values,
       handleSubmit,
-      newTransaction
+      // newTransaction,
+      confirmButton
     } = this.props;
-    console.log(cards);
 
     // const styles = require('./TransactionForm.scss');
 
@@ -58,7 +60,7 @@ export default class TransactionForm extends Component {
               <div className="form-group">
                    <label htmlFor="cardSelector">Choose your card:</label>
                    <select name="myCard" className="form-control" id="cardSelector" {...sender}>
-                   {cards.map(card => <option name={card.name} key={card._id} value={card._id}>
+                   {cards.map(card => <option name={card.name} key={card._id} value={JSON.stringify(card)} defaultChecked>
                    {card.name + ',   ' + hideHumber(card.number) + ', balance: ' + card.balance + '$'}</option>)}
                    </select>
 
@@ -76,8 +78,8 @@ export default class TransactionForm extends Component {
                    </div>
                   <div className="form-group" style={{paddingTop: 15}}>
                     <button className="btn btn-success"
-                    onClick={handleSubmit(() => (newTransaction(values))
-                    .then(resetForm))}>
+                    onClick={handleSubmit(() => (confirmButton(values)))
+                    }>
                       <i className="fa fa-plus"/> Send
                     </button>
                     <button className="btn btn-warning"

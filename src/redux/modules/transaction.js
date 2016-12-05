@@ -7,16 +7,23 @@ const DELETE_FAIL = '/transaction/DELETE_FAIL';
 const SAVE = '/transaction/SAVE';
 const SAVE_SUCCESS = '/transaction/SAVE_SUCCESS';
 const SAVE_FAIL = '/transaction/SAVE_FAIL';
+const LOAD_INFO = '/transaction/LOAD_INFO';
+const LOAD_INFO_SUCCESS = '/transaction/LOAD_INFO_SUCCESS';
+const LOAD_INFO_FAIL = '/transaction/LOAD_INFO_FAIL';
 
 const SHOW_CONFIRM_WINDOW = '/transaction/SHOW_CONFIRM_WINDOW';
 const TOGGLE_FORMS = '/transaction/TOGGLE_FORMS';
 
 const initialState = {
+  sendingTransaction: false,
   transactions: [],
   showConfirmWindow: false,
   showOwnForm: false,
   loaded: false,
   saveError: {},
+  transactionData: {},
+  loadingInfo: false,
+  confirmInfo: {}
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -24,7 +31,7 @@ export default function reducer(state = initialState, action = {}) {
     case SHOW_CONFIRM_WINDOW:
       return {
         ...state,
-        showConfirmWindow: true
+        showConfirmWindow: false,
       };
     case TOGGLE_FORMS:
       return {
@@ -67,17 +74,17 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
       };
     case SAVE:
-      return state; // 'saving' flag handled by redux-form
+      return {
+        sendingTransaction: true,
+        ...state}; // 'saving' flag handled by redux-form
     case SAVE_SUCCESS:
-      // const data = [...state.data];
-      // data[action.result.id - 1] = action.result;
       return {
         ...state,
-        // data: data,
         loaded: false,
+        showConfirmWindow: false,
+        sendingTransaction: false,
         saveError: {
           ...state.saveError,
-          // [action.id]: null
         }
       };
     case SAVE_FAIL:
@@ -85,9 +92,30 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         saveError: {
           ...state.saveError,
-          [action.id]: action.error
+          // [action.id]: action.error
         }
       } : state;
+    case LOAD_INFO:
+      return {
+        ...state,
+        loadingInfo: true,
+        showConfirmWindow: true,
+        transactionData: action.result
+      };
+    case LOAD_INFO_SUCCESS:
+      return {
+        ...state,
+        loadingInfo: false,
+        confirmInfo: action.result
+      };
+    case LOAD_INFO_FAIL:
+      return {
+        ...state,
+        loadingInfo: false,
+        loadInfo: false,
+        confirmInfo: null,
+        error: action.error
+      };
     default:
       return state;
   }
@@ -111,16 +139,10 @@ export function newTransaction(transaction) {
     promise: (client) => client.post('/addTransaction', {
       data: {
         receiver: transaction.receiver,
-        sender: transaction.sender,
+        sender: transaction.sender._id,
         amount: transaction.amount
       }
     }),
-  };
-}
-
-export function confirmButton() {
-  return {
-    type: SHOW_CONFIRM_WINDOW,
   };
 }
 
@@ -130,3 +152,30 @@ export function switchForms(showOwnForm) {
     showOwnForm
   };
 }
+
+export function cancelTransaction() {
+  return {
+    type: SHOW_CONFIRM_WINDOW,
+  };
+}
+
+export function confirmButton(values) {
+  console.log('HERE IS SENDER+++>>> ' + JSON.stringify(values));
+  // debugger;
+  return {
+    types: [LOAD_INFO, LOAD_INFO_SUCCESS, LOAD_INFO_FAIL],
+    promise: (client) => client.get('/getReceiverInfo?cardNumber=' + values.receiver),
+    result: {
+      sender: JSON.parse(values.sender),
+      receiver: values.receiver,
+      amount: values.amount
+    }
+  };
+}
+
+// export function confirmButton(values) {
+//   return (dispatch) => {
+//     dispatch(dButton(values));
+//     dispatch(getReceiverInfo(values.receiver));
+//   };
+// }
