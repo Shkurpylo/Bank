@@ -47,7 +47,6 @@ export default class TransactionForm extends Component {
 
     // const styles = require('./TransactionForm.scss');
 
-
     return (
       <div className="panel panel-info col-sm-5 col-md-offset-3"
             style={{paddingLeft: 0, paddingRight: 0}}>
@@ -60,7 +59,8 @@ export default class TransactionForm extends Component {
               <div className="form-group">
                    <label htmlFor="cardSelector">Choose your card:</label>
                    <select name="myCard" className="form-control" id="cardSelector" {...sender}>
-                   {cards.map(card => <option name={card.name} key={card._id} value={JSON.stringify(card)} defaultChecked>
+                   <option selected disabled>Your cards</option>
+                   {cards.map(card => <option name={card.name} key={card._id} value={JSON.stringify(card)}>
                    {card.name + ',   ' + hideHumber(card.number) + ', balance: ' + card.balance + '$'}</option>)}
                    </select>
 

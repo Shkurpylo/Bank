@@ -5,6 +5,7 @@ import Helmet from 'react-helmet';
 import { initializeWithKey } from 'redux-form';
 import * as transactionsActions from 'redux/modules/transaction';
 import { isLoaded, getTransactions as loadTransactions } from 'redux/modules/transaction';
+// import { reduxForm } from 'redux-form';
 
 const dateFormat = (date) => {
   const formatingDate = new Date(date);
@@ -12,7 +13,6 @@ const dateFormat = (date) => {
     year: 'numeric',
     month: 'numeric',
     day: 'numeric',
-    // weekday: 'long',
     timezone: 'UTC',
     hour: 'numeric',
     minute: 'numeric',
@@ -31,13 +31,16 @@ const dateFormat = (date) => {
 }])
 @connect(
   state => ({
+    cards: state.cards.cards,
+    loaded: state.cards.loaded,
+    loading: state.cards.loading,
     transactions: state.transaction.transactions,
     error: state.transaction.error,
-    loaded: state.transaction.loaded,
   }), {...transactionsActions, initializeWithKey })
 export default class History extends Component {
   static propTypes = {
-    transactions: PropTypes.array
+    transactions: PropTypes.array,
+    cards: PropTypes.array,
   }
   render() {
     const styles = require('./History.scss');
@@ -53,6 +56,8 @@ export default class History extends Component {
 
       <div className="row">
         <div className="col-md-8 col-md-offset-2">
+          <div className="row">
+          </div>
           <div className="btn-group btn-group-justified" role="group" aria-label="...">
             <div className="btn-group" role="group">
               <button type="button" className="btn btn-primary">Sending</button>

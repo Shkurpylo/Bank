@@ -161,7 +161,6 @@ export function cancelTransaction() {
 
 export function confirmButton(values) {
   console.log('HERE IS SENDER+++>>> ' + JSON.stringify(values));
-  // debugger;
   return {
     types: [LOAD_INFO, LOAD_INFO_SUCCESS, LOAD_INFO_FAIL],
     promise: (client) => client.get('/getReceiverInfo?cardNumber=' + values.receiver),
@@ -173,9 +172,3 @@ export function confirmButton(values) {
   };
 }
 
-// export function confirmButton(values) {
-//   return (dispatch) => {
-//     dispatch(dButton(values));
-//     dispatch(getReceiverInfo(values.receiver));
-//   };
-// }

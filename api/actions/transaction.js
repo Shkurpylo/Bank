@@ -1,50 +1,34 @@
 import mongoose from 'mongoose';
 import { Transaction, User } from '../models';
 import { getCardByNumber } from './cards';
+import util from 'util';
 
-// export function addTransaction(req) {
-//   return new Promise((resolve, reject) => {
-//     console.log('starting Transaction' + JSON.stringify(req.body.sender));
-//     console.log('req.sender: ' + req.body.sender);
-//     console.log('req.receiver: ' + req.body.receiver);
-//     const ownerId = req.session.passport.user;
+export function getTransactions(req) {
+  const userId = req.session.passport.user;
+  // const userId = req.body.id;
+  // const cardId = '58445540d6149b1284a289a1';
+  const body = req.body;
+  const queryBuilder = [];
 
-//     Promise.all([User.findById(ownerId).findOne({ 'cards._id': req.body.sender }),
-//         User.findById(ownerId).findOne({ 'cards._id': req.body.receiver }) // , (err, receiver) => {
-//       ])
-//       .then(result => {
-//         console.log('=====----->  result[0]' + JSON.stringify(result[0]));
-//         console.log('=====----->  result[1]' + JSON.stringify(result[1]));
-//         const senderCard = result[0];
-//         const receiverCard = result[1];
+  if (body.hasOwnProperty('card')) {
+    queryBuilder.push(util.format(' {$or: [{\'receiver.cardId\': \'%s\'}, {\'sender.cardId\': \'%s\'}]}', body.card, body.card));
+  }
+  if (body.hasOwnProperty('all')) {
+    queryBuilder.push(util.format('{$or: [{\'sender.userId\': \'%s\'}, {\'receiver.userId\': \'%s\'}]}', userId, userId));
+  } else if (body.hasOwnProperty('receiver')) {
+    queryBuilder.push(util.format('\'receiver.userId\': \'%s\'', userId));
+  } else if (body.hasOwnProperty('sender')) {
+    queryBuilder.push(util.format('\'sender.userId\': \'%s\'', userId));
+  }
 
-//         const transaction = new Transaction({
-//           sender: {
-//             userId: senderCard.owner,
-//             cardId: senderCard.cardId,
-//             cardNumber: senderCard.cardNumber
-//           },
-//           receiver: {
-//             userId: receiverCard.owner,
-//             cardId: receiverCard.cardId,
-//             cardNumber: receiverCard.cardNumber
-//           },
-//           amount: req.body.amount,
-//           date: new Date(),
-//         });
+  const queryCore = queryBuilder.join(', ');
 
-//         transaction.save((err, doc) => {
-//           if (err) reject(err);
-//           else resolve(doc);
-//         });
-//       }, err => reject(err));
-//   });
-// }
+  const query = util.format('{$and: [%s] }', queryCore);
 
+  console.log(query);
 
-export function getTransactions() {
   return new Promise((resolve, reject) => {
-    Transaction.find({}, (err, result) => {
+    Transaction.find( query, (err, result) => {
       if (err) {
         reject(err);
       }
@@ -108,39 +92,38 @@ export function countBalance(card) {
   });
 }
 
-export function getBalances(req) {
-  const userId = mongoose.Types.ObjectId(req.body.id);
-  // const userId = req.session.passport.user;
-  return new Promise((resolve, reject) => {
-    User.findById(userId).distinct('cards', (err, cards) => {
-      if (err) reject(err);
-      let current = Promise.resolve();
-      Promise.all(cards.map((card) => {
-          current = current.then(() => {
-              return countBalance(card._id);
-            })
-            .then((result) => {
-              let cardObj = {};
-              cardObj = card;
-              cardObj.balance = result;
-              return (cardObj);
-            });
-          return current;
-        }))
-        .then(results => resolve(results));
-    });
-  });
-}
+// export function getBalances(req) {
+//   const userId = mongoose.Types.ObjectId(req.body.id);
+//   // const userId = req.session.passport.user;
+//   return new Promise((resolve, reject) => {
+//     User.findById(userId).distinct('cards', (err, cards) => {
+//       if (err) reject(err);
+//       let current = Promise.resolve();
+//       Promise.all(cards.map((card) => {
+//         current = current.then(() => {
+//           return countBalance(card._id);
+//         })
+//         .then((result) => {
+//           let cardObj = {};
+//           cardObj = card;
+//           cardObj.balance = result;
+//           return (cardObj);
+//         });
+//         return current;
+//       }))
+//         .then(results => resolve(results));
+//     });
+//   });
+// }
 
 export function addTransaction(req) {
   return new Promise((resolve, reject) => {
     const ownerId = req.session.passport.user;
-    // const ownerId = mongoose.Types.ObjectId('583c89cee9b0ff599bfda427');
-    const senderCardId = mongoose.Types.ObjectId(req.body.sender);
+    const senderCardId = mongoose.Types.ObjectId(req.body.sender); // eslint-disable-line new-cap
     const receiverCardNumber = req.body.receiver;
     Promise.all([
       User.findById(ownerId).findOne({ 'cards._id': req.body.sender }),
-      getCardByNumber(receiverCardNumber) // , (err, receiver) => {
+      getCardByNumber(receiverCardNumber)
     ])
       .then(result => {
         const senderCard = result[0].cards.id(senderCardId);
