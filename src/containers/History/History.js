@@ -4,8 +4,18 @@ import { asyncConnect } from 'redux-async-connect';
 import Helmet from 'react-helmet';
 import { initializeWithKey } from 'redux-form';
 import * as transactionsActions from 'redux/modules/transaction';
+import { isLoaded as isLoadedCards, getCards as loadCards } from 'redux/modules/cards';
 import { isLoaded, getTransactions as loadTransactions } from 'redux/modules/transaction';
-// import { reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
+
+const hideHumber = (number) => {
+  const stringCartNumber = number.toString();
+  return stringCartNumber.slice(0, 4) + '....' + stringCartNumber.slice(-4);
+};
+
+// const coloredRows = (number) => {
+//   if(number.toString()[0] == )
+// }
 
 const dateFormat = (date) => {
   const formatingDate = new Date(date);
@@ -24,8 +34,11 @@ const dateFormat = (date) => {
 @asyncConnect([{
   deferred: true,
   promise: ({ store: { dispatch, getState } }) => {
+    if (!isLoadedCards(getState())) {
+      dispatch(loadCards());
+    }
     if (!isLoaded(getState())) {
-      return dispatch(loadTransactions());
+      (dispatch(loadTransactions()));
     }
   }
 }])
@@ -37,15 +50,29 @@ const dateFormat = (date) => {
     transactions: state.transaction.transactions,
     error: state.transaction.error,
   }), {...transactionsActions, initializeWithKey })
+
+@reduxForm({
+  form: 'transaction',
+  fields: ['cardID', 'direction', 'period'],
+})
 export default class History extends Component {
   static propTypes = {
     transactions: PropTypes.array,
     cards: PropTypes.array,
+    resetForm: PropTypes.func,
+    fields: PropTypes.object,
+    values: PropTypes.object,
+    handleSubmit: PropTypes.func,
   }
   render() {
     const styles = require('./History.scss');
     const {
-      transactions
+      fields: { cardID},
+      values,
+      transactions,
+      cards,
+      handleSubmit,
+
     } = this.props;
     return (
       <div className="container">
@@ -53,21 +80,33 @@ export default class History extends Component {
         <Helmet title="transactions"/>
         <h1>History</h1>
       </div>
+       <div className="row">
+
+        <div className="col-md-4 col-md-offset-4">
+          <label htmlFor="cardSelector">For:</label>
+          <select name="myCard" className="form-control" id="cardSelector" onChange={handleSubmit(() => (loadTransactions(values)))}>
+          <option selected>All cards</option>
+          {cards.map(card => <option name={card.name} key={card._id} value={card._id} {...cardID} >
+          {card.name + ',   ' + hideHumber(card.number) + ', balance: ' + card.balance + '$'}</option>)}
+          </select>
+        </div>
+       </div>
+
 
       <div className="row">
         <div className="col-md-8 col-md-offset-2">
           <div className="row">
           </div>
-          <div className="btn-group btn-group-justified" role="group" aria-label="...">
-            <div className="btn-group" role="group">
-              <button type="button" className="btn btn-primary">Sending</button>
-            </div>
-            <div className="btn-group" role="group">
-              <button type="button" className="btn btn-primary">All</button>
-            </div>
-            <div className="btn-group" role="group">
-              <button type="button" className="btn btn-primary">Reciving</button>
-            </div>
+          <div className="btn-group btn-group-justified" data-toggle="buttons" aria-label="...">
+             <label className="btn btn-primary active">
+              <input type="radio" name="options" id="option1" autoComplete="off"/> Sending
+            </label>
+           <label className="btn btn-primary">
+             <input type="radio" name="options" id="option2" autoComplete="off"/> All
+           </label>
+            <label className="btn btn-primary">
+              <input type="radio" name="options" id="option3" autoComplete="off"/> Radio 3
+            </label>
           </div>
         </div>
       </div>

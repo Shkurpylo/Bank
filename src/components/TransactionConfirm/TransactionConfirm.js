@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-// import { reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import * as transactionActions from 'redux/modules/transaction';
 
@@ -9,16 +8,11 @@ import * as transactionActions from 'redux/modules/transaction';
   cards: state.cards.cards,
   authUser: state.auth.user,
   transactionData: state.transaction.transactionData,
-  confirmInfo: state.transaction.confirmInfo
+  confirmInfo: state.transaction.confirmInfo,
+  loadingInfo: state.transaction.loadingInfo
 }),
   dispatch => bindActionCreators(transactionActions, dispatch)
 )
-
-// @reduxForm({
-//   form: 'transaction',
-//   fields: ['sender', 'receiver', 'amount'],
-// })
-
 
 export default class TransactionConfirm extends Component {
 
@@ -36,19 +30,16 @@ export default class TransactionConfirm extends Component {
   };
   render() {
     const {
-      // resetForm,
       confirmInfo,
       authUser,
       transactionData,
       sendingTransaction,
       loadingInfo,
-      // handleSubmit,
       newTransaction,
       cancelTransaction
     } = this.props;
 
     const styles = require('./TransactionConfirm.scss');
-
 
     return (
       <div className="col-sm-10 col-md-offset-1"
@@ -63,11 +54,9 @@ export default class TransactionConfirm extends Component {
                    <div className="row">
                      <div className="col-md-4">
                        <p>From</p>
-                       <p>{authUser.name}</p>
-                       <p>{authUser.lastName}</p>
+                       <p>{authUser.name} {authUser.lastName}</p>
                        <p>Card:</p>
                        <p>{transactionData.sender.number}</p>
-
 
                      </div>
                      <div className={styles.arrow + ' col-md-4'}>
@@ -80,8 +69,7 @@ export default class TransactionConfirm extends Component {
 
                      <div className="col-md-4">
                        <p>To</p>
-                       <p>{confirmInfo.receiverName}
-                       {confirmInfo.receiverLastname}</p>
+                       <p>{confirmInfo.receiverName} {confirmInfo.receiverLastname}</p>
                        <p>Card:</p>
                        <p>{transactionData.receiver}</p>
                      </div>
@@ -96,7 +84,7 @@ export default class TransactionConfirm extends Component {
                      </div>
                   </div>
                   <div className="modal-footer">
-                    <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" className="btn btn-default" data-dismiss="modal" onClick={()=>cancelTransaction()}>Close</button>
                     <button type="button" className="btn btn-primary" onClick={() => (newTransaction(transactionData))} >Send</button>
                   </div>
                 </div>

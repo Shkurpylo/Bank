@@ -10,25 +10,28 @@ export function getTransactions(req) {
   const body = req.body;
   const queryBuilder = [];
 
-  if (body.hasOwnProperty('card')) {
-    queryBuilder.push(util.format(' {$or: [{\'receiver.cardId\': \'%s\'}, {\'sender.cardId\': \'%s\'}]}', body.card, body.card));
+  if (body.cardID) {
+    queryBuilder.push(util.format(' {$or: [{\'receiver.cardId\': \'%s\'}, {\'sender.cardId\': \'%s\'}]}', body.cardID,
+      body.cardID));
   }
-  if (body.hasOwnProperty('all')) {
-    queryBuilder.push(util.format('{$or: [{\'sender.userId\': \'%s\'}, {\'receiver.userId\': \'%s\'}]}', userId, userId));
-  } else if (body.hasOwnProperty('receiver')) {
-    queryBuilder.push(util.format('\'receiver.userId\': \'%s\'', userId));
-  } else if (body.hasOwnProperty('sender')) {
-    queryBuilder.push(util.format('\'sender.userId\': \'%s\'', userId));
+  if (body.direction) {
+    if (body.direction === 'all') {
+      queryBuilder.push(util.format('{$or: [{\'sender.userId\': \'%s\'}, {\'receiver.userId\': \'%s\'}]}', userId,
+        userId));
+    } else if (body.direction === 'receiver') {
+      queryBuilder.push(util.format('\'receiver.userId\': \'%s\'', userId));
+    } else if (body.direction === 'sender') {
+      queryBuilder.push(util.format('\'sender.userId\': \'%s\'', userId));
+    }
   }
 
   const queryCore = queryBuilder.join(', ');
-
   const query = util.format('{$and: [%s] }', queryCore);
-
+  
   console.log(query);
 
   return new Promise((resolve, reject) => {
-    Transaction.find( query, (err, result) => {
+    Transaction.find(query, (err, result) => {
       if (err) {
         reject(err);
       }
@@ -122,9 +125,9 @@ export function addTransaction(req) {
     const senderCardId = mongoose.Types.ObjectId(req.body.sender); // eslint-disable-line new-cap
     const receiverCardNumber = req.body.receiver;
     Promise.all([
-      User.findById(ownerId).findOne({ 'cards._id': req.body.sender }),
-      getCardByNumber(receiverCardNumber)
-    ])
+        User.findById(ownerId).findOne({ 'cards._id': req.body.sender }),
+        getCardByNumber(receiverCardNumber)
+      ])
       .then(result => {
         const senderCard = result[0].cards.id(senderCardId);
         const receiverCard = result[1];

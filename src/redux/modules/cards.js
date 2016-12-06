@@ -106,6 +106,10 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export function isLoaded(globalState) {
+  if (globalState.transaction.balanceChanged === true) {
+    globalState.cards.loaded = false;
+    globalState.transaction.balanceChanged = false;
+  }
   return globalState.cards && globalState.cards.loaded;
 }
 

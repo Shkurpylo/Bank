@@ -23,7 +23,8 @@ const initialState = {
   saveError: {},
   transactionData: {},
   loadingInfo: false,
-  confirmInfo: {}
+  confirmInfo: {},
+  balanceChanged: false,
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -83,6 +84,7 @@ export default function reducer(state = initialState, action = {}) {
         loaded: false,
         showConfirmWindow: false,
         sendingTransaction: false,
+        balanceChanged: true,
         saveError: {
           ...state.saveError,
         }
@@ -122,13 +124,22 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export function isLoaded(globalState) {
+  globalState.transaction.loaded = false;
   return globalState.transactions && globalState.transaction.loaded;
 }
 
-export function getTransactions() {
+export function getTransactions(query) {
+  const queryParams = query || {};
+
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/getTransactions')
+    promise: (client) => client.post('/getTransactions', {
+      params: {
+        cardID: queryParams.hasOwnProperty('cardID') ? queryParams.cardID : null,
+        direction: queryParams.hasOwnProperty('direction') ? queryParams.direction : null,
+        period: queryParams.hasOwnProperty('period') ? queryParams.period : null
+      }
+    })
   };
 }
 
