@@ -1,56 +1,37 @@
+import mongoose from 'mongoose';
 import { Transaction, User } from '../models';
+import { getCardByNumber } from './cards';
+import util from 'util';
 
-export function addTransaction(req) {
+export function getTransactions(req) {
+  const userId = req.session.passport.user;
+  // const userId = req.body.id;
+  // const cardId = '58445540d6149b1284a289a1';
+  const body = req.body;
+  const queryBuilder = [];
+
+  if (body.cardID) {
+    queryBuilder.push(util.format(' {$or: [{\'receiver.cardId\': \'%s\'}, {\'sender.cardId\': \'%s\'}]}', body.cardID,
+      body.cardID));
+  }
+  if (body.direction) {
+    if (body.direction === 'all') {
+      queryBuilder.push(util.format('{$or: [{\'sender.userId\': \'%s\'}, {\'receiver.userId\': \'%s\'}]}', userId,
+        userId));
+    } else if (body.direction === 'receiver') {
+      queryBuilder.push(util.format('\'receiver.userId\': \'%s\'', userId));
+    } else if (body.direction === 'sender') {
+      queryBuilder.push(util.format('\'sender.userId\': \'%s\'', userId));
+    }
+  }
+
+  const queryCore = queryBuilder.join(', ');
+  const query = util.format('{$and: [%s] }', queryCore);
+
+  console.log(query);
+
   return new Promise((resolve, reject) => {
-    console.log('starting Transaction' + JSON.stringify(req.body.sender));
-    console.log('req.sender: ' + req.body.sender);
-    console.log('req.receiver: ' + req.body.receiver);
-    const ownerId = req.session.passport.user;
-
-    Promise.all([
-      User.findById(ownerId).findOne({ 'cards._id': req.body.sender }),
-      User.findById(ownerId).findOne({ 'cards._id': req.body.receiver }) // , (err, receiver) => {
-    ])
-    .then(result => {
-      console.log('=====----->  result[0]' + JSON.stringify(result[0]));
-      console.log('=====----->  result[1]' + JSON.stringify(result[1]));
-      const senderCard = result[0];
-      const receiverCard = result[1];
-
-      const transaction = new Transaction({
-        sender: {
-          userId: senderCard.owner,
-          cardId: senderCard.cardId,
-          cardNumber: senderCard.cardNumber
-        },
-        receiver: {
-          userId: receiverCard.owner,
-          cardId: receiverCard.cardId,
-          cardNumber: receiverCard.cardNumber
-        },
-        amount: req.body.amount,
-        date: new Date(),
-      });
-
-      transaction.save((err, doc) => {
-        if (err) reject(err);
-        else resolve(doc);
-      });
-    }, err => reject(err));
-  });
-}
-
-// export function getTransactions() {
-//   return new Promise((resolve, reject) => {
-//     Transaction.find({}).then(result => {
-//       resolve(result);
-//     }, err => reject(err));
-//   });
-// }
-
-export function getTransactions() {
-  return new Promise((resolve, reject) => {
-    Transaction.find({}, (err, result) => {
+    Transaction.find(query, (err, result) => {
       if (err) {
         reject(err);
       }
@@ -59,18 +40,17 @@ export function getTransactions() {
   });
 }
 
-export function getIncomingSum(receiverId) {
+function getIncomingSum(receiverId) {
+  const cardId = mongoose.Types.ObjectId(receiverId); // eslint-disable-line new-cap
   return new Promise((resolve, reject) => {
     Transaction.aggregate([{
-      $match: { receiver: receiverId }
-    },
-    {
+      $match: { 'receiver.cardId': cardId }
+    }, {
       $group: {
         _id: null,
         total: { $sum: '$amount' }
       }
-    }
-    ]).then(result => {
+    }]).then(result => {
       if (!result[0]) {
         resolve(0);
       } else {
@@ -80,23 +60,109 @@ export function getIncomingSum(receiverId) {
   });
 }
 
-export function getOutgoingSum(senderId) {
+function getOutgoingSum(senderId) {
+  const cardId = mongoose.Types.ObjectId(senderId); // eslint-disable-line new-cap
   return new Promise((resolve, reject) => {
     Transaction.aggregate([{
-      $match: { sender: senderId }
-    },
-    {
+      $match: { 'sender.cardId': cardId }
+    }, {
       $group: {
         _id: null,
         total: { $sum: '$amount' }
       }
-    }
-    ]).then(result => {
+    }]).then(result => {
       if (!result[0]) {
         resolve(0);
       } else {
         resolve(result[0].total);
       }
     }, err => reject(err));
+  });
+}
+
+export function countBalance(card) {
+  const cardId = mongoose.Types.ObjectId(card); // eslint-disable-line new-cap
+  return new Promise((resolve, reject) => {
+    Promise.all([getIncomingSum(cardId),
+        getOutgoingSum(cardId)
+      ])
+      .then(result => {
+        let balance = 0;
+        balance += result[0];
+        balance -= result[1];
+        resolve(balance);
+      }).catch(err => reject(err));
+  });
+}
+
+export function addTransaction(req) {
+  return new Promise((resolve, reject) => {
+    const ownerId = req.session.passport.user;
+    const senderCardId = mongoose.Types.ObjectId(req.body.sender); // eslint-disable-line new-cap
+    const receiverCardNumber = req.body.receiver;
+    Promise.all([
+      User.findById(ownerId).findOne({ 'cards._id': req.body.sender }),
+      getCardByNumber(receiverCardNumber)
+    ])
+      .then(result => {
+        const senderCard = result[0].cards.id(senderCardId);
+        const receiverCard = result[1];
+        const transaction = new Transaction({
+          sender: {
+            userId: senderCard.owner,
+            cardId: senderCard._id,
+            cardNumber: senderCard.number
+          },
+          receiver: {
+            userId: receiverCard.owner,
+            cardId: receiverCard._id,
+            cardNumber: receiverCard.number
+          },
+          message: req.body.message,
+          amount: req.body.amount,
+          date: new Date(),
+        });
+
+        transaction.save((err, doc) => {
+          if (err) reject(err);
+          else resolve(doc);
+        });
+      }, err => reject(err));
+  });
+}
+
+export function abstractPaymentTerminal(req) {
+  const senderId = mongoose.Types.ObjectId('58402a9a1469cf12a51fe61c'); // eslint-disable-line new-cap
+  const senderCardId = mongoose.Types.ObjectId('58402ac31469cf12a51fe61e'); // eslint-disable-line new-cap
+  const senderCardNumber = 5519971203432454;
+  return new Promise((resolve, reject) => {
+    const cardId = mongoose.Types.ObjectId(req.body.cardId); // eslint-disable-line new-cap
+    const extraMoney = req.body.amount;
+    User.findOne({ 'cards._id': cardId })
+      .then(user => {
+        const card = user.cards.id(cardId);
+        const transaction = new Transaction({
+          message: 'from abstractPaymentTerminal',
+          sender: {
+            userId: senderId,
+            cardId: senderCardId,
+            cardNumber: senderCardNumber
+          },
+          receiver: {
+            userId: card.owner,
+            cardId: card._id,
+            cardNumber: card.number
+          },
+          amount: extraMoney,
+          date: new Date(),
+        });
+        transaction.save((saveErr, result) => {
+          if (saveErr) reject(saveErr);
+          if (result) {
+            resolve('sacrifice accepted');
+          }
+        });
+      })
+      .catch(err => reject(err));
   });
 }
