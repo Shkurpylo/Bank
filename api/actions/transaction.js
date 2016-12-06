@@ -40,7 +40,7 @@ export function getTransactions(req) {
   });
 }
 
-function getIncomingSum(receiverId) {
+export function getIncomingSum(receiverId) {
   const cardId = mongoose.Types.ObjectId(receiverId); // eslint-disable-line new-cap
   return new Promise((resolve, reject) => {
     Transaction.aggregate([{
@@ -60,7 +60,7 @@ function getIncomingSum(receiverId) {
   });
 }
 
-function getOutgoingSum(senderId) {
+export function getOutgoingSum(senderId) {
   const cardId = mongoose.Types.ObjectId(senderId); // eslint-disable-line new-cap
   return new Promise((resolve, reject) => {
     Transaction.aggregate([{
