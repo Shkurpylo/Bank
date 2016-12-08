@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:3001/dist/main-14681bdde058fbe4762d.js"
+    "main": "http://localhost:3001/dist/main-fbdbfbf8c0a064b6e1f6.js"
   },
   "styles": {},
   "assets": {
@@ -81,6 +81,7 @@
     },
     "./src/containers/History/History.scss": {
       "history": "history___3XdfK",
+      "btn": "btn___3roWU",
       "pull-right": "pull-right___YHKIg",
       "col-md-4": "col-md-4___3vRUF",
       "refreshBtn": "refreshBtn___fa3kh",
@@ -90,7 +91,7 @@
       "ownerCol": "ownerCol___1yEvw",
       "buttonCol": "buttonCol___2bw5g",
       "saving": "saving___3chDx",
-      "_style": ".history___3XdfK .pull-right___YHKIg {\n  float: right !important;\n}\n\n.history___3XdfK .col-md-4___3vRUF {\n  color: #adadad;\n}\n\n.history___3XdfK .refreshBtn___fa3kh {\n  margin-left: 20px;\n}\n\n.history___3XdfK .idCol___2K95t {\n  width: 5%;\n}\n\n.history___3XdfK .colorCol___15qCI {\n  width: 20%;\n}\n\n.history___3XdfK .sprocketsCol___1tcxN {\n  width: 20%;\n  text-align: right;\n}\n\n.history___3XdfK .sprocketsCol___1tcxN input {\n  text-align: right;\n}\n\n.history___3XdfK .ownerCol___1yEvw {\n  width: 30%;\n}\n\n.history___3XdfK .buttonCol___2bw5g {\n  width: 25%;\n}\n\n.history___3XdfK .buttonCol___2bw5g .btn {\n  margin: 0 5px;\n}\n\n.history___3XdfK tr.saving___3chDx {\n  opacity: 0.8;\n}\n\n.history___3XdfK tr.saving___3chDx .btn[disabled] {\n  opacity: 1;\n}\n"
+      "_style": ".history___3XdfK .btn___3roWU {\n  display: block;\n  float: none;\n  max-width: 100%;\n  width: 100%;\n}\n\n.history___3XdfK .pull-right___YHKIg {\n  float: right !important;\n}\n\n.history___3XdfK .col-md-4___3vRUF {\n  color: #adadad;\n}\n\n.history___3XdfK .refreshBtn___fa3kh {\n  margin-left: 20px;\n}\n\n.history___3XdfK .idCol___2K95t {\n  width: 5%;\n}\n\n.history___3XdfK .colorCol___15qCI {\n  width: 20%;\n}\n\n.history___3XdfK .sprocketsCol___1tcxN {\n  width: 20%;\n  text-align: right;\n}\n\n.history___3XdfK .sprocketsCol___1tcxN input {\n  text-align: right;\n}\n\n.history___3XdfK .ownerCol___1yEvw {\n  width: 30%;\n}\n\n.history___3XdfK .buttonCol___2bw5g {\n  width: 25%;\n}\n\n.history___3XdfK .buttonCol___2bw5g .btn {\n  margin: 0 5px;\n}\n\n.history___3XdfK tr.saving___3chDx {\n  opacity: 0.8;\n}\n\n.history___3XdfK tr.saving___3chDx .btn[disabled] {\n  opacity: 1;\n}\n"
     }
   }
 }

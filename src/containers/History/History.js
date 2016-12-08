@@ -7,11 +7,24 @@ import * as transactionsActions from 'redux/modules/transaction';
 import { isLoaded as isLoadedCards, getCards as loadCards } from 'redux/modules/cards';
 import { isLoaded, getTransactions as loadTransactions } from 'redux/modules/transaction';
 import { reduxForm } from 'redux-form';
+import DatePicker from 'react-bootstrap-date-picker';
 
 const hideHumber = (number) => {
   const stringCartNumber = number.toString();
   return stringCartNumber.slice(0, 4) + '....' + stringCartNumber.slice(-4);
 };
+
+// const getDefValueAfterDate = () => {
+//   const date = new Date();
+//   const firstDay = new Date(date.getFullYear(), date.getMonth(), 0);
+//   return firstDay;
+// };
+
+// const getDefValueBeforeDate = () => {
+//   const date = new Date();
+//   const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+//   return lastDay;
+// };
 
 // const coloredRows = (number) => {
 //   if(number.toString()[0] == )
@@ -49,11 +62,12 @@ const dateFormat = (date) => {
     loading: state.cards.loading,
     transactions: state.transaction.transactions,
     error: state.transaction.error,
+    getTransactions: state.transaction.getTransactions
   }), {...transactionsActions, initializeWithKey })
 
 @reduxForm({
-  form: 'transaction',
-  fields: ['cardID', 'direction', 'period'],
+  form: 'history',
+  fields: ['cardID', 'direction', 'dateBefore', 'dateAfter'],
 })
 export default class History extends Component {
   static propTypes = {
@@ -63,15 +77,20 @@ export default class History extends Component {
     fields: PropTypes.object,
     values: PropTypes.object,
     handleSubmit: PropTypes.func,
+    getTransactions: PropTypes.func
   }
+
+
   render() {
     const styles = require('./History.scss');
     const {
-      fields: { cardID},
+      fields: { cardID, direction, dateBefore, dateAfter },
       values,
+      resetForm,
       transactions,
       cards,
       handleSubmit,
+      getTransactions
 
     } = this.props;
     return (
@@ -80,44 +99,62 @@ export default class History extends Component {
         <Helmet title="transactions"/>
         <h1>History</h1>
       </div>
-       <div className="row">
 
-        <div className="col-md-4 col-md-offset-4">
-          <label htmlFor="cardSelector">For:</label>
-          <select name="myCard" className="form-control" id="cardSelector" onChange={handleSubmit(() => (loadTransactions(values)))}>
-          <option selected>All cards</option>
-          {cards.map(card => <option name={card.name} key={card._id} value={card._id} {...cardID} >
-          {card.name + ',   ' + hideHumber(card.number) + ', balance: ' + card.balance + '$'}</option>)}
-          </select>
-        </div>
-       </div>
+      <div className="col-md-2">
+      <p>Choose direction</p>
 
-
-      <div className="row">
-        <div className="col-md-8 col-md-offset-2">
-          <div className="row">
-          </div>
-          <div className="btn-group btn-group-justified" data-toggle="buttons" aria-label="...">
-             <label className="btn btn-primary active">
-              <input type="radio" name="options" id="option1" autoComplete="off"/> Sending
-            </label>
-           <label className="btn btn-primary">
-             <input type="radio" name="options" id="option2" autoComplete="off"/> All
-           </label>
-            <label className="btn btn-primary">
-              <input type="radio" name="options" id="option3" autoComplete="off"/> Radio 3
-            </label>
+        <div className="row">
+          <div className="col-md-12">
+            <div className="row">
+            </div>
+            <div className="btn-group-vertical" data-toggle="buttons" aria-label="...">
+               <label className={direction.value === 'from' ? 'btn btn-default active' : 'btn btn-default'}>
+                <input type="radio" {...direction} value="from" name="options" id="option1" autoComplete="off"/> Sended
+              </label>
+             <label className={direction.value === 'all' ? 'btn btn-default active' : 'btn btn-default'}>
+               <input type="radio" {...direction} value="all" name="options" id="option2" autoComplete="off"/> All
+             </label>
+              <label className={direction.value === 'to' ? 'btn btn-default active' : 'btn btn-default'}>
+                <input type="radio" {...direction} value="to" name="options" id="option3" autoComplete="off"/> Received
+              </label>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="row">
-        <div className="col-md-6 col-md-offset-3">
-        <h3>date picker</h3>
+
+        <div className="row">
+          <div className="col-md-12">
+          <p>Select period</p>
+            <div>
+              <DatePicker {...dateBefore} defaultValue="2016-12-01T12:00:00.000Z" dateForm="MM/DD/YYYY" id="dateBefore-datepicker" />
+            </div>
+            <div style={{marginTop: 15}}>
+              <DatePicker {...dateAfter} defaultValue="2016-12-30T12:00:00.000Z" dateForm="MM/DD/YYYY" id="example-dateAfter" />
+            </div>
+          </div>
         </div>
+
+        <div className="row">
+          <div className="col-md-12">
+            <label htmlFor="cardSelector">For:</label>
+            <select name="myCard" className="form-control" id="cardSelector" {...cardID}>
+            <option selected>All cards</option>
+            {cards.map(card => <option name={card.name} key={card._id} value={card._id} >
+            {card.name + ',   ' + hideHumber(card.number) + ', balance: ' + card.balance + '$'}</option>)}
+            </select>
+          </div>
+        </div>
+
+        <button className="btn btn-success" onClick={handleSubmit(() => (getTransactions(values)))}>
+           <i className="fa fa-paper-plane"/> Submit
+         </button>
+         <button className="btn btn-warning" onClick={resetForm} style={{marginLeft: 15}}>
+           <i className="fa fa-undo"/> Reset
+         </button>
       </div>
-      <div className="row">
-      <div className="col-md-10 col-md-offset-1 panel panel-default">
-    {transactions && transactions.length &&
+
+
+      <div className="col-md-10 panel panel-default">
+        {transactions && transactions.length &&
             <table className="table table-hover">
               <thead>
               <tr>
@@ -142,8 +179,6 @@ export default class History extends Component {
               </tbody>
             </table> }
           </div>
-          </div>
-
        </div>
 
     );

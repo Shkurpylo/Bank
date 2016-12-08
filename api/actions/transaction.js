@@ -1,33 +1,55 @@
 import mongoose from 'mongoose';
 import { Transaction, User } from '../models';
 import { getCardByNumber } from './cards';
-import util from 'util';
 
 export function getTransactions(req) {
-  const userId = req.session.passport.user;
-  // const userId = req.body.id;
-  // const cardId = '58445540d6149b1284a289a1';
+  const userId = req.session.passport.user._id;
+  // const userId = mongoose.Types.ObjectId(req.body.id);
+  // const cardId = '58402ac31469cf12a51fe61e';
+
+  console.log(JSON.stringify(userId));
+
   const body = req.body;
-  const queryBuilder = [];
-
-  if (body.cardID) {
-    queryBuilder.push(util.format(' {$or: [{\'receiver.cardId\': \'%s\'}, {\'sender.cardId\': \'%s\'}]}', body.cardID,
-      body.cardID));
-  }
-  if (body.direction) {
-    if (body.direction === 'all') {
-      queryBuilder.push(util.format('{$or: [{\'sender.userId\': \'%s\'}, {\'receiver.userId\': \'%s\'}]}', userId,
-        userId));
-    } else if (body.direction === 'receiver') {
-      queryBuilder.push(util.format('\'receiver.userId\': \'%s\'', userId));
-    } else if (body.direction === 'sender') {
-      queryBuilder.push(util.format('\'sender.userId\': \'%s\'', userId));
-    }
+  console.log(req.body);
+  let before = {};
+  let after = {};
+  if (body.before) {
+    before = new Date(body.dateBefore);
+  } else {
+    const date = new Date();
+    before = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   }
 
-  const queryCore = queryBuilder.join(', ');
-  const query = util.format('{$and: [%s] }', queryCore);
-  
+  if (body.after) {
+    after = new Date(body.dateAfter);
+  } else {
+    const date = new Date();
+    after = new Date(date.getFullYear(), date.getMonth(), 0);
+  }
+
+
+  const query = {
+    '$and': [{
+        '$or': [
+          body.direction === 'all' ? ({ 'sender.userId': userId }, { 'receiver.userId': userId }) :
+          body.direction !== 'to' ? { 'sender.userId': userId } : { 'receiver.userId': userId },
+        ]
+      },
+      {
+        '$or': [
+          body.cardID ? { 'sender.cardId': body.cardID } : {},
+          body.cardID ? { 'receiver.cardId': body.cardID } : {},
+        ]
+      },
+      {
+        date: {
+          $gte: before,
+          $lt: after
+        }
+      }
+    ]
+  };
+
   console.log(query);
 
   return new Promise((resolve, reject) => {
@@ -124,8 +146,7 @@ export function addTransaction(req) {
     const ownerId = req.session.passport.user;
     const senderCardId = mongoose.Types.ObjectId(req.body.sender); // eslint-disable-line new-cap
     const receiverCardNumber = req.body.receiver;
-    Promise.all([
-        User.findById(ownerId).findOne({ 'cards._id': req.body.sender }),
+    Promise.all([User.findById(ownerId).findOne({ 'cards._id': req.body.sender }),
         getCardByNumber(receiverCardNumber)
       ])
       .then(result => {

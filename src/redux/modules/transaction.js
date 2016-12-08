@@ -77,7 +77,8 @@ export default function reducer(state = initialState, action = {}) {
     case SAVE:
       return {
         sendingTransaction: true,
-        ...state}; // 'saving' flag handled by redux-form
+        ...state
+      }; // 'saving' flag handled by redux-form
     case SAVE_SUCCESS:
       return {
         ...state,
@@ -128,16 +129,17 @@ export function isLoaded(globalState) {
   return globalState.transactions && globalState.transaction.loaded;
 }
 
-export function getTransactions(query) {
-  const queryParams = query || {};
-
+export function getTransactions(history) {
+  console.log(history);
+  const queryParams = history || {};
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     promise: (client) => client.post('/getTransactions', {
-      params: {
-        cardID: queryParams.hasOwnProperty('cardID') ? queryParams.cardID : null,
-        direction: queryParams.hasOwnProperty('direction') ? queryParams.direction : null,
-        period: queryParams.hasOwnProperty('period') ? queryParams.period : null
+      data: {
+        cardID: queryParams.cardID || null,
+        direction: queryParams.direction || 'all',
+        dateBefore: queryParams.dateBefore || null,
+        dateAfter: queryParams.dateAfter || null
       }
     })
   };
@@ -182,4 +184,3 @@ export function confirmButton(values) {
     }
   };
 }
-
