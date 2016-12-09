@@ -21,5 +21,6 @@ export function getCVV() {
 
 export function getExplDate() {
   const now = new Date;
-  return (new Date(now.getMonth(), now.getFullYear() + 3));
+  now.setFullYear(now.getFullYear() + 3);
+  return now;
 }

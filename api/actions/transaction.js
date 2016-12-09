@@ -3,26 +3,17 @@ import { Transaction, User } from '../models';
 import { getCardByNumber } from './cards';
 
 export function getTransactions(req) {
+  console.log('PASSPORT IN TRANSACTION' + JSON.stringify(req.session.passport));
   const userId = req.session.passport.user._id;
-  // const userId = mongoose.Types.ObjectId(req.body.id);
-  // const cardId = '58402ac31469cf12a51fe61e';
-
-  console.log(JSON.stringify(userId));
-
   const body = req.body;
-  console.log(req.body);
-  // const before = body.dateBefore;
-  // const after = body.dateAfter;
-
   let before = {};
   let after = {};
+  console.log(JSON.stringify(body));
+
   if (body.dateAfter) {
-    console.log('date before' + body.dateAfter);
     after = new Date(body.dateAfter);
     after.setHours(24);
-    console.log('date after' + after);
   } else {
-    console.log('in else');
     const date = new Date();
     after = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   }
@@ -36,11 +27,10 @@ export function getTransactions(req) {
     before = new Date(date.getFullYear(), date.getMonth(), 0);
   }
 
-
   const query = {
     '$and': [{
       '$or': [
-        body.direction === 'all' ? ({ 'sender.userId': userId }, { 'receiver.userId': userId }) : // eslint-disable-line no-nested-ternary
+        body.direction === 'all' ? ({ 'receiver.userId': userId }, { 'sender.userId': userId }) : // eslint-disable-line no-nested-ternary
         body.direction !== 'to' ? { 'sender.userId': userId } : { 'receiver.userId': userId },
       ]
     },
@@ -59,10 +49,7 @@ export function getTransactions(req) {
     ]
   };
 
-
-
-  console.log('query:' + query);
-  console.log('dates: ' + JSON.stringify(query));
+  console.log('QUERY: ' + JSON.stringify(query));
 
   return new Promise((resolve, reject) => {
     Transaction.find(query, (err, result) => {
@@ -155,7 +142,7 @@ export function countBalance(card) {
 
 export function addTransaction(req) {
   return new Promise((resolve, reject) => {
-    const ownerId = req.session.passport.user;
+    const ownerId = req.session.passport.user._id;
     const senderCardId = mongoose.Types.ObjectId(req.body.sender); // eslint-disable-line new-cap
     const receiverCardNumber = req.body.receiver;
     Promise.all([User.findById(ownerId).findOne({ 'cards._id': req.body.sender }),

@@ -37,6 +37,7 @@ const isVisa = (number) => {
     showCardView: state.cards.showCardView,
     addButton: state.cards.addButton,
     createCard: state.cards.createCard,
+    // editing: state.cards.editing
   }), {...cardsActions, initializeWithKey })
 export default class Cards extends Component {
   static propTypes = {
@@ -51,7 +52,8 @@ export default class Cards extends Component {
     initializeWithKey: PropTypes.func.isRequired,
     loading: PropTypes.bool,
     error: PropTypes.string,
-    user: PropTypes.object
+    user: PropTypes.object,
+    // submitting: PropTypes.bool.isRequired,
   };
 
   render() {
@@ -62,7 +64,8 @@ export default class Cards extends Component {
       viewButton,
       showAddForm,
       showCardView,
-      loading
+      loading,
+      // submitting
     } = this.props;
     return (
       <div className={styles.cards + ' container'}>

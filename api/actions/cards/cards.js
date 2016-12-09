@@ -34,7 +34,7 @@ function getUserById(id) {
 
 export function getCards(req) {
   // const userId = mongoose.Types.ObjectId(req.body.id);
-  const userId = req.session.passport.user;
+  const userId = req.session.passport.user._id;
   return new Promise((resolve, reject) => {
     User.findById(userId).distinct('cards', (err, cards) => {
       if (err) reject(err);
@@ -107,7 +107,7 @@ function createCard(ownerId, cardName, cardType) {
 export function addNewCard(req) { // post
   return new Promise((resolve, reject) => {
     // const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1'); // temporary
-    const ownerId = req.session.passport.user;
+    const ownerId = req.session.passport.user._id;
     console.log('starting addNewCard');
     Promise.all([getUserById(ownerId),
         createCard(ownerId, req.body.cardName, req.body.cardType)
@@ -127,14 +127,15 @@ export function addNewCard(req) { // post
 
 export function updateCard(req) { // post
   return new Promise((resolve, reject) => {
-    const ownerId = req.session.passport.user;
+    const ownerId = req.session.passport.user._id;
+    console.log('in updateCard: ' + JSON.stringify(req.body) + ' user: ' + ownerId);
     // const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1'); // temporary
     User.update({
       '_id': ownerId,
-      'cards._id': req.body._id
+      'cards._id': req.body.id
     }, {
       '$set': {
-        'cards.name': req.body.cardName
+        'cards.$.name': req.body.name
       }
     }, (err, ok) => {
       if (err) {

@@ -11,9 +11,18 @@ const SAVE_FAIL = '/cards/SAVE_FAIL';
 const SHOW_ADD_FORM = '/cards/SHOW_ADD_FORM';
 const VIEW_CARD = '/cards/VIEW_CARD';
 
+const EDIT_START = '/cards/EDIT_START';
+const EDIT_STOP = '/cards/EDIT_STOP';
+
+const UPDATE = '/cards/UPDATE';
+const UPDATE_SUCCESS = '/cards/UPDATE_SUCCESS';
+const UPDATE_FAIL = '/cards/UPDATE_FAIL';
+
 const initialState = {
   cards: [],
   card: {},
+  editing: {},
+  updating: false,
   loaded: false,
   review: false,
   saveError: {},
@@ -97,7 +106,41 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         saveError: {
           ...state.saveError,
-          [action.id]: action.error
+          // [action.id]: action.error
+        }
+      } : state;
+    case EDIT_START:
+      return {
+        ...state,
+        editing: {
+          ...state.editing,
+          [action.id]: true
+        }
+      };
+    case EDIT_STOP:
+      return {
+        ...state,
+        editing: {
+          ...state.editing,
+          [action.id]: false
+        }
+      };
+    case UPDATE:
+      return {
+        updating: true,
+        ...state
+      }; // 'saving' flag handled by redux-form
+    case UPDATE_SUCCESS:
+      return {
+        updating: false,
+        ...state
+      };
+    case UPDATE_FAIL:
+      return typeof action.error === 'string' ? {
+        ...state,
+        updating: false,
+        saveError: {
+          ...state.saveError,
         }
       } : state;
     default:
@@ -151,6 +194,20 @@ export function reviewCard(cardId) {
   };
 }
 
+
+export function updateCard(card, id) {
+  console.log(JSON.stringify(card) + ' id: ' + id );
+  return {
+    types: [UPDATE, UPDATE_SUCCESS, UPDATE_FAIL],
+    promise: (client) => client.post('/updateCard', {
+      data: {
+        name: card.name,
+        id: id
+      }
+    })
+  };
+}
+
 export function addButton(showAddForm) {
   return {
     type: SHOW_ADD_FORM,
@@ -163,4 +220,12 @@ export function viewButton(card) {
     type: VIEW_CARD,
     card,
   };
+}
+
+export function editStart(id) {
+  return { type: EDIT_START, id };
+}
+
+export function editStop(id) {
+  return { type: EDIT_STOP, id };
 }

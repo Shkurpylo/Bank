@@ -71,6 +71,7 @@ const dateFormat = (date) => {
     transactions: state.transaction.transactions,
     error: state.transaction.error,
     getTransactions: state.transaction.getTransactions,
+    user: state.auth.user
   }), {...transactionsActions, initializeWithKey })
 
 @reduxForm({
@@ -102,6 +103,7 @@ export default class History extends Component {
       handleSubmit,
       getTransactions,
       loading,
+      user
     } = this.props;
     return (
       <div>
@@ -187,7 +189,7 @@ export default class History extends Component {
                         <td className={styles.message} >{transaction.message}</td>
                         <td className={styles.senderCard} >{transaction.sender.cardNumber}</td>
                         <td className={styles.receiverCard} >{transaction.receiver.cardNumber}</td>
-                        <td className={ styles.green } >{transaction.amount}</td>
+                        <td className={ transaction.receiver.userId === user._id ? styles.green : styles.red } >{transaction.amount}</td>
                       </tr>)
                   }
               </tbody>
