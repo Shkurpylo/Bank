@@ -14,6 +14,14 @@ const hideHumber = (number) => {
   return stringCartNumber.slice(0, 4) + '....' + stringCartNumber.slice(-4);
 };
 
+
+// const coloredTable = (id) => {
+//   if (id === user._id) {
+//     return true;
+//   }
+//   return false;
+// };
+
 // const getDefValueAfterDate = () => {
 //   const date = new Date();
 //   const firstDay = new Date(date.getFullYear(), date.getMonth(), 0);
@@ -62,7 +70,7 @@ const dateFormat = (date) => {
     loading: state.cards.loading,
     transactions: state.transaction.transactions,
     error: state.transaction.error,
-    getTransactions: state.transaction.getTransactions
+    getTransactions: state.transaction.getTransactions,
   }), {...transactionsActions, initializeWithKey })
 
 @reduxForm({
@@ -77,7 +85,9 @@ export default class History extends Component {
     fields: PropTypes.object,
     values: PropTypes.object,
     handleSubmit: PropTypes.func,
-    getTransactions: PropTypes.func
+    getTransactions: PropTypes.func,
+    loading: PropTypes.bool,
+    user: PropTypes.object
   }
 
 
@@ -90,15 +100,16 @@ export default class History extends Component {
       transactions,
       cards,
       handleSubmit,
-      getTransactions
-
+      getTransactions,
+      loading,
     } = this.props;
     return (
-      <div className="container">
       <div>
-        <Helmet title="transactions"/>
-        <h1>History</h1>
-      </div>
+      <div className="container">
+        <div>
+          <Helmet title="traansactions"/>
+          <h1>History</h1>
+        </div>
 
       <div className="col-md-2">
       <p>Choose direction</p>
@@ -125,10 +136,10 @@ export default class History extends Component {
           <div className="col-md-12">
           <p>Select period</p>
             <div>
-              <DatePicker {...dateBefore} defaultValue="2016-12-01T12:00:00.000Z" dateForm="MM/DD/YYYY" id="dateBefore-datepicker" />
+              <DatePicker {...dateBefore} dateForm="MM/DD/YYYY" id="dateBefore-datepicker" />
             </div>
             <div style={{marginTop: 15}}>
-              <DatePicker {...dateAfter} defaultValue="2016-12-30T12:00:00.000Z" dateForm="MM/DD/YYYY" id="example-dateAfter" />
+              <DatePicker {...dateAfter} dateForm="MM/DD/YYYY" id="example-dateAfter" />
             </div>
           </div>
         </div>
@@ -137,49 +148,57 @@ export default class History extends Component {
           <div className="col-md-12">
             <label htmlFor="cardSelector">For:</label>
             <select name="myCard" className="form-control" id="cardSelector" {...cardID}>
-            <option selected>All cards</option>
+            <option>All cards</option>
             {cards.map(card => <option name={card.name} key={card._id} value={card._id} >
             {card.name + ',   ' + hideHumber(card.number) + ', balance: ' + card.balance + '$'}</option>)}
             </select>
           </div>
         </div>
 
-        <button className="btn btn-success" onClick={handleSubmit(() => (getTransactions(values)))}>
-           <i className="fa fa-paper-plane"/> Submit
-         </button>
-         <button className="btn btn-warning" onClick={resetForm} style={{marginLeft: 15}}>
-           <i className="fa fa-undo"/> Reset
-         </button>
+        <div className="row">
+          <button className="btn btn-success" onClick={handleSubmit(() => (getTransactions(values)))}>
+             <i className="fa fa-paper-plane"/> Submit
+           </button>
+           <button className="btn btn-warning" onClick={resetForm} style={{marginLeft: 15}}>
+             <i className="fa fa-undo"/> Reset
+           </button>
+        </div>
       </div>
 
-
-      <div className="col-md-10 panel panel-default">
-        {transactions && transactions.length &&
-            <table className="table table-hover">
-              <thead>
-              <tr>
-                <th className={styles.colorCol}>Date</th>
-                <th className={styles.colorCol}>Massage</th>
-                <th className={styles.sprocketsCol}>Sender</th>
-                <th className={styles.ownerCol}>Receiver</th>
-                <th className={styles.buttonCol}>Amount</th>
-              </tr>
-              </thead>
-              <tbody>
-              {
-                transactions.map((transaction) =>
-                  <tr key={transaction._id}>
-                    <td className={styles.buttonCol} >{dateFormat(transaction.date)}</td>
-                    <td className={styles.colorCol} >{transaction.message}</td>
-                    <td className={styles.idCol} >{transaction.sender.cardNumber}</td>
-                    <td className={styles.colorCol} >{transaction.receiver.cardNumber}</td>
-                    <td className={styles.ownerCol} >{transaction.amount}</td>
-                  </tr>)
-              }
+          <div className="col-md-10 panel panel-default">
+            {loading && <div className={styles.loadingDiv}>
+            <i className={styles.loading + ' fa fa-refresh fa-spin fa-3x fa-fw'}></i> </div> ||
+              transactions && transactions.length &&
+                <table className="table table-hover">
+                  <thead>
+                  <tr>
+                    <th className={styles.colorCol}>Date</th>
+                    <th className={styles.colorCol}>Massage</th>
+                    <th className={styles.sprocketsCol}>Sender</th>
+                    <th className={styles.ownerCol}>Receiver</th>
+                    <th className={styles.buttonCol}>Amount</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {
+                    transactions.map((transaction) =>
+                      <tr key={transaction._id}>
+                        <td className={styles.date} >{dateFormat(transaction.date)}</td>
+                        <td className={styles.message} >{transaction.message}</td>
+                        <td className={styles.senderCard} >{transaction.sender.cardNumber}</td>
+                        <td className={styles.receiverCard} >{transaction.receiver.cardNumber}</td>
+                        <td className={ styles.green } >{transaction.amount}</td>
+                      </tr>)
+                  }
               </tbody>
-            </table> }
+            </table>
+            || <div className={styles.loadingDiv}>
+              <i className={styles.nomatch}>No result for your selectors</i> </div>
+            }
           </div>
+
        </div>
+     </div>
 
     );
   }

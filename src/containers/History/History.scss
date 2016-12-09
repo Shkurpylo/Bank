@@ -46,3 +46,27 @@ width: 100%;
     }
   }
 }
+
+.loading{
+  color: grey;
+  margin-top: 10%;
+}
+
+.nomatch{
+  color: grey;
+  font-size: 200%;
+}
+
+.loadingDiv{
+  box-sizing: border-box;
+  text-align: center;
+  margin: 100px;
+}
+.green{
+  color: lightgreen;
+  font-weight: bold;
+}
+.red{
+  color: red;
+  font-weight: bold;
+}

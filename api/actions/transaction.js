@@ -11,31 +11,40 @@ export function getTransactions(req) {
 
   const body = req.body;
   console.log(req.body);
+  // const before = body.dateBefore;
+  // const after = body.dateAfter;
+
   let before = {};
   let after = {};
-  if (body.before) {
-    before = new Date(body.dateBefore);
+  if (body.dateAfter) {
+    console.log('date before' + body.dateAfter);
+    after = new Date(body.dateAfter);
+    after.setHours(24);
+    console.log('date after' + after);
   } else {
+    console.log('in else');
     const date = new Date();
-    before = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    after = new Date(date.getFullYear(), date.getMonth() + 1, 0);
   }
 
-  if (body.after) {
-    after = new Date(body.dateAfter);
+  if (body.dateBefore) {
+    before = new Date(body.dateBefore);
+    before.setHours(0);
   } else {
+    console.log('in else');
     const date = new Date();
-    after = new Date(date.getFullYear(), date.getMonth(), 0);
+    before = new Date(date.getFullYear(), date.getMonth(), 0);
   }
 
 
   const query = {
     '$and': [{
-        '$or': [
-          body.direction === 'all' ? ({ 'sender.userId': userId }, { 'receiver.userId': userId }) :
-          body.direction !== 'to' ? { 'sender.userId': userId } : { 'receiver.userId': userId },
-        ]
-      },
-      {
+      '$or': [
+        body.direction === 'all' ? ({ 'sender.userId': userId }, { 'receiver.userId': userId }) : // eslint-disable-line no-nested-ternary
+        body.direction !== 'to' ? { 'sender.userId': userId } : { 'receiver.userId': userId },
+      ]
+    },
+      body.cardID === 'All cards' ? {} : {
         '$or': [
           body.cardID ? { 'sender.cardId': body.cardID } : {},
           body.cardID ? { 'receiver.cardId': body.cardID } : {},
@@ -50,7 +59,10 @@ export function getTransactions(req) {
     ]
   };
 
-  console.log(query);
+
+
+  console.log('query:' + query);
+  console.log('dates: ' + JSON.stringify(query));
 
   return new Promise((resolve, reject) => {
     Transaction.find(query, (err, result) => {
