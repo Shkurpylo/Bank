@@ -10,6 +10,20 @@ export function getTransactions(req) {
   let after = {};
   console.log(JSON.stringify(body));
 
+  let direction = {};
+
+  switch (body.direction) {
+    case 'to':
+      direction = [{ 'receiver.userId': userId }];
+      break;
+    case 'from':
+      direction = [{ 'sender.userId': userId }];
+      break;
+    default:
+      direction = [{ 'receiver.userId': userId }, { 'sender.userId': userId }];
+      break;
+  }
+
   if (body.dateAfter) {
     after = new Date(body.dateAfter);
     after.setHours(24);
@@ -29,10 +43,7 @@ export function getTransactions(req) {
 
   const query = {
     '$and': [{
-      '$or': [
-        body.direction === 'all' ? ({ 'receiver.userId': userId }, { 'sender.userId': userId }) : // eslint-disable-line no-nested-ternary
-        body.direction !== 'to' ? { 'sender.userId': userId } : { 'receiver.userId': userId },
-      ]
+      '$or': direction
     },
       body.cardID === 'All cards' ? {} : {
         '$or': [
@@ -145,6 +156,7 @@ export function addTransaction(req) {
     const ownerId = req.session.passport.user._id;
     const senderCardId = mongoose.Types.ObjectId(req.body.sender); // eslint-disable-line new-cap
     const receiverCardNumber = req.body.receiver;
+    console.log('FIND MESSAGE HERE: ' + JSON.stringify(req.body));
     Promise.all([User.findById(ownerId).findOne({ 'cards._id': req.body.sender }),
         getCardByNumber(receiverCardNumber)
       ])
