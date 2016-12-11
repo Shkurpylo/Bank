@@ -33,6 +33,7 @@ function getUserById(id) {
 // }
 
 export function getCards(req) {
+  console.log('IN GET CARDS!!!');
   // const userId = mongoose.Types.ObjectId(req.body.id);
   const userId = req.session.passport.user._id;
   return new Promise((resolve, reject) => {
