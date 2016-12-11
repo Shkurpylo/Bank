@@ -16,9 +16,14 @@ export default function createNewUser(req) {
         if (errLogin) {
           console.log(errLogin);
         }
-        return user;
+        // return user;
       });
-      resolve(result);
+      console.log(JSON.stringify(result));
+      const newUser = {
+        name: result.firstName,
+        _id: result._id
+      };
+      resolve({'user': newUser});
     });
     console.log('addUser end');
   });

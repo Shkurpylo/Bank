@@ -4,7 +4,8 @@ import {connect} from 'react-redux';
 import {reduxForm} from 'redux-form';
 import {bindActionCreators} from 'redux';
 import signupValidation from './signupValidation';
-import * as signUpActions from 'redux/modules/signUp';
+import * as signUpActions from 'redux/modules/auth';
+
 
 function asyncValidate(data, dispatch, {isValidEmail}) {
   if (!data.email) {
@@ -32,10 +33,6 @@ export default class SignUpForm extends Component {
     values: PropTypes.object,
     createNewUser: PropTypes.func
   };
-
-  // handleSubmit = (values) => {
-  //   createNewUser(values);
-  // };
 
   render() {
     const {

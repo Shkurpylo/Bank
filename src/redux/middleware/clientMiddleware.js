@@ -15,10 +15,6 @@ export default function clientMiddleware(client) {
 
       const [REQUEST, SUCCESS, FAILURE] = types;
 
-      // if (REQUEST === 'bank/auth/LOGOUT') {
-      //   getState.next = undefined;
-      // }
-
       next({...rest, type: REQUEST });
 
       const actionPromise = promise(client);

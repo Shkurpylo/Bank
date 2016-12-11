@@ -8,8 +8,18 @@ const LOGOUT = 'bank/auth/LOGOUT';
 const LOGOUT_SUCCESS = 'bank/auth/LOGOUT_SUCCESS';
 const LOGOUT_FAIL = 'bank/auth/LOGOUT_FAIL';
 
+const IS_VALID = '/signUp/IS_VALID';
+const IS_VALID_SUCCESS = '/signUp/IS_VALID_SUCCESS';
+const IS_VALID_FAIL = '/signUp/IS_VALID_FAIL';
+const SIGNUP = '/signUp/SAVE';
+const SIGNUP_SUCCESS = '/signUp/SAVE_SUCCESS';
+const SIGNUP_FAIL = '/signUp/SAVE_FAIL';
+
+
 const initialState = {
-  loaded: false
+  loaded: false,
+  saveError: null,
+  data: []
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -68,6 +78,36 @@ export default function reducer(state = initialState, action = {}) {
         loggingOut: false,
         logoutError: action.error
       };
+    case IS_VALID:
+      return state; // 'saving' flag handled by redux-form
+    case IS_VALID_SUCCESS:
+      return {
+        ...state,
+        data: state.data,
+        saveError: null,
+      };
+    case IS_VALID_FAIL:
+      return typeof action.error === 'string' ? {
+        ...state,
+        saveError: action.error
+      } : state;
+
+    case SIGNUP:
+      return state; // 'saving' flag handled by redux-form
+    case SIGNUP_SUCCESS:
+      // data = [...state.data];
+      return {
+        ...state,
+        user: action.result.user,
+      };
+    case SIGNUP_FAIL:
+      return typeof action.error === 'string' ? {
+        ...state,
+        saveError: {
+          ...state.saveError,
+          [action.id]: action.error
+        }
+      } : state;
     default:
       return state;
   }
@@ -100,5 +140,23 @@ export function logout() {
   return {
     types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL],
     promise: (client) => client.get('/logout')
+  };
+}
+
+export function isValidEmail(data) {
+  return {
+    types: [IS_VALID, IS_VALID_SUCCESS, IS_VALID_FAIL],
+    promise: (client) => client.post('/signUp/isValid', {
+      data
+    })
+  };
+}
+
+export function createNewUser(user) {
+  return {
+    types: [SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL],
+    promise: (client) => client.post('/signUp/createNewUser', {
+      data: user
+    })
   };
 }
