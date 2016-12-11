@@ -182,7 +182,8 @@ export function confirmButton(values) {
     result: {
       sender: JSON.parse(values.sender),
       receiver: values.receiver,
-      amount: values.amount
+      amount: values.amount,
+      message: values.mess
     }
   };
 }

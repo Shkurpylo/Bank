@@ -21,7 +21,7 @@ const hideHumber = (number) => {
 
 @reduxForm({
   form: 'transaction',
-  fields: ['sender', 'receiver', 'amount'],
+  fields: ['sender', 'receiver', 'mess', 'amount' ],
 })
 export default class TransactionForm extends Component {
   static propTypes = {
@@ -36,7 +36,7 @@ export default class TransactionForm extends Component {
   };
   render() {
     const {
-      fields: { sender, receiver, amount },
+      fields: { sender, receiver, mess, amount },
       resetForm,
       cards,
       values,
@@ -68,6 +68,12 @@ export default class TransactionForm extends Component {
                    <label htmlFor="cardName">Input card number of recipient:</label>
                    <input type="text" className="col-xs-3 form-control"
                    id="cardName" placeholder="0000 0000 0000 0000" {...receiver} />
+                   </div>
+
+                   <div className="input-group">
+                   <label htmlFor="message">Input message for transaction:</label>
+                   <input type="text" className="form-control"
+                   id="message" placeholder="purpose of payment" {...mess} />
                    </div>
 
                    <label htmlFor="amount">Amount:</label>
