@@ -2,12 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
 import Helmet from 'react-helmet';
+import DatePicker from 'react-bootstrap-date-picker';
 import { initializeWithKey } from 'redux-form';
 import * as transactionsActions from 'redux/modules/transaction';
 import { isLoaded as isLoadedCards, getCards as loadCards } from 'redux/modules/cards';
 import { isLoaded, getTransactions as loadTransactions } from 'redux/modules/transaction';
 import { reduxForm } from 'redux-form';
-import DatePicker from 'react-bootstrap-date-picker';
 
 const hideHumber = (number) => {
   const stringCartNumber = number.toString();
@@ -17,30 +17,6 @@ const hideHumber = (number) => {
 const fixedAmount = (amount) => {
   return amount.toFixed(2);
 };
-
-
-// const coloredTable = (id) => {
-//   if (id === user._id) {
-//     return true;
-//   }
-//   return false;
-// };
-
-// const getDefValueAfterDate = () => {
-//   const date = new Date();
-//   const firstDay = new Date(date.getFullYear(), date.getMonth(), 0);
-//   return firstDay;
-// };
-
-// const getDefValueBeforeDate = () => {
-//   const date = new Date();
-//   const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-//   return lastDay;
-// };
-
-// const coloredRows = (number) => {
-//   if(number.toString()[0] == )
-// }
 
 const dateFormat = (date) => {
   const formatingDate = new Date(date);
@@ -63,7 +39,7 @@ const dateFormat = (date) => {
       dispatch(loadCards());
     }
     if (!isLoaded(getState())) {
-      (dispatch(loadTransactions()));
+      dispatch(loadTransactions());
     }
   }
 }])
@@ -72,6 +48,7 @@ const dateFormat = (date) => {
     cards: state.cards.cards,
     loaded: state.cards.loaded,
     loading: state.cards.loading,
+    loadingTransactions: state.transaction.loadingTransactions,
     transactions: state.transaction.transactions,
     error: state.transaction.error,
     getTransactions: state.transaction.getTransactions,
@@ -92,6 +69,7 @@ export default class History extends Component {
     handleSubmit: PropTypes.func,
     getTransactions: PropTypes.func,
     loading: PropTypes.bool,
+    loadingTransactions: PropTypes.bool,
     user: PropTypes.object
   }
 
@@ -105,7 +83,7 @@ export default class History extends Component {
       cards,
       handleSubmit,
       getTransactions,
-      loading,
+      loadingTransactions,
       user
     } = this.props;
     return (
@@ -145,10 +123,10 @@ export default class History extends Component {
           <p></p>
           <p><b>Select period:</b></p>
             <div>
-              <DatePicker {...dateBefore} dateForm="MM/DD/YYYY" id="dateBefore-datepicker" />
+              <DatePicker {...dateBefore} placeholder="MM/DD/YYYY" dateForm="MM/DD/YYYY" id="dateBefore-datepicker" />
             </div>
             <div style={{marginTop: 15}}>
-              <DatePicker {...dateAfter} dateForm="MM/DD/YYYY" id="example-dateAfter" />
+              <DatePicker {...dateAfter} placeholder="MM/DD/YYYY" dateForm="MM/DD/YYYY" id="example-dateAfter" />
             </div>
           </div>
         </div>
@@ -175,9 +153,9 @@ export default class History extends Component {
       </div>
 
           <div className={styles.history + ' col-md-10 panel panel-default'}>
-            {loading && <div className={styles.loadingDiv}>
-            <i className={styles.loading + ' fa fa-refresh fa-spin fa-3x fa-fw'}></i> </div> ||
-              transactions && transactions.length &&
+            {loadingTransactions && <div className={styles.loadingDiv}>
+            <i className={styles.loading + ' fa fa-refresh fa-spin fa-3x fa-fw'}></i> </div>
+             || transactions && transactions.length &&
                 <table className="table table-striped">
                   <thead>
                   <tr>

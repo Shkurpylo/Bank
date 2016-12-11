@@ -1,18 +1,18 @@
-const LOAD = '/transaction/LOAD';
-const LOAD_SUCCESS = '/transaction/LOAD_SUCCESS';
-const LOAD_FAIL = '/transaction/LOAD_FAIL';
-const DELETE = '/transaction/DELETE';
-const DELETE_SUCCESS = '/transaction/DELETE_SUCCESS';
-const DELETE_FAIL = '/transaction/DELETE_FAIL';
-const SAVE = '/transaction/SAVE';
-const SAVE_SUCCESS = '/transaction/SAVE_SUCCESS';
-const SAVE_FAIL = '/transaction/SAVE_FAIL';
-const LOAD_INFO = '/transaction/LOAD_INFO';
-const LOAD_INFO_SUCCESS = '/transaction/LOAD_INFO_SUCCESS';
-const LOAD_INFO_FAIL = '/transaction/LOAD_INFO_FAIL';
+const TRANSACTION_LOAD = '/transaction/LOAD';
+const TRANSACTION_LOAD_SUCCESS = '/transaction/LOAD_SUCCESS';
+const TRANSACTION_LOAD_FAIL = '/transaction/LOAD_FAIL';
+const TRANSACTION_DELETE = '/transaction/DELETE';
+const TRANSACTION_DELETE_SUCCESS = '/transaction/DELETE_SUCCESS';
+const TRANSACTION_DELETE_FAIL = '/transaction/DELETE_FAIL';
+const TRANSACTION_SAVE = '/transaction/SAVE';
+const TRANSACTION_SAVE_SUCCESS = '/transaction/SAVE_SUCCESS';
+const TRANSACTION_SAVE_FAIL = '/transaction/SAVE_FAIL';
+const TRANSACTION_LOAD_INFO = '/transaction/LOAD_INFO';
+const TRANSACTION_LOAD_INFO_SUCCESS = '/transaction/LOAD_INFO_SUCCESS';
+const TRANSACTION_LOAD_INFO_FAIL = '/transaction/LOAD_INFO_FAIL';
 
-const SHOW_CONFIRM_WINDOW = '/transaction/SHOW_CONFIRM_WINDOW';
-const TOGGLE_FORMS = '/transaction/TOGGLE_FORMS';
+const TRANSACTION_SHOW_CONFIRM_WINDOW = '/transaction/SHOW_CONFIRM_WINDOW';
+const TRANSACTION_TOGGLE_FORMS = '/transaction/TOGGLE_FORMS';
 
 const initialState = {
   sendingTransaction: false,
@@ -20,6 +20,7 @@ const initialState = {
   showConfirmWindow: false,
   showOwnForm: false,
   loaded: false,
+  loadingTransactions: false,
   saveError: {},
   transactionData: {},
   loadingInfo: false,
@@ -29,57 +30,57 @@ const initialState = {
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case SHOW_CONFIRM_WINDOW:
+    case TRANSACTION_SHOW_CONFIRM_WINDOW:
       return {
         ...state,
         showConfirmWindow: false,
       };
-    case TOGGLE_FORMS:
+    case TRANSACTION_TOGGLE_FORMS:
       return {
         ...state,
         showOwnForm: action.showOwnForm,
       };
-    case LOAD:
+    case TRANSACTION_LOAD:
       return {
         ...state,
-        loading: true,
+        loadingTransactions: true,
         loaded: false
       };
-    case LOAD_SUCCESS:
+    case TRANSACTION_LOAD_SUCCESS:
       return {
         ...state,
-        loading: false,
+        loadingTransactions: false,
         loaded: true,
         transactions: action.result,
         error: null
       };
-    case LOAD_FAIL:
+    case TRANSACTION_LOAD_FAIL:
       return {
         ...state,
-        loading: false,
+        loadingTransactions: false,
         loaded: false,
         transactions: null,
         error: action.error
       };
-    case DELETE:
+    case TRANSACTION_DELETE:
       return {
         ...state,
       };
-    case DELETE_SUCCESS:
+    case TRANSACTION_DELETE_SUCCESS:
       return {
         ...state,
         loaded: false,
       };
-    case DELETE_FAIL:
+    case TRANSACTION_DELETE_FAIL:
       return {
         ...state,
       };
-    case SAVE:
+    case TRANSACTION_SAVE:
       return {
         sendingTransaction: true,
         ...state
       }; // 'saving' flag handled by redux-form
-    case SAVE_SUCCESS:
+    case TRANSACTION_SAVE_SUCCESS:
       return {
         ...state,
         loaded: false,
@@ -90,7 +91,7 @@ export default function reducer(state = initialState, action = {}) {
           ...state.saveError,
         }
       };
-    case SAVE_FAIL:
+    case TRANSACTION_SAVE_FAIL:
       return typeof action.error === 'string' ? {
         ...state,
         saveError: {
@@ -98,20 +99,20 @@ export default function reducer(state = initialState, action = {}) {
           // [action.id]: action.error
         }
       } : state;
-    case LOAD_INFO:
+    case TRANSACTION_LOAD_INFO:
       return {
         ...state,
         loadingInfo: true,
         showConfirmWindow: true,
         transactionData: action.result
       };
-    case LOAD_INFO_SUCCESS:
+    case TRANSACTION_LOAD_INFO_SUCCESS:
       return {
         ...state,
         loadingInfo: false,
         confirmInfo: action.result
       };
-    case LOAD_INFO_FAIL:
+    case TRANSACTION_LOAD_INFO_FAIL:
       return {
         ...state,
         loadingInfo: false,
@@ -133,7 +134,7 @@ export function getTransactions(history) {
   console.log(history);
   const queryParams = history || {};
   return {
-    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
+    types: [TRANSACTION_LOAD, TRANSACTION_LOAD_SUCCESS, TRANSACTION_LOAD_FAIL],
     promise: (client) => client.post('/getTransactions', {
       data: {
         cardID: queryParams.cardID || null,
@@ -148,12 +149,13 @@ export function getTransactions(history) {
 export function newTransaction(transaction) {
   console.log('transaction data:' + JSON.stringify(transaction));
   return {
-    types: [SAVE, SAVE_SUCCESS, SAVE_FAIL],
+    types: [TRANSACTION_SAVE, TRANSACTION_SAVE_SUCCESS, TRANSACTION_SAVE_FAIL],
     promise: (client) => client.post('/addTransaction', {
       data: {
         receiver: transaction.receiver,
         sender: transaction.sender._id,
-        amount: transaction.amount
+        message: transaction.message,
+        amount: transaction.amount,
       }
     }),
   };
@@ -161,21 +163,21 @@ export function newTransaction(transaction) {
 
 export function switchForms(showOwnForm) {
   return {
-    type: TOGGLE_FORMS,
+    type: TRANSACTION_TOGGLE_FORMS,
     showOwnForm
   };
 }
 
 export function cancelTransaction() {
   return {
-    type: SHOW_CONFIRM_WINDOW,
+    type: TRANSACTION_SHOW_CONFIRM_WINDOW,
   };
 }
 
 export function confirmButton(values) {
   console.log('HERE IS SENDER+++>>> ' + JSON.stringify(values));
   return {
-    types: [LOAD_INFO, LOAD_INFO_SUCCESS, LOAD_INFO_FAIL],
+    types: [TRANSACTION_LOAD_INFO, TRANSACTION_LOAD_INFO_SUCCESS, TRANSACTION_LOAD_INFO_FAIL],
     promise: (client) => client.get('/getReceiverInfo?cardNumber=' + values.receiver),
     result: {
       sender: JSON.parse(values.sender),

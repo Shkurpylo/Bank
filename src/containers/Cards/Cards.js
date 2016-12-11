@@ -89,8 +89,8 @@ export default class Cards extends Component {
           <div className="col-md-6 panel panel-default">
             {
               loading && <div className={styles.loadingDiv}>
-            <i className={styles.loading + ' fa fa-refresh fa-spin fa-3x fa-fw'}></i> </div> ||
-              cards && cards.length &&
+            <i className={styles.loading + ' fa fa-refresh fa-spin fa-3x fa-fw'}></i> </div>
+             || cards && cards.length &&
             <table className="table table-hover ">
               <thead>
               <tr>
