@@ -11,7 +11,11 @@ import DatePicker from 'react-bootstrap-date-picker';
 
 const hideHumber = (number) => {
   const stringCartNumber = number.toString();
-  return stringCartNumber.slice(0, 4) + '....' + stringCartNumber.slice(-4);
+  return stringCartNumber.slice(0, 4) + '........' + stringCartNumber.slice(-4);
+};
+
+const fixedAmount = (amount) => {
+  return amount.toFixed(2);
 };
 
 
@@ -97,7 +101,6 @@ export default class History extends Component {
     const {
       fields: { cardID, direction, dateBefore, dateAfter },
       values,
-      resetForm,
       transactions,
       cards,
       handleSubmit,
@@ -109,12 +112,12 @@ export default class History extends Component {
       <div>
       <div className="container">
         <div>
-          <Helmet title="traansactions"/>
-          <h1>History</h1>
+          <Helmet title="History"/>
+          <h1 className={styles.title}>History</h1>
         </div>
-
       <div className="col-md-2">
-      <p>Choose direction</p>
+
+      <p><b>Choose direction:</b></p>
 
         <div className="row">
           <div className="col-md-12">
@@ -122,13 +125,16 @@ export default class History extends Component {
             </div>
             <div className="btn-group-vertical" data-toggle="buttons" aria-label="...">
                <label className={direction.value === 'from' ? 'btn btn-default active' : 'btn btn-default'}>
-                <input type="radio" {...direction} value="from" name="options" id="option1" autoComplete="off"/> Sended
+                <input type="radio" {...direction} value="from" name="options" id="option1" autoComplete="off"/>
+                 Sended transactions
               </label>
              <label className={direction.value === 'all' ? 'btn btn-default active' : 'btn btn-default'}>
-               <input type="radio" {...direction} value="all" name="options" id="option2" autoComplete="off"/> All
+               <input type="radio" {...direction} value="all" name="options" id="option2" autoComplete="off"/>
+                All transactions
              </label>
               <label className={direction.value === 'to' ? 'btn btn-default active' : 'btn btn-default'}>
-                <input type="radio" {...direction} value="to" name="options" id="option3" autoComplete="off"/> Received
+                <input type="radio" {...direction} value="to" name="options" id="option3" autoComplete="off"/>
+                 Received transactions
               </label>
             </div>
           </div>
@@ -136,7 +142,8 @@ export default class History extends Component {
 
         <div className="row">
           <div className="col-md-12">
-          <p>Select period</p>
+          <p></p>
+          <p><b>Select period:</b></p>
             <div>
               <DatePicker {...dateBefore} dateForm="MM/DD/YYYY" id="dateBefore-datepicker" />
             </div>
@@ -148,6 +155,7 @@ export default class History extends Component {
 
         <div className="row">
           <div className="col-md-12">
+            <p></p>
             <label htmlFor="cardSelector">For:</label>
             <select name="myCard" className="form-control" id="cardSelector" {...cardID}>
             <option>All cards</option>
@@ -156,40 +164,43 @@ export default class History extends Component {
             </select>
           </div>
         </div>
+        <p></p>
+        <p> Transactions found: <b>{transactions.length}</b></p>
 
         <div className="row">
-          <button className="btn btn-success" onClick={handleSubmit(() => (getTransactions(values)))}>
-             <i className="fa fa-paper-plane"/> Submit
-           </button>
-           <button className="btn btn-warning" onClick={resetForm} style={{marginLeft: 15}}>
-             <i className="fa fa-undo"/> Reset
+          <button className="btn btn-success btn-lg" style={{marginLeft: 20, marginTop: 5}} onClick={handleSubmit(() => (getTransactions(values)))}>
+             <i className="fa fa-filter"/> Apply filters
            </button>
         </div>
       </div>
 
-          <div className="col-md-10 panel panel-default">
+          <div className={styles.history + ' col-md-10 panel panel-default'}>
             {loading && <div className={styles.loadingDiv}>
             <i className={styles.loading + ' fa fa-refresh fa-spin fa-3x fa-fw'}></i> </div> ||
               transactions && transactions.length &&
-                <table className="table table-hover">
+                <table className="table table-striped">
                   <thead>
                   <tr>
-                    <th className={styles.colorCol}>Date</th>
-                    <th className={styles.colorCol}>Massage</th>
-                    <th className={styles.sprocketsCol}>Sender</th>
-                    <th className={styles.ownerCol}>Receiver</th>
-                    <th className={styles.buttonCol}>Amount</th>
+                    <th className={styles.calendarIco}></th>
+                    <th className={styles.dateCol}>Date</th>
+                    <th className={styles.messageCol}>Massage</th>
+                    <th className={styles.senderCol}>Sender</th>
+                    <th className={styles.arrow}> </th>
+                    <th className={styles.receiverCol}>Receiver</th>
+                    <th className={styles.amountCol}>Amount</th>
                   </tr>
                   </thead>
                   <tbody>
                   {
                     transactions.map((transaction) =>
                       <tr key={transaction._id}>
+                        <td className={styles.calendarIco}><i className="fa fa-calendar" aria-hidden="true"></i></td>
                         <td className={styles.date} >{dateFormat(transaction.date)}</td>
                         <td className={styles.message} >{transaction.message}</td>
-                        <td className={styles.senderCard} >{transaction.sender.cardNumber}</td>
-                        <td className={styles.receiverCard} >{transaction.receiver.cardNumber}</td>
-                        <td className={ transaction.receiver.userId === user._id ? styles.green : styles.red } >{transaction.amount}</td>
+                        <td className={styles.senderCard} >{hideHumber(transaction.sender.cardNumber)}</td>
+                        <td className={styles.arrow} ><i className="fa fa-arrow-right" aria-hidden="true"></i></td>
+                        <td className={styles.receiverCard} >{hideHumber(transaction.receiver.cardNumber)}</td>
+                        <td className={ transaction.receiver.userId === user._id ? styles.green : styles.red } >{fixedAmount(transaction.amount)} $</td>
                       </tr>)
                   }
               </tbody>

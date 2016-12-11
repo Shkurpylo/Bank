@@ -1,72 +1,104 @@
+.title {
+    font-size: 3em;
+    color: grey;
+    font-weight: bold;
+}
 .history {
-
-.btn {
-display: block;
-float: none;
-max-width: 100%;
-width: 100%;
-}
-  .pull-right {
-    float: right !important;
-  }
-  .col-md-4 {
-    color: #adadad;
-  }
-  .refreshBtn {
-    margin-left: 20px;
-  }
-  .idCol {
-    width: 5%;
-  }
-  .colorCol {
-    width: 20%;
-  }
-  .sprocketsCol {
-    width: 20%;
-    text-align: right;
-    input {
-      text-align: right;
+    table {
+        width: 100%;
     }
-  }
-  .ownerCol {
-    width: 30%;
-  }
-  .buttonCol {
-    width: 25%;
-    :global(.btn) {
-      margin: 0 5px;
+    thead,
+    tbody,
+    tr,
+    td,
+    th {
+        display: block;
     }
-  }
-  tr.saving {
-    opacity: 0.8;
-    :global(.btn) {
-      &[disabled] {
-        opacity: 1;
-      }
+    tr:after {
+        content: ' ';
+        display: block;
+        visibility: hidden;
+        clear: both;
     }
-  }
-}
-
-.loading{
-  color: grey;
-  margin-top: 10%;
-}
-
-.nomatch{
-  color: grey;
-  font-size: 200%;
-}
-
-.loadingDiv{
-  box-sizing: border-box;
-  text-align: center;
-  margin: 100px;
-}
-.green{
-  color: lightgreen;
-  font-weight: bold;
-}
-.red{
-  color: red;
-  font-weight: bold;
+    thead th {
+        height: 30px;
+        /*text-align: left;*/
+    }
+    tbody {
+        height: 395px;
+        overflow-y: auto;
+    }
+    thead {
+        /* fallback */
+    }
+    tbody td,
+    thead th {
+        width: 19.2%;
+        float: left;
+    }
+    .nomatch {
+        color: grey;
+        font-size: 200%;
+    }
+    .loadingDiv {
+        box-sizing: border-box;
+        text-align: center;
+        margin: 100px;
+    }
+    .calendarIco {
+        text-align: center;
+        vertical-align: middle;
+        width: 3%;
+    }
+    .dateCol {
+        width: 20%;
+        // float: left;
+    }
+    .date {
+        width: 20%;
+        // float: left;
+    }
+    .message {
+        text-align: center;
+        vertical-align: middle;
+        width: 32%;
+    }
+    .messageCol {
+        width: 32%;
+    }
+    .senderCol {
+        width: 13%;
+    }
+    .senderCard {
+        width: 13%;
+    }
+    .arrow {
+        text-align: center;
+        vertical-align: middle;
+        width: 4%;
+    }
+    .receiverCol {
+        width: 13%;
+    }
+    .receiverCard {
+        width: 13%;
+    }
+    .amountCol {
+        width: 15%;
+        // float: left;
+    }
+    .green {
+        text-align: right;
+        vertical-align: middle;
+        width: 15%;
+        color: #00802b;
+        font-weight: bold;
+    }
+    .red {
+        text-align: right;
+        vertical-align: middle;
+        width: 15%;
+        color: #cc0000;
+        font-weight: bold;
+    }
 }
