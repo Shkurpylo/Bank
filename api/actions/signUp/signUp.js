@@ -3,10 +3,11 @@ import { User } from '../../models';
 export default function createNewUser(req) {
   console.log('addUser' + JSON.stringify(req.body));
   return new Promise((resolve, reject) => {
+    const lowCaseEmail = req.body.email.toLowerCase();
     const user = new User({
       firstName: req.body.name,
       lastName: req.body.lastName,
-      email: req.body.email,
+      email: lowCaseEmail,
       password: req.body.pass,
       cards: []
     });
