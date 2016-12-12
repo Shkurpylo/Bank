@@ -205,7 +205,10 @@ export function createCard(card) {
   return {
     types: [SAVE, SAVE_SUCCESS, SAVE_FAIL],
     promise: (client) => client.post('/addNewCard', {
-      data: card
+      data: {
+        cardName: card.cardName,
+        cardType: card.cardType || 'Mastercard'
+      }
     })
   };
 }

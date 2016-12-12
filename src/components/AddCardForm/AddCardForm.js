@@ -3,8 +3,6 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as cardsActions from 'redux/modules/cards';
-// import { createCard } from 'redux/modules/cards';
-// import { getCards as loadCards } from 'redux/modules/cards';
 
 @connect((state) => ({
   saveError: state.cards.saveError
@@ -23,8 +21,6 @@ export default class AddCardForm extends Component {
     resetForm: PropTypes.func,
     createCard: PropTypes.func,
     values: PropTypes.object,
-    // submitting: PropTypes.bool,
-    // formKey: PropTypes.string,
     saveError: PropTypes.object,
     getCards: PropTypes.func
   };
