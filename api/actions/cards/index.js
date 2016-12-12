@@ -1,12 +1,11 @@
-// import * as cards from './cards';
 export {
   getCardByNumber,
   getCards,
   addNewCard,
   updateCard,
   deleteCard,
+  getCardById,
   getReceiverInfo
 }
 from './cards';
 
-// export default cards;

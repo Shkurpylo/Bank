@@ -1,6 +1,11 @@
-const LOAD = '/cards/LOAD';
-const LOAD_SUCCESS = '/cards/LOAD_SUCCESS';
-const LOAD_FAIL = '/cards/LOAD_FAIL';
+const CARDS_LOAD = '/cards/CARDS_LOAD';
+const CARDS_LOAD_SUCCESS = '/cards/CARDS_LOAD_SUCCESS';
+const CARDS_LOAD_FAIL = '/cards/CARDS_LOAD_FAIL';
+
+const LOAD_CARD = '/cards/LOAD_CARD';
+const LOAD_CARD_SUCCESS = '/cards/LOAD_CARD_SUCCESS';
+const LOAD_CARD_FAIL = '/cards/LOAD_CARD_FAIL';
+
 const DELETE = '/cards/DELETE';
 const DELETE_SUCCESS = '/cards/DELETE_SUCCESS';
 const DELETE_FAIL = '/cards/DELETE_FAIL';
@@ -20,10 +25,10 @@ const UPDATE_FAIL = '/cards/UPDATE_FAIL';
 
 const initialState = {
   cards: [],
-  card: {},
+  cardForView: {},
   editing: {},
   updating: false,
-  loaded: false,
+  loadedCards: false,
   review: false,
   saveError: {},
   showAddForm: false,
@@ -45,26 +50,52 @@ export default function reducer(state = initialState, action = {}) {
         showCardView: true,
         showAddForm: false
       };
-    case LOAD:
+    case CARDS_LOAD:
       return {
         ...state,
-        loading: true,
-        loaded: false
+        loadingCardsList: true,
+        loadedCards: false
       };
-    case LOAD_SUCCESS:
+    case CARDS_LOAD_SUCCESS:
       return {
         ...state,
-        loading: false,
-        loaded: true,
+        loadingCardsList: false,
+        loadedCards: true,
         cards: action.result,
         error: null
       };
-    case LOAD_FAIL:
+    case CARDS_LOAD_FAIL:
       return {
         ...state,
-        loading: false,
-        loaded: false,
+        loadingCardsList: false,
+        loadedCards: false,
         cards: null,
+        error: action.error
+      };
+
+    case LOAD_CARD:
+      return {
+        ...state,
+        // showCardView: true,
+        // showAddForm: false,
+        loadingCard: true,
+      };
+    case LOAD_CARD_SUCCESS:
+      return {
+        ...state,
+        showCardView: true,
+        showAddForm: false,
+        loadingCard: false,
+        cardForView: action.result,
+        error: null
+      };
+    case LOAD_CARD_FAIL:
+      return {
+        ...state,
+        showCardView: false,
+        showAddForm: false,
+        loadingCard: false,
+        cardForView: null,
         error: action.error
       };
     case DELETE:
@@ -79,7 +110,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         showCardView: false,
-        loaded: false,
+        loadedCards: false,
         editing: {
           ...state.review,
           [action.id]: false,
@@ -99,7 +130,7 @@ export default function reducer(state = initialState, action = {}) {
     case SAVE_SUCCESS:
       return {
         ...state,
-        loaded: false,
+        loadedCards: false,
       };
     case SAVE_FAIL:
       return typeof action.error === 'string' ? {
@@ -150,22 +181,22 @@ export default function reducer(state = initialState, action = {}) {
 
 export function isLoaded(globalState) {
   if (globalState.transaction.balanceChanged === true) {
-    globalState.cards.loaded = false;
+    globalState.cards.loadedCards = false;
     globalState.transaction.balanceChanged = false;
   }
-  return globalState.cards && globalState.cards.loaded;
+  return globalState.cards && globalState.cards.loadedCards;
 }
 
 export function getCards() {
   return {
-    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
+    types: [CARDS_LOAD, CARDS_LOAD_SUCCESS, CARDS_LOAD_FAIL],
     promise: (client) => client.get('/getCards/')
   };
 }
 
 export function getCardByNumber(number) {
   return {
-    types: [LOAD],
+    types: [CARDS_LOAD],
     promise: (client) => client.get('/getCardByNumber?num=' + number)
   };
 }
@@ -187,16 +218,17 @@ export function deleteCard(cardId) {
   };
 }
 
-export function reviewCard(cardId) {
+export function getCard(cardId) {
+  console.log('card id is: ' + cardId);
   return {
-    types: [LOAD],
-    promise: (client) => client.get('/cards/getCard/' + cardId)
+    types: [LOAD_CARD, LOAD_CARD_SUCCESS, LOAD_CARD_FAIL],
+    promise: (client) => client.get('/getCardById?id=' + cardId)
   };
 }
 
 
 export function updateCard(card, id) {
-  console.log(JSON.stringify(card) + ' id: ' + id );
+  console.log(JSON.stringify(card) + ' id: ' + id);
   return {
     types: [UPDATE, UPDATE_SUCCESS, UPDATE_FAIL],
     promise: (client) => client.post('/updateCard', {
@@ -215,12 +247,12 @@ export function addButton(showAddForm) {
   };
 }
 
-export function viewButton(card) {
-  return {
-    type: VIEW_CARD,
-    card,
-  };
-}
+// export function viewButton(cardId) {
+//   return {
+//     type: VIEW_CARD,
+//     promise: (client) => client.get('/cards/getCardById?id=' + cardId)
+//   };
+// }
 
 export function editStart(id) {
   return { type: EDIT_START, id };

@@ -24,3 +24,8 @@ export function getExplDate() {
   now.setFullYear(now.getFullYear() + 3);
   return now;
 }
+
+export function hideHumber(number) {
+  const stringCartNumber = number.toString();
+  return stringCartNumber.slice(0, 4) + '........' + stringCartNumber.slice(-4);
+}

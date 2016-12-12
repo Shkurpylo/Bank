@@ -1,19 +1,20 @@
 // import mongoose from 'mongoose';
 import { User, Card } from '../../models';
-import { numberGenerator, getPin, getCVV, getExplDate } from './cardsHelpers';
+import { numberGenerator, getPin, getCVV, getExplDate, hideHumber } from './cardsHelpers';
 import { countBalance } from '../transaction';
+import { getUserById } from '../user';
 
 
-function getUserById(id) {
-  return new Promise((resolve, reject) => {
-    User.findById(id, (err, user) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(user);
-    });
-  });
-}
+// function getUserById(id) {
+//   return new Promise((resolve, reject) => {
+//     User.findById(id, (err, user) => {
+//       if (err) {
+//         reject(err);
+//       }
+//       resolve(user);
+//     });
+//   });
+// }
 
 // export function getCards(req) { // get
 //   // const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
@@ -46,15 +47,48 @@ export function getCards(req) {
               return countBalance(card._id);
             })
             .then((result) => {
-              let cardObj = {};
-              cardObj = card;
-              cardObj.balance = result.toFixed(2);
+              const cardObj = {
+                balance: result.toFixed(2),
+                number: hideHumber(card.number),
+                _id: card._id,
+                name: card.name
+              };
+              // let cardObj = {};
+              // cardObj = card;
+              // cardObj.balance = result.toFixed(2);
               return (cardObj);
             });
           return current;
         }))
         .then(results => resolve(results));
     });
+  });
+}
+
+export function getCardById(req) { // get
+  const userId = req.session.passport.user._id;
+  return new Promise((resolve, reject) => {
+    console.log('in getCardById');
+    Promise.all([User.findById(userId),
+        countBalance(req.query.id)
+      ])
+      .then(results => {
+        console.log(results[1]);
+        const card = results[0].cards.id(req.query.id);
+        const cardObj = {
+          balance: results[1].toFixed(2),
+          active: card.active,
+          explDate: card.explDate,
+          cvv: card.cvv,
+          number: card.number,
+          _id: card._id,
+          name: card.name
+        };
+        card.balance = results[1].toFixed(2);
+        console.log(cardObj);
+        resolve(cardObj);
+      })
+      .catch(err => reject(err));
   });
 }
 

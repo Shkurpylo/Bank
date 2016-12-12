@@ -7,10 +7,10 @@ import { isLoaded, getCards as loadCards } from 'redux/modules/cards';
 import * as cardsActions from 'redux/modules/cards';
 import { AddCardForm, CardView } from 'components';
 
-const hideHumber = (number) => {
-  const stringCartNumber = number.toString();
-  return stringCartNumber.slice(0, 4) + '........' + stringCartNumber.slice(-4);
-};
+// const hideHumber = (number) => {
+//   const stringCartNumber = number.toString();
+//   return stringCartNumber.slice(0, 4) + '........' + stringCartNumber.slice(-4);
+// };
 
 const isVisa = (number) => {
   const firstDigit = (number + '')[0];
@@ -31,8 +31,8 @@ const isVisa = (number) => {
     cards: state.cards.cards,
     review: state.cards.review,
     error: state.cards.error,
-    loaded: state.cards.loaded,
-    loading: state.cards.loading,
+    // loadedCards: state.cards.loadedCards,
+    loadingCardsList: state.cards.loadingCardsList,
     showAddForm: state.cards.showAddForm,
     showCardView: state.cards.showCardView,
     addButton: state.cards.addButton,
@@ -48,9 +48,9 @@ export default class Cards extends Component {
     showCardView: PropTypes.bool,
     createCard: PropTypes.func,
     addButton: PropTypes.func,
-    viewButton: PropTypes.func,
+    getCard: PropTypes.func,
     initializeWithKey: PropTypes.func.isRequired,
-    loading: PropTypes.bool,
+    loadingCardsList: PropTypes.bool,
     error: PropTypes.string,
     user: PropTypes.object,
     // submitting: PropTypes.bool.isRequired,
@@ -61,18 +61,18 @@ export default class Cards extends Component {
     const {
       cards,
       addButton,
-      viewButton,
+      getCard,
       showAddForm,
       showCardView,
-      loading,
+      loadingCardsList,
       // submitting
     } = this.props;
     return (
-      <div className={styles.cards + ' container'}>
-      <div className ="row">
-      <div className={styles.title + ' col-md-2'}>
+      <div className={'container'}>
         <Helmet title="Cards"/>
-        <h1 className={styles}>My Cards</h1>
+      <div className ="row">
+      <div className={styles.titleh + ' col-md-2'}>
+        <h1 >My Cards</h1>
       </div>
       <div className="col-md-4">
           <button className=
@@ -88,7 +88,7 @@ export default class Cards extends Component {
         <div className="row">
           <div className="col-md-6 panel panel-default">
             {
-              loading && <div className={styles.loadingDiv}>
+              loadingCardsList && <div className={styles.loadingDiv}>
             <i className={styles.loading + ' fa fa-refresh fa-spin fa-3x fa-fw'}></i> </div>
              || cards && cards.length &&
             <table className="table table-hover ">
@@ -108,11 +108,11 @@ export default class Cards extends Component {
                     <td className={styles.idCol} ><i classID="cardIcons" className=
                     {isVisa(card.number) ? 'fa fa-cc-visa fa-2x' : 'fa fa-cc-mastercard fa-2x' }></i></td>
                     <td className={styles.colorCol} >{card.name}</td>
-                    <td className={styles.ownerCol} >{hideHumber(card.number)}</td>
+                    <td className={styles.ownerCol} >{card.number}</td>
                     <td className={styles.ownerCol} >{card.balance + '$'}</td>
                     <td className={styles.buttonCol} >
-                      <button key={card.id} className="btn btn-info btn-sm"
-                              onClick={() => {viewButton(card);}}>
+                      <button key={card._id} className="btn btn-info btn-sm"
+                              onClick={() => {getCard(card._id);}}>
                         <i className="fa fa-credit-card"/> select
                       </button>
                     </td>
@@ -130,7 +130,7 @@ export default class Cards extends Component {
             <AddCardForm />}
 
             { showCardView &&
-            <CardView />}
+            <CardView getCard={() => this.getCard().bind(this)}/>}
 
           </div>
         </div>

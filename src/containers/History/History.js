@@ -138,7 +138,7 @@ export default class History extends Component {
             <select name="myCard" className="form-control" id="cardSelector" {...cardID}>
             <option>All cards</option>
             {cards.map(card => <option name={card.name} key={card._id} value={card._id} >
-            {card.name + ',   ' + hideHumber(card.number) + ', balance: ' + card.balance + '$'}</option>)}
+            {card.name + ',   ' + card.number + ', balance: ' + card.balance + '$'}</option>)}
             </select>
           </div>
         </div>

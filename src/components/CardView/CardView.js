@@ -22,11 +22,11 @@ const numberFormat = (number) => {
 };
 
 @connect((state) => ({
-  card: state.cards.card,
+  cardForView: state.cards.cardForView,
   deleteCard: state.cards.deleteCard,
   editing: state.cards.editing,
   saveError: state.cards.saveError,
-  updateCard: state.cards.updateCard
+  updateCard: state.cards.updateCard,
 }),
   dispatch => bindActionCreators(cardsActions, dispatch)
 )
@@ -37,7 +37,8 @@ const numberFormat = (number) => {
 })
 export default class CardView extends Component {
   static propTypes = {
-    card: PropTypes.object.isRequired,
+    // card: PropTypes.object.isRequired,
+    getCard: PropTypes.func.isRequired,
     deleteCard: PropTypes.func,
     getCards: PropTypes.func,
     editStart: PropTypes.func.isRequired,
@@ -50,24 +51,26 @@ export default class CardView extends Component {
     editing: PropTypes.object,
     saveError: PropTypes.object,
     values: PropTypes.object.isRequired,
-    updateCard: PropTypes.func
+    updateCard: PropTypes.func,
+    cardForView: PropTypes.object
   };
 
   render() {
     const {
       fields: { name },
+      getCard,
       editStop,
       invalid,
       pristine,
-      card,
+      cardForView,
       submitting,
       deleteCard,
       getCards,
       editing,
       updateCard,
-      saveError: {
-        [card._id]: saveError
-      },
+      // saveError: {
+      //   [card._id]: saveError
+      // },
       values
     } = this.props;
 
@@ -81,13 +84,15 @@ export default class CardView extends Component {
     };
     const handleUpdate = (newValue, cardId) => {
       return updateCard(newValue, cardId)
-      .then(result => {
-        console.log('in handleSubmit: ' + values.name);
-        if (result && typeof result.error === 'object') {
-          return Promise.reject(result.error);
-        }
-      })
-      .then(getCards());
+        .then(result => {
+          console.log('in handleSubmit: ' + values.name);
+          if (result && typeof result.error === 'object') {
+            return Promise.reject(result.error);
+          }
+        })
+        .then(getCards())
+        .then(getCard(cardForView._id))
+        .then(editStop(String(cardForView._id)));
     };
 
     const styles = require('./CardView.scss');
@@ -95,54 +100,55 @@ export default class CardView extends Component {
 
       <div className={styles.cardView + ' col-md-12'}>
         {
-          editing[card._id]
+          editing[cardForView._id]
           ?
-          <div formKey={card.name}>
+          <div formKey={cardForView.name}>
             <div className="col-md-6">
               <input type="text"
-                key={String(card._id)}
-                value={card.name}
+                onBlur={() => editStop(String(cardForView._id))}
+                key={String(cardForView._id)}
+                value={cardForView.name}
                 className="form-control"
                 {...name}/>
             </div>
 
             <button
               className="btn btn-default"
-              onClick={() => editStop(String(card._id))}
+              onClick={() => editStop(String(cardForView._id))}
               disabled={submitting}>
               <i className="fa fa-ban"/>
                  Cancel
             </button>
               <button
                 className="btn btn-success"
-                onClick={() => handleUpdate(values, card._id)}
+                onClick={() => handleUpdate(values, cardForView._id)}
                 disabled={pristine || invalid || submitting}>
                 <i className={'fa ' + (submitting ? 'fa-cog fa-spin' : 'fa-cloud')}/> Save
               </button>
               <div className="row">
               {name.error && name.touched && <div className="text-danger">{name.error}</div>}
-              {saveError && <div className="text-danger">{saveError}</div>}
+
               </div>
             </div>
             :
           <div className={styles.cardName}>
-            {card.name}
-          <button className="btn btn-link" onClick={handleEdit(card)}
+            {cardForView.name}
+          <button className="btn btn-link" onClick={handleEdit(cardForView)}
           >Change Name</button>
           </div>
           }
 
          <div className={styles.bgimg}>
            <p> </p>
-           <div className={styles.cardNumber}>{numberFormat(card.number)}</div>
-           <div className={styles.explDate + ' col-md-5'}>{dateFormat(card.explDate)}</div>
-           <div className={styles.cvv}> {card.cvv} </div>
+           <div className={styles.cardNumber}>{numberFormat(cardForView.number)}</div>
+           <div className={styles.explDate + ' col-md-5'}>{dateFormat(cardForView.explDate)}</div>
+           <div className={styles.cvv}> {cardForView.cvv} </div>
            <div className={styles.balance}>
-             Balance: {card.balance + '$'}
+             Balance: {cardForView.balance + '$'}
            </div>
            <div className={styles.delButton}>
             <button className="btn btn-danger"
-              onClick={() => handleDelete(card._id)}>
+              onClick={() => handleDelete(cardForView._id)}>
               <i className="fa fa-trash" aria-hidden="true">
               </i> Delete Card</button>
           </div>
