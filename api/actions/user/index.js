@@ -1,1 +1,1 @@
-export * as userActions from './user';
+export {getUserById, getUserByEmail} from './user';

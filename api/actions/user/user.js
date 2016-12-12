@@ -1,6 +1,5 @@
 import { User } from '../../models';
 
-
 export function getUserById(id) {
   return new Promise((resolve, reject) => {
     User.findById(id, (err, user) => {
