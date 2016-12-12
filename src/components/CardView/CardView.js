@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { reduxForm } from 'redux-form';
+import renameValidation from './renameValidation';
 import * as cardsActions from 'redux/modules/cards';
 
 const dateFormat = (date) => {
@@ -32,7 +33,7 @@ const numberFormat = (number) => {
 @reduxForm({
   form: 'card',
   fields: ['name'],
-  // validate: widgetValidation
+  validate: renameValidation
 })
 export default class CardView extends Component {
   static propTypes = {
@@ -48,60 +49,80 @@ export default class CardView extends Component {
     fields: PropTypes.object.isRequired,
     editing: PropTypes.object,
     saveError: PropTypes.object,
-    // formKey: PropTypes.string,
     values: PropTypes.object.isRequired,
     updateCard: PropTypes.func
   };
 
   render() {
-    // const creditCard = require('./card.png');
-    const handleEdit = (card) => {
-      const { editStart } = this.props; // eslint-disable-line no-shadow
-      return () => editStart(String(card._id));
-    };
     const {
       fields: { name },
       editStop,
       invalid,
       pristine,
-      handleSubmit,
       card,
       submitting,
       deleteCard,
       getCards,
       editing,
-      // formKey,
       updateCard,
       saveError: {
         [card._id]: saveError
       },
       values
     } = this.props;
+
+    const handleEdit = (handleCard) => {
+      const { editStart } = this.props; // eslint-disable-line no-shadow
+      return () => editStart(String(handleCard._id));
+    };
+    const handleDelete = (cardId) => {
+      return deleteCard(cardId)
+        .then(getCards());
+    };
+    const handleUpdate = (newValue, cardId) => {
+      return updateCard(newValue, cardId)
+      .then(result => {
+        console.log('in handleSubmit: ' + values.name);
+        if (result && typeof result.error === 'object') {
+          return Promise.reject(result.error);
+        }
+      })
+      .then(getCards());
+    };
+
     const styles = require('./CardView.scss');
     return (
 
       <div className={styles.cardView + ' col-md-12'}>
-        {editing[card._id] ?
+        {
+          editing[card._id]
+          ?
           <div formKey={card.name}>
-            <input type="text" key={String(card._id)} value={card.name} className="form-control" {...name}/>
-            <button className="btn btn-default"
-                    onClick={() => editStop(String(card._id))}
-                    disabled={submitting}>
-              <i className="fa fa-ban"/> Cancel
-              </button>
-              <button className="btn btn-success"
-                      onClick={handleSubmit(() => updateCard(values, card._id)
-                        .then(result => {
-                          console.log('in handleSubmit: ' + values.name);
-                          if (result && typeof result.error === 'object') {
-                            return Promise.reject(result.error);
-                          }
-                        })
-                      )}
-                      disabled={pristine || invalid || submitting}>
+            <div className="col-md-6">
+              <input type="text"
+                key={String(card._id)}
+                value={card.name}
+                className="form-control"
+                {...name}/>
+            </div>
+
+            <button
+              className="btn btn-default"
+              onClick={() => editStop(String(card._id))}
+              disabled={submitting}>
+              <i className="fa fa-ban"/>
+                 Cancel
+            </button>
+              <button
+                className="btn btn-success"
+                onClick={() => handleUpdate(values, card._id)}
+                disabled={pristine || invalid || submitting}>
                 <i className={'fa ' + (submitting ? 'fa-cog fa-spin' : 'fa-cloud')}/> Save
               </button>
+              <div className="row">
+              {name.error && name.touched && <div className="text-danger">{name.error}</div>}
               {saveError && <div className="text-danger">{saveError}</div>}
+              </div>
             </div>
             :
           <div className={styles.cardName}>
@@ -110,7 +131,6 @@ export default class CardView extends Component {
           >Change Name</button>
           </div>
           }
-
 
          <div className={styles.bgimg}>
            <p> </p>
@@ -122,10 +142,9 @@ export default class CardView extends Component {
            </div>
            <div className={styles.delButton}>
             <button className="btn btn-danger"
-                    onClick={() => deleteCard(card._id)
-                      .then(getCards())}>
-                      <i className="fa fa-trash" aria-hidden="true"></i>
-                       Delete Card</button>
+              onClick={() => handleDelete(card._id)}>
+              <i className="fa fa-trash" aria-hidden="true">
+              </i> Delete Card</button>
           </div>
          </div>
 
