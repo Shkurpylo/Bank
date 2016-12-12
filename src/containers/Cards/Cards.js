@@ -49,6 +49,7 @@ export default class Cards extends Component {
     createCard: PropTypes.func,
     addButton: PropTypes.func,
     getCard: PropTypes.func,
+    closeCardView: PropTypes.func,
     initializeWithKey: PropTypes.func.isRequired,
     loadingCardsList: PropTypes.bool,
     error: PropTypes.string,
@@ -62,17 +63,18 @@ export default class Cards extends Component {
       cards,
       addButton,
       getCard,
+      // closeCardView,
       showAddForm,
       showCardView,
       loadingCardsList,
       // submitting
     } = this.props;
     return (
-      <div className={'container'}>
-        <Helmet title="Cards"/>
+      <div className={' container'}>
       <div className ="row">
-      <div className={styles.titleh + ' col-md-2'}>
-        <h1 >My Cards</h1>
+      <div className={'col-md-3'}>
+        <Helmet title="Cards"/>
+        <h1 className={styles.title}>My Cards</h1>
       </div>
       <div className="col-md-4">
           <button className=
@@ -86,7 +88,7 @@ export default class Cards extends Component {
         <div>
         </div>
         <div className="row">
-          <div className="col-md-6 panel panel-default">
+          <div className={ styles.cardsList + ' col-md-6 panel panel-default'}>
             {
               loadingCardsList && <div className={styles.loadingDiv}>
             <i className={styles.loading + ' fa fa-refresh fa-spin fa-3x fa-fw'}></i> </div>
@@ -94,23 +96,23 @@ export default class Cards extends Component {
             <table className="table table-hover ">
               <thead>
               <tr>
-                <th className={styles.colorCol}>Type</th>
-                <th className={styles.sprocketsCol}>Name</th>
-                <th className={styles.ownerCol}>Number</th>
-                <th className={styles.ownerCol}>Balance</th>
-                <th className={styles.buttonCol}>Button</th>
+                <th className={styles.typeCol}>Type</th>
+                <th className={styles.nameCol}>Name</th>
+                <th className={styles.numberCol}>Number</th>
+                <th className={styles.balanceCol}>Balance</th>
+                <th className={styles.buttonCol}></th>
               </tr>
               </thead>
               <tbody>
               {
                 cards.map((card) =>
                   <tr key={card._id}>
-                    <td className={styles.idCol} ><i classID="cardIcons" className=
+                    <td className={styles.type} ><i classID="cardIcons" className=
                     {isVisa(card.number) ? 'fa fa-cc-visa fa-2x' : 'fa fa-cc-mastercard fa-2x' }></i></td>
-                    <td className={styles.colorCol} >{card.name}</td>
-                    <td className={styles.ownerCol} >{card.number}</td>
-                    <td className={styles.ownerCol} >{card.balance + '$'}</td>
-                    <td className={styles.buttonCol} >
+                    <td className={styles.name} >{card.name}</td>
+                    <td className={styles.number} >{card.number}</td>
+                    <td className={styles.balance} >{card.balance + '$'}</td>
+                    <td className={styles.button} >
                       <button key={card._id} className="btn btn-info btn-sm"
                               onClick={() => {getCard(card._id);}}>
                         <i className="fa fa-credit-card"/> select
@@ -130,8 +132,10 @@ export default class Cards extends Component {
             <AddCardForm />}
 
             { showCardView &&
-            <CardView getCard={() => this.getCard().bind(this)}/>}
-
+            <CardView
+            getCard={() => this.getCard().bind(this)}
+            closeCardView={() => this.closeCardView().bind(this)}
+            />}
           </div>
         </div>
       </div>

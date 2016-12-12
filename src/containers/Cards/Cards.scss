@@ -1,42 +1,122 @@
 @import "../../theme/variables.scss";
-.addButton {
-  margin-top: 7%;
-  margin-right: 5%;
-  }
+.cardsList {
+    table {
+        width: 100%;
+    }
+    thead,
+    tbody,
+    tr,
+    td,
+    th {
+        display: block;
+    }
+    tr:after {
+        content: ' ';
+        display: block;
+        visibility: hidden;
+        clear: both;
+    }
+    thead th {
+        height: 30px;
+        /*text-align: left;*/
+    }
+    tbody {
+        height: 283px;
+        overflow-y: auto;
+    }
+    thead {
+        /* fallback */
+    }
+    tbody td,
+    thead th {
+        width: 19.2%;
+        float: left;
+    }
+    .type {
+        width: 10%;
+    }
+    .typeCol {
+        text-align: center;
+        vertical-align: middle;
+        width: 10%;
+    }
+    .name {
+        width: 30%;
+    }
+    .nameCol {
+        text-align: center;
+        vertical-align: middle;
+        width: 30%;
+    }
+    .number {
+        width: 20%;
+    }
+    .numberCol {
+        text-align: center;
+        vertical-align: middle;
+        width: 20%;
+    }
+    .balance {
+        text-align: right;
+        vertical-align: middle;
+        width: 25%;
+    }
+    .balanceCol {
+        text-align: center;
+        vertical-align: middle;
+        width: 25%;
+    }
+    .button {
+        width: 15%;
+    }
+    .buttonCol {
+        width: 15%;
+    }
+}
+
 .title {
-  font-size: 4em;
-  color: grey;
-  font-weight: bold;
+    font-size: 3em;
+    color: grey;
+    font-weight: bold;
 }
+
+.addButton {
+    margin-top: 7%;
+    margin-right: 35%;
+}
+
 .table th {
-   text-align: center;   
+    text-align: center;
 }
-.loadingDiv{
-  box-sizing: border-box;
-  text-align: center;
-  margin: 100px;
-}
-.loading{
-  color: grey;
-  margin-top: 10%;
-}
-.nocards{
-  color: grey;
-  font-size: 200%;
 
+.loadingDiv {
+    box-sizing: border-box;
+    text-align: center;
+    margin: 100px;
 }
-.panel-default{
-  border-radius: 5px;
+
+.loading {
+    color: grey;
+    margin-top: 10%;
 }
+
+.nocards {
+    color: grey;
+    font-size: 200%;
+}
+
+.panel-default {
+    border-radius: 5px;
+}
+
 .cards {
-  .pull-right {
-    float: right !important;
-  }
-
+    .pull-right {
+        float: right !important;
+    }
 }
 
 .cardIcons {
-  color: #333;
-  text-shadow: 1px 1px 1px #ccc;
-  font-size: 1.5em;
+    color: #333;
+    text-shadow: 1px 1px 1px #ccc;
+    font-size: 1.5em;
 }
