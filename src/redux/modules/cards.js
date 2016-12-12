@@ -46,8 +46,7 @@ export default function reducer(state = initialState, action = {}) {
     case VIEW_CARD:
       return {
         ...state,
-        card: action.card,
-        showCardView: true,
+        showCardView: false,
         showAddForm: false
       };
     case CARDS_LOAD:
@@ -226,7 +225,6 @@ export function getCard(cardId) {
   };
 }
 
-
 export function updateCard(card, id) {
   console.log(JSON.stringify(card) + ' id: ' + id);
   return {
@@ -247,12 +245,11 @@ export function addButton(showAddForm) {
   };
 }
 
-// export function viewButton(cardId) {
-//   return {
-//     type: VIEW_CARD,
-//     promise: (client) => client.get('/cards/getCardById?id=' + cardId)
-//   };
-// }
+export function closeCardView() {
+  return {
+    type: VIEW_CARD,
+  };
+}
 
 export function editStart(id) {
   return { type: EDIT_START, id };

@@ -39,6 +39,7 @@ export default class CardView extends Component {
   static propTypes = {
     // card: PropTypes.object.isRequired,
     getCard: PropTypes.func.isRequired,
+    closeCardView: PropTypes.func.isRequired,
     deleteCard: PropTypes.func,
     getCards: PropTypes.func,
     editStart: PropTypes.func.isRequired,
@@ -58,6 +59,7 @@ export default class CardView extends Component {
   render() {
     const {
       fields: { name },
+      closeCardView,
       getCard,
       editStop,
       invalid,
@@ -135,6 +137,13 @@ export default class CardView extends Component {
             {cardForView.name}
           <button className="btn btn-link" onClick={handleEdit(cardForView)}
           >Change Name</button>
+           <button type="button" className="close"
+             onClick={() => closeCardView()}
+             data-dismiss="modal"
+             aria-label="Close">
+             <span aria-hidden="true">&times;
+             </span>
+           </button>
           </div>
           }
 
