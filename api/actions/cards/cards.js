@@ -1,65 +1,32 @@
-// import mongoose from 'mongoose';
 import { User, Card } from '../../models';
 import { numberGenerator, getPin, getCVV, getExplDate, hideHumber } from './cardsHelpers';
 import { countBalance } from '../transaction';
 import { getUserById } from '../user';
 
 
-// function getUserById(id) {
-//   return new Promise((resolve, reject) => {
-//     User.findById(id, (err, user) => {
-//       if (err) {
-//         reject(err);
-//       }
-//       resolve(user);
-//     });
-//   });
-// }
-
-// export function getCards(req) { // get
-//   // const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
-//   const ownerId = req.session.passport.user;
-//   return new Promise((resolve, reject) => {
-//     // const cards = req.session.cards;
-//     // if (!cards) {
-//     //   req.session.cards = cards;
-//     User.findById(ownerId).distinct('cards', (err, result) => {
-//       if (err) {
-//         reject(err);
-//       }
-//       resolve(result);
-//     });
-//     // }
-//   });
-// }
-
 export function getCards(req) {
   console.log('IN GET CARDS!!!');
-  // const userId = mongoose.Types.ObjectId(req.body.id);
   const userId = req.session.passport.user._id;
   return new Promise((resolve, reject) => {
     User.findById(userId).distinct('cards', (err, cards) => {
       if (err) reject(err);
       let current = Promise.resolve();
       Promise.all(cards.map((card) => {
-          current = current
-            .then(() => {
-              return countBalance(card._id);
-            })
-            .then((result) => {
-              const cardObj = {
-                balance: result.toFixed(2),
-                number: hideHumber(card.number),
-                _id: card._id,
-                name: card.name
-              };
-              // let cardObj = {};
-              // cardObj = card;
-              // cardObj.balance = result.toFixed(2);
-              return (cardObj);
-            });
-          return current;
-        }))
+        current = current
+          .then(() => {
+            return countBalance(card._id);
+          })
+          .then((result) => {
+            const cardObj = {
+              balance: result.toFixed(2),
+              number: hideHumber(card.number),
+              _id: card._id,
+              name: card.name
+            };
+            return (cardObj);
+          });
+        return current;
+      }))
         .then(results => resolve(results));
     });
   });
@@ -95,7 +62,6 @@ export function getCardById(req) { // get
 export function getCardByNumber(number) { // get
   return new Promise((resolve, reject) => {
     console.log('in getCardById');
-    // const number = req.query.num;
     User.findOne({ 'cards.number': number }, { cards: { $elemMatch: { number: number } } })
       .then(user => {
         console.log(user);
@@ -141,7 +107,6 @@ function createCard(ownerId, cardName, cardType) {
 
 export function addNewCard(req) { // post
   return new Promise((resolve, reject) => {
-    // const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1'); // temporary
     const ownerId = req.session.passport.user._id;
     console.log('starting addNewCard');
     Promise.all([getUserById(ownerId),
@@ -164,7 +129,6 @@ export function updateCard(req) { // post
   return new Promise((resolve, reject) => {
     const ownerId = req.session.passport.user._id;
     console.log('in updateCard: ' + JSON.stringify(req.body) + ' user: ' + ownerId);
-    // const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1'); // temporary
     User.update({
       '_id': ownerId,
       'cards._id': req.body.id
