@@ -1,18 +1,22 @@
-const TRANSACTION_LOAD = '/transaction/LOAD';
-const TRANSACTION_LOAD_SUCCESS = '/transaction/LOAD_SUCCESS';
-const TRANSACTION_LOAD_FAIL = '/transaction/LOAD_FAIL';
-const TRANSACTION_DELETE = '/transaction/DELETE';
-const TRANSACTION_DELETE_SUCCESS = '/transaction/DELETE_SUCCESS';
-const TRANSACTION_DELETE_FAIL = '/transaction/DELETE_FAIL';
-const TRANSACTION_SAVE = '/transaction/SAVE';
-const TRANSACTION_SAVE_SUCCESS = '/transaction/SAVE_SUCCESS';
-const TRANSACTION_SAVE_FAIL = '/transaction/SAVE_FAIL';
-const TRANSACTION_LOAD_INFO = '/transaction/LOAD_INFO';
-const TRANSACTION_LOAD_INFO_SUCCESS = '/transaction/LOAD_INFO_SUCCESS';
-const TRANSACTION_LOAD_INFO_FAIL = '/transaction/LOAD_INFO_FAIL';
+const TRANSACTION_LOAD = '/transaction/TRANSACTION_LOAD';
+const TRANSACTION_LOAD_SUCCESS = '/transaction/TRANSACTION_LOAD_SUCCESS';
+const TRANSACTION_LOAD_FAIL = '/transaction/TRANSACTION_LOAD_FAIL';
 
-const TRANSACTION_SHOW_CONFIRM_WINDOW = '/transaction/SHOW_CONFIRM_WINDOW';
-const TRANSACTION_TOGGLE_FORMS = '/transaction/TOGGLE_FORMS';
+const TRANSACTION_SAVE = '/transaction/TRANSACTION_SAVE';
+const TRANSACTION_SAVE_SUCCESS = '/transaction/TRANSACTION_SAVE_SUCCESS';
+const TRANSACTION_SAVE_FAIL = '/transaction/TRANSACTION_SAVE_FAIL';
+
+const TRANSACTION_LOAD_INFO = '/transaction/TRANSACTION_LOAD_INFO';
+const TRANSACTION_LOAD_INFO_SUCCESS = '/transaction/TRANSACTION_LOAD_INFO_SUCCESS';
+const TRANSACTION_LOAD_INFO_FAIL = '/transaction/TRANSACTION_LOAD_INFO_FAIL';
+
+const IS_NUMBER_VALID = '/transaction/IS_NUMBER_VALID';
+const IS_NUMBER_VALID_SUCCESS = '/transaction/IS_NUMBER_VALID_SUCCESS';
+const IS_NUMBER_VALID_FAIL = '/transaction/IS_NUMBER_VALID_FAIL';
+
+const TRANSACTION_SHOW_CONFIRM_WINDOW = '/transaction/TRANSACTION_SHOW_CONFIRM_WINDOW';
+const TRANSACTION_TOGGLE_FORMS = '/transaction/TRANSACTION_TOGGLE_FORMS';
+const TRANSACTION_HIDE_SUCCESS_ALERT = '/transaction/TRANSACTION_SHOW_SUCCESS_ALERT';
 
 const initialState = {
   sendingTransaction: false,
@@ -26,6 +30,7 @@ const initialState = {
   loadingInfo: false,
   confirmInfo: {},
   balanceChanged: false,
+  alertSuccess: false
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -34,6 +39,11 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         showConfirmWindow: false,
+      };
+    case TRANSACTION_HIDE_SUCCESS_ALERT:
+      return {
+        ...state,
+        alertSuccess: false,
       };
     case TRANSACTION_TOGGLE_FORMS:
       return {
@@ -62,23 +72,10 @@ export default function reducer(state = initialState, action = {}) {
         transactions: null,
         error: action.error
       };
-    case TRANSACTION_DELETE:
-      return {
-        ...state,
-      };
-    case TRANSACTION_DELETE_SUCCESS:
-      return {
-        ...state,
-        loaded: false,
-      };
-    case TRANSACTION_DELETE_FAIL:
-      return {
-        ...state,
-      };
     case TRANSACTION_SAVE:
       return {
+        ...state,
         sendingTransaction: true,
-        ...state
       }; // 'saving' flag handled by redux-form
     case TRANSACTION_SAVE_SUCCESS:
       return {
@@ -87,6 +84,7 @@ export default function reducer(state = initialState, action = {}) {
         showConfirmWindow: false,
         sendingTransaction: false,
         balanceChanged: true,
+        alertSuccess: true,
         saveError: {
           ...state.saveError,
         }
@@ -120,6 +118,19 @@ export default function reducer(state = initialState, action = {}) {
         confirmInfo: null,
         error: action.error
       };
+    case IS_NUMBER_VALID:
+      return state; // 'saving' flag handled by redux-form
+    case IS_NUMBER_VALID_SUCCESS:
+      return {
+        ...state,
+        data: state.data,
+        saveError: null,
+      };
+    case IS_NUMBER_VALID_FAIL:
+      return typeof action.error === 'string' ? {
+        ...state,
+        saveError: action.error
+      } : state;
     default:
       return state;
   }
@@ -146,6 +157,7 @@ export function getTransactions(history) {
   };
 }
 
+
 export function newTransaction(transaction) {
   console.log('transaction data:' + JSON.stringify(transaction));
   return {
@@ -159,6 +171,14 @@ export function newTransaction(transaction) {
       }
     }),
   };
+}
+
+export function alertSuccessHide() {
+  // setTimeout(() => {
+  return {
+    type: TRANSACTION_HIDE_SUCCESS_ALERT,
+  };
+  // }, 2000);
 }
 
 export function switchForms(showOwnForm) {
@@ -185,5 +205,14 @@ export function confirmButton(values) {
       amount: values.amount,
       message: values.mess
     }
+  };
+}
+
+export function isValidNumber(data) {
+  return {
+    types: [IS_NUMBER_VALID, IS_NUMBER_VALID_SUCCESS, IS_NUMBER_VALID_FAIL],
+    promise: (client) => client.post('/isValidNumber', {
+      data
+    })
   };
 }

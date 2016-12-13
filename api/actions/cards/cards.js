@@ -12,21 +12,21 @@ export function getCards(req) {
       if (err) reject(err);
       let current = Promise.resolve();
       Promise.all(cards.map((card) => {
-        current = current
-          .then(() => {
-            return countBalance(card._id);
-          })
-          .then((result) => {
-            const cardObj = {
-              balance: result.toFixed(2),
-              number: hideHumber(card.number),
-              _id: card._id,
-              name: card.name
-            };
-            return (cardObj);
-          });
-        return current;
-      }))
+          current = current
+            .then(() => {
+              return countBalance(card._id);
+            })
+            .then((result) => {
+              const cardObj = {
+                balance: result.toFixed(2),
+                number: hideHumber(card.number),
+                _id: card._id,
+                name: card.name
+              };
+              return (cardObj);
+            });
+          return current;
+        }))
         .then(results => resolve(results));
     });
   });
@@ -164,3 +164,4 @@ export function deleteCard(req) { // get
     });
   });
 }
+

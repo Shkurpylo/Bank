@@ -9,6 +9,7 @@ const LOAD_CARD_FAIL = '/cards/LOAD_CARD_FAIL';
 const DELETE = '/cards/DELETE';
 const DELETE_SUCCESS = '/cards/DELETE_SUCCESS';
 const DELETE_FAIL = '/cards/DELETE_FAIL';
+
 const SAVE = '/cards/SAVE';
 const SAVE_SUCCESS = '/cards/SAVE_SUCCESS';
 const SAVE_FAIL = '/cards/SAVE_FAIL';
@@ -261,3 +262,5 @@ export function editStart(id) {
 export function editStop(id) {
   return { type: EDIT_STOP, id };
 }
+
+

@@ -10,7 +10,7 @@ export {
     deleteCard,
     getCardByNumber,
     getReceiverInfo,
-    getCardById
+    getCardById,
 }
 from './cards';
 
@@ -20,6 +20,7 @@ export {
   getOutgoingSum,
   abstractPaymentTerminal,
   countBalance,
-  getBalances
+  getBalances,
+  isValidNumber
 }
 from './transaction';

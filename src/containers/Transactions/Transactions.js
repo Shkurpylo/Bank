@@ -27,17 +27,28 @@ export default class Transactions extends Component {
     cards: PropTypes.array,
     showOwnForm: PropTypes.bool,
     showConfirmWindow: PropTypes.bool,
-    switchForms: PropTypes.func
+    switchForms: PropTypes.func,
+    alertSuccess: PropTypes.bool,
+    alertSuccessHide: PropTypes.func
   };
 
   render() {
     const styles = require('./Transactions.scss');
-    const {showOwnForm, switchForms, showConfirmWindow} = this.props;  // eslint-disable-line no-shadow
+    const {showOwnForm, showConfirmWindow, alertSuccess} = this.props;  // eslint-disable-line no-shadow
     return (
       <div className={styles.transaction + ' container'}>
+      <div className={styles.title + ' col-sm-3'}>
         <h1>
           Transactions
         </h1>
+      </div>
+      <div className="col-sm-5">
+        { alertSuccess && <div className="alert alert-success"
+        style={{marginTop: 10}}
+        role="alert">
+        Transaction sent success!</div>
+        }
+      </div>
         { showConfirmWindow ?
           <div>
           <TransactionConfirm/>
@@ -45,24 +56,13 @@ export default class Transactions extends Component {
         <div>
         <div className="row">
           <div className="col-sm-5 col-md-offset-3">
-            <div className="btn-group btn-group-justified" style={{paddingBottom: 30}} role="group" aria-label="...">
-              <div className="btn-group" role="group">
-                <button
-                  className={showOwnForm ? 'btn btn-primary active' : 'btn btn-primary'}
-                  onClick={ () => switchForms(true) }>Between own cards</button>
-              </div>
-              <div className="btn-group" role="group">
-                <button
-                  className={showOwnForm ? 'btn btn-primary' : 'btn btn-primary active'}
-                  onClick={ () => switchForms(false) }>To another card</button>
-              </div>
-            </div>
+
           </div>
         </div>
         <div className="row">
          {showOwnForm ?
             <TransactionFormBetweenOwn/> :
-            <TransactionForm/>
+            <TransactionForm alertSuccessHide={() => this.alertSuccessHide().bind(this)}/>
          }
     </div>
     </div>
