@@ -1,5 +1,40 @@
-.arrow{
-text-align: center;
-vertical-align: middle;
-line-height: 90px; 
+.arrow {
+    text-align: center;
+    vertical-align: middle;
+    line-height: 90px;
+}
+
+.fromSide {
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+}
+
+.sender{
+    color: #cc0000;
+    font-size: 120%;
+    font-weight: bold;
+}
+
+.toSide {
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+}
+
+.receiver{
+    color: #00802b;
+    font-size: 120%;
+    font-weight: bold;
+}
+.amount {
+    text-align: center;
+    font-size: 200%;
+    vertical-align: middle;
+    color: #0a0a0f;
+    font-weight: bold;
+}
+.leftSide{
+    font-weight: initial;
+    text-align: left;
 }

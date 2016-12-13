@@ -9,7 +9,8 @@ import * as transactionActions from 'redux/modules/transaction';
   authUser: state.auth.user,
   transactionData: state.transaction.transactionData,
   confirmInfo: state.transaction.confirmInfo,
-  loadingInfo: state.transaction.loadingInfo
+  loadingInfo: state.transaction.loadingInfo,
+  sendingTransaction: state.transaction.sendingTransaction
 }),
   dispatch => bindActionCreators(transactionActions, dispatch)
 )
@@ -47,16 +48,22 @@ export default class TransactionConfirm extends Component {
               <div className="modal-dialog modal-lg" role="document">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <button type="button" className="close" onClick={()=>cancelTransaction()} data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" className="close"
+                      onClick={()=>cancelTransaction()}
+                      data-dismiss="modal"
+                      aria-label="Close">
+                      <span aria-hidden="true">&times;
+                      </span>
+                    </button>
                     <h4 className="modal-title">Confirm transaction</h4>
                   </div>
                   <div className="modal-body">
                    <div className="row">
-                     <div className="col-md-4">
-                       <p>From</p>
-                       <p>{authUser.name} {authUser.lastName}</p>
-                       <p>Card:</p>
-                       <p>{transactionData.sender.number}</p>
+                     <div className={styles.fromSide + ' col-md-4'}>
+                       <p className={styles.leftSide}>From:</p>
+                       <p>You, {authUser.name} {authUser.lastName}</p>
+                       <p className={styles.leftSide}>Card:</p>
+                       <p className={styles.sender}>{transactionData.sender.number}</p>
 
                      </div>
                      <div className={styles.arrow + ' col-md-4'}>
@@ -67,19 +74,19 @@ export default class TransactionConfirm extends Component {
                      }
                      </div>
 
-                     <div className="col-md-4">
-                       <p>To</p>
+                     <div className={styles.toSide + ' col-md-4'}>
+                       <p className={styles.leftSide}>To:</p>
                        <p>{confirmInfo.receiverName} {confirmInfo.receiverLastname}</p>
-                       <p>Card:</p>
-                       <p>{transactionData.receiver}</p>
+                       <p className={styles.leftSide}>Card:</p>
+                       <p className={styles.receiver}>{transactionData.receiver}</p>
                      </div>
                    </div>
                   </div>
                   <div className="row">
                   </div>
                   <div className="modal-footer">
-                     <div className="col-md-4 col-md-offset-4">
-                     {transactionData.amount + '$'}
+                     <div className={styles.amount + ' col-md-4 col-md-offset-4'}>
+                     {transactionData.amount + ' $'}
 
                      </div>
                   </div>

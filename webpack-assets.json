@@ -1,10 +1,11 @@
 {
   "javascript": {
-    "main": "http://localhost:3001/dist/main-96eef865675fee27dced.js"
+    "main": "http://localhost:3001/dist/main-1a41314c099cb708c6fc.js"
   },
   "styles": {},
   "assets": {
     "./src/containers/Home/logo.png": "http://localhost:3001/dist/9007a2d3e52358e63c45454126eeac4d.png",
+    "./src/components/CardView/card.png": "http://localhost:3001/dist/31fa438f7a19bf1befc1a1c2fcb0e3e5.png",
     "./~/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.eot": "http://localhost:3001/dist/f4769f9bdb7466be65088239c12046d1.eot",
     "./~/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.woff2": "http://localhost:3001/dist/448c34a56d699c29117adc64c43affeb.woff2",
     "./~/bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.woff": "http://localhost:3001/dist/fa2772327f55d8198301fdb8bcfc8158.woff",
@@ -39,11 +40,28 @@
     },
     "./src/components/CardView/CardView.scss": {
       "panel": "panel___q9WqE",
-      "_style": "#panel___q9WqE {\n  text-align: center;\n}\n"
+      "bgimg": "bgimg___wkOT4",
+      "cardName": "cardName___24t3t",
+      "cardNumber": "cardNumber___3wXP-",
+      "explDate": "explDate___14ka4",
+      "cvv": "cvv___19Qt3",
+      "balance": "balance___1DV2V",
+      "delButton": "delButton___1fbwF",
+      "_style": "#panel___q9WqE {\n  text-align: center;\n}\n\n.bgimg___wkOT4 {\n  background-image: url(http://localhost:3001/dist/31fa438f7a19bf1befc1a1c2fcb0e3e5.png);\n  background-repeat: no-repeat;\n  height: 500px;\n  width: 500px;\n  overflow: hidden;\n  background-size: contain;\n}\n\n.cardName___24t3t {\n  margin: 1px 10px 5px 10px;\n  font-size: 200%;\n  font-stretch: ultra-expanded;\n  color: #4b4c4a;\n}\n\n.cardNumber___3wXP- {\n  margin: 135px 50px 5px 50px;\n  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;\n  font-size: 170%;\n  font-stretch: ultra-expanded;\n  text-shadow: 2px 2px black;\n  color: white;\n}\n\n.explDate___14ka4 {\n  margin: 23px 15px 30px 140px;\n  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;\n  font-size: 120%;\n  font-stretch: ultra-expanded;\n  text-shadow: 1.5px 1.5px black;\n  color: white;\n}\n\n.cvv___19Qt3 {\n  margin: 20px 15px 30px 420px;\n  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;\n  font-size: 120%;\n  font-stretch: ultra-expanded;\n  color: black;\n}\n\n.balance___1DV2V {\n  text-align: left;\n  margin: 100px 15px 10px 20px;\n  font-family: Arial, Helvetica, sans-serif;\n  font-size: 220%;\n  font-stretch: ultra-expanded;\n  color: #1d5910;\n}\n\n.delButton___1fbwF {\n  float: right;\n  margin-right: 30px;\n}\n"
+    },
+    "./src/components/TransactionForm/TransactionForm.scss": {
+      "errorText": "errorText___2cgV4",
+      "_style": ".errorText___2cgV4 {\n  text-align: right;\n}\n"
     },
     "./src/components/TransactionConfirm/TransactionConfirm.scss": {
       "arrow": "arrow___1kPVe",
-      "_style": ".arrow___1kPVe {\n  text-align: center;\n  vertical-align: middle;\n  line-height: 90px;\n}\n"
+      "fromSide": "fromSide___4wK6e",
+      "sender": "sender___1ALtJ",
+      "toSide": "toSide___1lXbN",
+      "receiver": "receiver___1Vbvq",
+      "amount": "amount___prmff",
+      "leftSide": "leftSide___1MbOl",
+      "_style": ".arrow___1kPVe {\n  text-align: center;\n  vertical-align: middle;\n  line-height: 90px;\n}\n\n.fromSide___4wK6e {\n  text-align: center;\n  vertical-align: middle;\n  font-weight: bold;\n}\n\n.sender___1ALtJ {\n  color: #cc0000;\n  font-size: 120%;\n  font-weight: bold;\n}\n\n.toSide___1lXbN {\n  text-align: center;\n  vertical-align: middle;\n  font-weight: bold;\n}\n\n.receiver___1Vbvq {\n  color: #00802b;\n  font-size: 120%;\n  font-weight: bold;\n}\n\n.amount___prmff {\n  text-align: center;\n  font-size: 200%;\n  vertical-align: middle;\n  color: #0a0a0f;\n  font-weight: bold;\n}\n\n.leftSide___1MbOl {\n  font-weight: initial;\n  text-align: left;\n}\n"
     },
     "./src/containers/Home/Home.scss": {
       "home": "home___1bkob",
@@ -55,20 +73,23 @@
     },
     "./src/containers/Transactions/Transactions.scss": {
       "transaction": "transaction___DnK4r",
-      "pull-right": "pull-right___F2IOq",
-      "col-md-4": "col-md-4___148q6",
-      "refreshBtn": "refreshBtn___azjTA",
-      "idCol": "idCol___YVUjh",
-      "colorCol": "colorCol___3azeR",
-      "sprocketsCol": "sprocketsCol___30fI1",
-      "ownerCol": "ownerCol___2ixgg",
-      "buttonCol": "buttonCol___30l5g",
-      "saving": "saving___3GTma",
-      "_style": ".transaction___DnK4r .pull-right___F2IOq {\n  float: right !important;\n}\n\n.transaction___DnK4r .col-md-4___148q6 {\n  color: #adadad;\n}\n\n.transaction___DnK4r .refreshBtn___azjTA {\n  margin-left: 20px;\n}\n\n.transaction___DnK4r .idCol___YVUjh {\n  width: 5%;\n}\n\n.transaction___DnK4r .colorCol___3azeR {\n  width: 20%;\n}\n\n.transaction___DnK4r .sprocketsCol___30fI1 {\n  width: 20%;\n  text-align: right;\n}\n\n.transaction___DnK4r .sprocketsCol___30fI1 input {\n  text-align: right;\n}\n\n.transaction___DnK4r .ownerCol___2ixgg {\n  width: 30%;\n}\n\n.transaction___DnK4r .buttonCol___30l5g {\n  width: 25%;\n}\n\n.transaction___DnK4r .buttonCol___30l5g .btn {\n  margin: 0 5px;\n}\n\n.transaction___DnK4r tr.saving___3GTma {\n  opacity: 0.8;\n}\n\n.transaction___DnK4r tr.saving___3GTma .btn[disabled] {\n  opacity: 1;\n}\n"
+      "title": "title___3hE5Q",
+      "_style": ".transaction___DnK4r .title___3hE5Q {\n  font-size: 3em;\n  color: grey;\n  font-weight: bold;\n}\n"
     },
     "./src/containers/Cards/Cards.scss": {
-      "addButton": "addButton___363Ei",
+      "cardsList": "cardsList___3VU1s",
+      "type": "type___3KV4v",
+      "typeCol": "typeCol___1RkEo",
+      "name": "name___ekfvX",
+      "nameCol": "nameCol___2AGLo",
+      "number": "number___1fSmh",
+      "numberCol": "numberCol___2dHZr",
+      "balance": "balance___2553l",
+      "balanceCol": "balanceCol___2978l",
+      "button": "button___3c9wB",
+      "buttonCol": "buttonCol___2VEtK",
       "title": "title___c9cRa",
+      "addButton": "addButton___363Ei",
       "table": "table___1ib8G",
       "loadingDiv": "loadingDiv___yxa8Y",
       "loading": "loading___Y7E8Y",
@@ -77,26 +98,27 @@
       "cards": "cards___30KUc",
       "pull-right": "pull-right___1B9mI",
       "cardIcons": "cardIcons___2axLm",
-      "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.addButton___363Ei {\n  margin-top: 7%;\n  margin-right: 5%;\n}\n\n.title___c9cRa {\n  font-size: 4em;\n  color: grey;\n  font-weight: bold;\n}\n\n.table___1ib8G th {\n  text-align: center;\n}\n\n.loadingDiv___yxa8Y {\n  box-sizing: border-box;\n  text-align: center;\n  margin: 100px;\n}\n\n.loading___Y7E8Y {\n  color: grey;\n  margin-top: 10%;\n}\n\n.nocards___3PgwC {\n  color: grey;\n  font-size: 200%;\n}\n\n.panel-default___2dA1f {\n  border-radius: 5px;\n}\n\n.cards___30KUc .pull-right___1B9mI {\n  float: right !important;\n}\n\n.cardIcons___2axLm {\n  color: #333;\n  text-shadow: 1px 1px 1px #ccc;\n  font-size: 1.5em;\n}\n"
+      "_style": "/**\n *  Define scss variables here.\n *\n *  Available options for Bootstrap:\n *  http://getbootstrap.com/customize/\n *\n */\n.cardsList___3VU1s table {\n  width: 100%;\n}\n\n.cardsList___3VU1s thead,\n.cardsList___3VU1s tbody,\n.cardsList___3VU1s tr,\n.cardsList___3VU1s td,\n.cardsList___3VU1s th {\n  display: block;\n}\n\n.cardsList___3VU1s tr:after {\n  content: ' ';\n  display: block;\n  visibility: hidden;\n  clear: both;\n}\n\n.cardsList___3VU1s thead th {\n  height: 30px;\n  /*text-align: left;*/\n}\n\n.cardsList___3VU1s tbody {\n  height: 283px;\n  overflow-y: auto;\n}\n\n.cardsList___3VU1s thead {\n  /* fallback */\n}\n\n.cardsList___3VU1s tbody td,\n.cardsList___3VU1s thead th {\n  width: 19.2%;\n  float: left;\n}\n\n.cardsList___3VU1s .type___3KV4v {\n  width: 10%;\n}\n\n.cardsList___3VU1s .typeCol___1RkEo {\n  text-align: center;\n  vertical-align: middle;\n  width: 10%;\n}\n\n.cardsList___3VU1s .name___ekfvX {\n  width: 30%;\n}\n\n.cardsList___3VU1s .nameCol___2AGLo {\n  text-align: center;\n  vertical-align: middle;\n  width: 30%;\n}\n\n.cardsList___3VU1s .number___1fSmh {\n  width: 20%;\n}\n\n.cardsList___3VU1s .numberCol___2dHZr {\n  text-align: center;\n  vertical-align: middle;\n  width: 20%;\n}\n\n.cardsList___3VU1s .balance___2553l {\n  text-align: right;\n  vertical-align: middle;\n  width: 25%;\n}\n\n.cardsList___3VU1s .balanceCol___2978l {\n  text-align: center;\n  vertical-align: middle;\n  width: 25%;\n}\n\n.cardsList___3VU1s .button___3c9wB {\n  width: 15%;\n}\n\n.cardsList___3VU1s .buttonCol___2VEtK {\n  width: 15%;\n}\n\n.title___c9cRa {\n  font-size: 3em;\n  color: grey;\n  font-weight: bold;\n}\n\n.addButton___363Ei {\n  margin-top: 7%;\n  margin-right: 35%;\n}\n\n.table___1ib8G th {\n  text-align: center;\n}\n\n.loadingDiv___yxa8Y {\n  box-sizing: border-box;\n  text-align: center;\n  margin: 100px;\n}\n\n.loading___Y7E8Y {\n  color: grey;\n  margin-top: 10%;\n}\n\n.nocards___3PgwC {\n  color: grey;\n  font-size: 200%;\n}\n\n.panel-default___2dA1f {\n  border-radius: 5px;\n}\n\n.cards___30KUc .pull-right___1B9mI {\n  float: right !important;\n}\n\n.cardIcons___2axLm {\n  color: #333;\n  text-shadow: 1px 1px 1px #ccc;\n  font-size: 1.5em;\n}\n"
     },
     "./src/containers/History/History.scss": {
+      "title": "title___2eSjm",
       "history": "history___3XdfK",
-      "btn": "btn___3roWU",
-      "pull-right": "pull-right___YHKIg",
-      "col-md-4": "col-md-4___3vRUF",
-      "refreshBtn": "refreshBtn___fa3kh",
-      "idCol": "idCol___2K95t",
-      "colorCol": "colorCol___15qCI",
-      "sprocketsCol": "sprocketsCol___1tcxN",
-      "ownerCol": "ownerCol___1yEvw",
-      "buttonCol": "buttonCol___2bw5g",
-      "saving": "saving___3chDx",
-      "loading": "loading___2O9GT",
       "nomatch": "nomatch___3YDtN",
       "loadingDiv": "loadingDiv___H1y5Q",
+      "calendarIco": "calendarIco___2nH_T",
+      "dateCol": "dateCol___2ofbM",
+      "date": "date___18cAn",
+      "message": "message___b0kEc",
+      "messageCol": "messageCol___2NzNy",
+      "senderCol": "senderCol___2JZ8Z",
+      "senderCard": "senderCard___3bbGG",
+      "arrow": "arrow___3yXSj",
+      "receiverCol": "receiverCol___dALZZ",
+      "receiverCard": "receiverCard___3oT-3",
+      "amountCol": "amountCol___2G5n-",
       "green": "green___3pgxW",
       "red": "red___2LEKU",
-      "_style": ".history___3XdfK .btn___3roWU {\n  display: block;\n  float: none;\n  max-width: 100%;\n  width: 100%;\n}\n\n.history___3XdfK .pull-right___YHKIg {\n  float: right !important;\n}\n\n.history___3XdfK .col-md-4___3vRUF {\n  color: #adadad;\n}\n\n.history___3XdfK .refreshBtn___fa3kh {\n  margin-left: 20px;\n}\n\n.history___3XdfK .idCol___2K95t {\n  width: 5%;\n}\n\n.history___3XdfK .colorCol___15qCI {\n  width: 20%;\n}\n\n.history___3XdfK .sprocketsCol___1tcxN {\n  width: 20%;\n  text-align: right;\n}\n\n.history___3XdfK .sprocketsCol___1tcxN input {\n  text-align: right;\n}\n\n.history___3XdfK .ownerCol___1yEvw {\n  width: 30%;\n}\n\n.history___3XdfK .buttonCol___2bw5g {\n  width: 25%;\n}\n\n.history___3XdfK .buttonCol___2bw5g .btn {\n  margin: 0 5px;\n}\n\n.history___3XdfK tr.saving___3chDx {\n  opacity: 0.8;\n}\n\n.history___3XdfK tr.saving___3chDx .btn[disabled] {\n  opacity: 1;\n}\n\n.loading___2O9GT {\n  color: grey;\n  margin-top: 10%;\n}\n\n.nomatch___3YDtN {\n  color: grey;\n  font-size: 200%;\n}\n\n.loadingDiv___H1y5Q {\n  box-sizing: border-box;\n  text-align: center;\n  margin: 100px;\n}\n\n.green___3pgxW {\n  color: lightgreen;\n  font-weight: bold;\n}\n\n.red___2LEKU {\n  color: red;\n  font-weight: bold;\n}\n"
+      "_style": ".title___2eSjm {\n  font-size: 3em;\n  color: grey;\n  font-weight: bold;\n}\n\n.history___3XdfK table {\n  width: 100%;\n}\n\n.history___3XdfK thead,\n.history___3XdfK tbody,\n.history___3XdfK tr,\n.history___3XdfK td,\n.history___3XdfK th {\n  display: block;\n}\n\n.history___3XdfK tr:after {\n  content: ' ';\n  display: block;\n  visibility: hidden;\n  clear: both;\n}\n\n.history___3XdfK thead th {\n  height: 30px;\n  /*text-align: left;*/\n}\n\n.history___3XdfK tbody {\n  height: 395px;\n  overflow-y: auto;\n}\n\n.history___3XdfK thead {\n  /* fallback */\n}\n\n.history___3XdfK tbody td,\n.history___3XdfK thead th {\n  width: 19.2%;\n  float: left;\n}\n\n.history___3XdfK .nomatch___3YDtN {\n  color: grey;\n  font-size: 200%;\n}\n\n.history___3XdfK .loadingDiv___H1y5Q {\n  box-sizing: border-box;\n  text-align: center;\n  margin: 100px;\n}\n\n.history___3XdfK .calendarIco___2nH_T {\n  text-align: center;\n  vertical-align: middle;\n  width: 3%;\n}\n\n.history___3XdfK .dateCol___2ofbM {\n  width: 20%;\n}\n\n.history___3XdfK .date___18cAn {\n  width: 20%;\n}\n\n.history___3XdfK .message___b0kEc {\n  text-align: center;\n  vertical-align: middle;\n  width: 32%;\n}\n\n.history___3XdfK .messageCol___2NzNy {\n  width: 32%;\n}\n\n.history___3XdfK .senderCol___2JZ8Z {\n  width: 13%;\n}\n\n.history___3XdfK .senderCard___3bbGG {\n  width: 13%;\n}\n\n.history___3XdfK .arrow___3yXSj {\n  text-align: center;\n  vertical-align: middle;\n  width: 4%;\n}\n\n.history___3XdfK .receiverCol___dALZZ {\n  width: 13%;\n}\n\n.history___3XdfK .receiverCard___3oT-3 {\n  width: 13%;\n}\n\n.history___3XdfK .amountCol___2G5n- {\n  width: 15%;\n}\n\n.history___3XdfK .green___3pgxW {\n  text-align: right;\n  vertical-align: middle;\n  width: 15%;\n  color: #00802b;\n  font-weight: bold;\n}\n\n.history___3XdfK .red___2LEKU {\n  text-align: right;\n  vertical-align: middle;\n  width: 15%;\n  color: #cc0000;\n  font-weight: bold;\n}\n"
     }
   }
 }
