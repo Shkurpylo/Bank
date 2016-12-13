@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import nameValidation from './nameValidation';
 import * as cardsActions from 'redux/modules/cards';
 
 @connect((state) => ({
@@ -13,6 +14,7 @@ import * as cardsActions from 'redux/modules/cards';
 @reduxForm({
   form: 'newCard',
   fields: ['cardName', 'cardType'],
+  validate: nameValidation
 })
 export default class AddCardForm extends Component {
   static propTypes = {
@@ -46,6 +48,7 @@ export default class AddCardForm extends Component {
               <div className={styles.centered + ' col-sm-12'}>
                 <label htmlFor="cardName">Cards name:</label>
                 <input type="name" className="col-xs-3 form-control" id="cardName" placeholder="name" {...cardName} />
+                  {cardName.error && cardName.touched ? <div className={styles.errorText + ' text-danger'}>{cardName.error}</div> : <p></p>}
               </div>
             </div>
           </div>
