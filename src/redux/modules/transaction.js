@@ -208,11 +208,12 @@ export function confirmButton(values) {
   };
 }
 
-export function isValidNumber(data) {
+export function isValidNumber(cardNumber) {
+  console.log(' in reducer, req is: ' + JSON.stringify(cardNumber));
   return {
     types: [IS_NUMBER_VALID, IS_NUMBER_VALID_SUCCESS, IS_NUMBER_VALID_FAIL],
     promise: (client) => client.post('/isValidNumber', {
-      data
+      data: cardNumber
     })
   };
 }

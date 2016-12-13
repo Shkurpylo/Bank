@@ -32,7 +32,7 @@ function asyncValidate(data, dispatch, { isValidNumber }) {
   fields: ['sender', 'receiver', 'mess', 'amount'],
   validate: transactionValidation,
   asyncValidate,
-  asyncBlurFields: ['email']
+  asyncBlurFields: ['receiver']
 })
 export default class TransactionForm extends Component {
   static propTypes = {
