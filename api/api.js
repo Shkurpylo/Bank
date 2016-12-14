@@ -13,7 +13,6 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import { login, configPassport } from './actions/login';
 import passportBearer from 'passport-http-bearer';
-import { checkCustomerToken } from './actions/customer';
 import util from 'util';
 
 const pretty = new PrettyError();
@@ -40,7 +39,7 @@ app.use(session({
   secret: 'react and redux rule!!!!',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 6000000 }
+  cookie: { maxAge: 60000 }
 }));
 
 app.use(bodyParser.json());
@@ -57,14 +56,10 @@ if (process.env.NODE_ENV === 'public_api') {
   passport.use(
     new BearerStrategy(
       (token, done) => {
-        checkCustomerToken(token)
-          .then(res => {
-            console.log('is token valid:' + res);
-            if (res) {
-              return done(null, true, { scope: 'all' });
-            }
-            return done(null, false);
-          });
+        if (token === 'multipassport') {
+          return done(null, true, { scope: 'all' });
+        }
+        return done(null, false);
       }
     )
   );
@@ -135,13 +130,15 @@ const bufferSize = 100;
 const messageBuffer = new Array(bufferSize);
 let messageIndex = 0;
 
-if (config.apiPort) {
-  const runnable = app.listen(config.apiPort, (err) => {
+const apiPort = process.env.PORT;
+
+if (apiPort) {
+  const runnable = app.listen(apiPort, (err) => {
     if (err) {
       console.error(err);
     }
-    console.info('----\n==> 🌎  API is running on port %s', config.apiPort);
-    console.info('==> 💻  Send requests to http://%s:%s', config.apiHost, config.apiPort);
+    console.info('----\n==> 🌎  API is running on port %s', apiPort);
+    console.info('==> 💻  Send requests to http://%s:%s', apiPort);
   });
 
   io.on('connection', (socket) => {
