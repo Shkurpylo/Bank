@@ -1,36 +1,75 @@
+import mongoose from 'mongoose';
 import { User, Card } from '../../models';
 import { numberGenerator, getPin, getCVV, getExplDate, hideHumber } from './cardsHelpers';
 import { countBalance } from '../transaction';
 import { getUserById } from '../user';
 
 
+// export function getCards(req) {
+//   console.log('IN GET CARDS!!!');
+//   const userId = req.body.cardId;
+//   // const userId = req.session.passport.user._id;
+//   return new Promise((resolve, reject) => {
+//     // {Comment: {$elemMatch: {"Reply.email" : "xxx"}}}
+//     User.findById(userId).distinct('cards', {'cards.cvv': 797}, (err, cards) => {
+//       if (err) reject(err);
+//       let current = Promise.resolve();
+//       Promise.all(cards.map((card) => {
+//           current = current
+//             .then(() => {
+//               return countBalance(card._id);
+//             })
+//             .then((result) => {
+//               const cardObj = {
+//                 balance: result.toFixed(2),
+//                 number: hideHumber(card.number),
+//                 _id: card._id,
+//                 name: card.name
+//               };
+//               return (cardObj);
+//             });
+//           return current;
+//         }))
+//         .then(results => resolve(results));
+//     });
+//   });
+// }
+
 export function getCards(req) {
   console.log('IN GET CARDS!!!');
-  const userId = req.session.passport.user._id;
+  // const userId = mongoose.Types.ObjectId(req.body.cardId);
+  const userId = mongoose.Types.ObjectId(req.session.passport.user._id); // eslint-disable-line new-cap
   return new Promise((resolve, reject) => {
-    User.findById(userId).distinct('cards', (err, cards) => {
-      if (err) reject(err);
+    User.aggregate([
+        { $match: { '_id': userId } },
+        { $unwind: '$cards' },
+        { $match: { 'cards.active': true } },
+        { $project: {_id: 0, 'cards.name': 1, 'cards.number': 1, 'cards._id': 1}},
+    ])
+    .then(cards => {
       let current = Promise.resolve();
-      Promise.all(cards.map((card) => {
-          current = current
-            .then(() => {
-              return countBalance(card._id);
-            })
-            .then((result) => {
-              const cardObj = {
-                balance: result.toFixed(2),
-                number: hideHumber(card.number),
-                _id: card._id,
-                name: card.name
-              };
-              return (cardObj);
-            });
-          return current;
-        }))
-        .then(results => resolve(results));
+      Promise.all(cards.map((elem) => {
+        current = current
+          .then(() => {
+            return countBalance(elem.cards._id);
+          })
+          .then((result) => {
+            const cardObj = {
+              balance: result.toFixed(2),
+              number: hideHumber(elem.cards.number),
+              _id: elem.cards._id,
+              name: elem.cards.name
+            };
+            return (cardObj);
+          });
+        return current;
+      }))
+        .then(results => resolve(results))
+        .catch(err => reject(err));
     });
   });
 }
+
 
 export function getCardById(req) { // get
   const userId = req.session.passport.user._id;
@@ -147,15 +186,15 @@ export function updateCard(req) { // post
 
 export function deleteCard(req) { // get
   return new Promise((resolve, reject) => {
+    const ownerId = req.session.passport.user._id;
     const id = req.query.id;
-    User.update({}, {
-      '$pull': {
-        cards: {
-          '_id': id
-        }
-      }
+    User.update({
+      '_id': ownerId,
+      'cards._id': id
     }, {
-      multi: true
+      '$set': {
+        'cards.$.active': false
+      }
     }, (err, ok) => {
       if (err) {
         reject(err);
@@ -165,3 +204,22 @@ export function deleteCard(req) { // get
   });
 }
 
+// export function deleteCard(req) { // get
+//   return new Promise((resolve, reject) => {
+//     const id = req.query.id;
+//     User.update({}, {
+//       '$pull': {
+//         cards: {
+//           '_id': id
+//         }
+//       }
+//     }, {
+//       multi: true
+//     }, (err, ok) => {
+//       if (err) {
+//         reject(err);
+//       }
+//       resolve(ok);
+//     });
+//   });
+// }
