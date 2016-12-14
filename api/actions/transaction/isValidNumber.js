@@ -13,6 +13,8 @@ export default function isValidNumber(req) {
         }
         if (!user) {
           errorMassage.receiver = 'card is not valid';
+          errorMassage.status = 200;
+          errorMassage.type = 'error';
           reject(errorMassage);
         } else {
           resolve();

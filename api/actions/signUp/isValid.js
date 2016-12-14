@@ -9,6 +9,8 @@ export default function isValid(req) {
         if (err) throw err;
         if (user) {
           errorMassage.email = 'Email address already used';
+          errorMassage.status = 200;
+          errorMassage.type = 'error';
           reject(errorMassage);
         } else {
           resolve();
