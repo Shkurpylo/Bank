@@ -5,36 +5,6 @@ import { countBalance } from '../transaction';
 import { getUserById } from '../user';
 
 
-// export function getCards(req) {
-//   console.log('IN GET CARDS!!!');
-//   const userId = req.body.cardId;
-//   // const userId = req.session.passport.user._id;
-//   return new Promise((resolve, reject) => {
-//     // {Comment: {$elemMatch: {"Reply.email" : "xxx"}}}
-//     User.findById(userId).distinct('cards', {'cards.cvv': 797}, (err, cards) => {
-//       if (err) reject(err);
-//       let current = Promise.resolve();
-//       Promise.all(cards.map((card) => {
-//           current = current
-//             .then(() => {
-//               return countBalance(card._id);
-//             })
-//             .then((result) => {
-//               const cardObj = {
-//                 balance: result.toFixed(2),
-//                 number: hideHumber(card.number),
-//                 _id: card._id,
-//                 name: card.name
-//               };
-//               return (cardObj);
-//             });
-//           return current;
-//         }))
-//         .then(results => resolve(results));
-//     });
-//   });
-// }
-
 export function getCards(req) {
   console.log('IN GET CARDS!!!');
   // const userId = mongoose.Types.ObjectId(req.body.cardId);
@@ -64,8 +34,8 @@ export function getCards(req) {
           });
         return current;
       }))
-        .then(results => resolve(results))
-        .catch(err => reject(err));
+     .then(results => resolve(results))
+     .catch(err => reject(err));
     });
   });
 }

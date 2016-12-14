@@ -4,6 +4,11 @@ export logout from './logout';
 export * as signUp from './signUp/';
 
 export {
+  addCustomer
+}
+from './customer';
+
+export {
     getCards,
     addNewCard,
     updateCard,

@@ -1,25 +1,19 @@
 import { User } from '../../models';
 
+
 export default function isValidNumber(req) {
   return new Promise((resolve, reject) => {
-    console.log('IN card validation function, body is:' + JSON.stringify(req.body));
-    setTimeout(() => {
-      const cardNumber = req.body.receiver;
-      const errorMassage = {};
-      User.findOne({ 'cards.number': cardNumber }, (err, user) => {
-        if (err) {
-          console.log('YEAH erro is here!');
-          throw err;
-        }
+    const cardNumber = req.body.receiver;
+    const errorMassage = {};
+    User.findOne({cards: {$elemMatch: {number: cardNumber, active: true}}})
+      .then(user => {
         if (!user) {
-          errorMassage.receiver = 'card is not valid';
+          errorMassage.receiver = 'card is not active';
           errorMassage.status = 200;
           errorMassage.type = 'error';
           reject(errorMassage);
-        } else {
-          resolve();
         }
-      });
-    }, 500);
+        resolve();
+      }).catch(err => reject(err));
   });
 }
