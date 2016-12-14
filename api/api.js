@@ -13,6 +13,7 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import { login, configPassport } from './actions/login';
 import passportBearer from 'passport-http-bearer';
+import { checkCustomerToken } from './actions/customer';
 import util from 'util';
 
 const pretty = new PrettyError();
@@ -56,10 +57,14 @@ if (process.env.NODE_ENV === 'public_api') {
   passport.use(
     new BearerStrategy(
       (token, done) => {
-        if (token === 'multipassport') {
-          return done(null, true, { scope: 'all' });
-        }
-        return done(null, false);
+        checkCustomerToken(token)
+          .then(res => {
+            console.log('is token valid:' + res);
+            if (res) {
+              return done(null, true, { scope: 'all' });
+            }
+            return done(null, false);
+          });
       }
     )
   );
