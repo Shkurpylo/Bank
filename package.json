@@ -24,8 +24,8 @@
   ],
   "main": "bin/server.js",
   "scripts": {
-    "api": "better-npm-run api",
-    "start": "concurrent --kill-others \"npm run start-prod\" \"npm run start-prod-api\"",
+    "api": "better-npm-run api",    
+    "start": "concurrent --kill-others \"npm run start-prod-api\"",
     "start-prod": "better-npm-run start-prod",
     "start-prod-api": "better-npm-run start-prod-api",
     "build": "better-npm-run build",
@@ -40,20 +40,11 @@
     "test-node-watch": "./node_modules/mocha/bin/mocha $(find api -name '*-test.js') --compilers js:babel-core/register --watch"
   },
   "betterScripts": {
-    "api": {
+    "start-prod": {
       "command": "node ./bin/api.js",
       "env": {
         "NODE_PATH": "./api",
-        "NODE_ENV": "public_api",
-        "APIPORT": 3300
-      }
-    },
-    "start-prod": {
-      "command": "node ./bin/server.js",
-      "env": {
-        "NODE_PATH": "./src",
         "NODE_ENV": "production",
-        "PORT": 8080,
         "APIPORT": 3030
       }
     },
@@ -61,8 +52,16 @@
       "command": "node ./bin/api.js",
       "env": {
         "NODE_PATH": "./api",
-        "NODE_ENV": "production",
+        "NODE_ENV": "public_api",
         "APIPORT": 3030
+      }
+    },
+  "api": {
+      "command": "node ./bin/api.js",
+      "env": {
+        "NODE_PATH": "./api",
+        "NODE_ENV": "public_api",
+        "APIPORT": 3300
       }
     },
     "start-dev": {
@@ -136,8 +135,7 @@
     "piping": "^0.3.0",
     "pretty-error": "^1.2.0",
     "react": "^0.14.2",
-    "react-bootstrap": "^0.30.7",
-    "react-bootstrap-date-picker": "^4.0.0",
+    "react-bootstrap": "^0.28.1",
     "react-dom": "^0.14.1",
     "react-helmet": "^2.2.0",
     "react-inline-css": "^2.0.0",
