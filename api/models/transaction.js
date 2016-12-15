@@ -13,7 +13,7 @@ const TransactionSchema = new Schema({
     cardId: {type: Schema.ObjectId, required: true},
     cardNumber: { type: Number, required: true }
   },
-  message: { type: String, required: true },
+  message: { type: String },
   amount: { type: Number, required: true },
   date: { type: Date, required: true }
 });

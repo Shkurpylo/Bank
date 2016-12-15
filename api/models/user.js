@@ -4,20 +4,20 @@ import bcrypt from 'bcrypt-nodejs';
 const Schema = mongoose.Schema;
 
 const CardSchema = mongoose.Schema({ // eslint-disable-line new-cap
-  number: { type: Number },
-  name: { type: String },
-  pin: { type: Number },
-  cvv: { type: Number },
-  explDate: { type: Date },
-  owner: { type: Schema.ObjectId },
-  active: {type: Boolean, default: true}
+  number: { type: Number, required: true },
+  name: { type: String, required: true },
+  pin: { type: Number, required: true },
+  cvv: { type: Number, required: true },
+  explDate: { type: Date, required: true },
+  owner: { type: Schema.ObjectId, required: true },
+  active: { type: Boolean, default: true, required: true }
 });
 
 const UserSchema = mongoose.Schema({ // eslint-disable-line new-cap
-  firstName: { type: String },
-  lastName: { type: String },
-  email: { type: String },
-  password: { type: String },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true },
+  password: { type: String, required: true },
   cards: [CardSchema]
 
 });

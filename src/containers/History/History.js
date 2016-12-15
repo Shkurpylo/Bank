@@ -14,6 +14,16 @@ const hideHumber = (number) => {
   return stringCartNumber.slice(0, 4) + '........' + stringCartNumber.slice(-4);
 };
 
+const coloredAmount = (userId, receiver, sender) => {
+  if (sender === receiver) {
+    return 'gray';
+  } else if (sender === userId) {
+    return 'red';
+  } else if (receiver === userId) {
+    return 'green';
+  }
+};
+
 const fixedAmount = (amount) => {
   return amount.toFixed(2);
 };
@@ -178,7 +188,7 @@ export default class History extends Component {
                         <td className={styles.senderCard} >{hideHumber(transaction.sender.cardNumber)}</td>
                         <td className={styles.arrow} ><i className="fa fa-arrow-right" aria-hidden="true"></i></td>
                         <td className={styles.receiverCard} >{hideHumber(transaction.receiver.cardNumber)}</td>
-                        <td className={ transaction.receiver.userId === user._id ? styles.green : styles.red } >{fixedAmount(transaction.amount)} $</td>
+                        <td className={styles[coloredAmount(user._id, transaction.receiver.userId, transaction.sender.userId)] } >{fixedAmount(transaction.amount)} $</td>
                       </tr>)
                   }
               </tbody>

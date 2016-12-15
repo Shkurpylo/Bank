@@ -4,13 +4,17 @@ import Helmet from 'react-helmet';
 import * as authActions from 'redux/modules/auth';
 
 @connect(
-  state => ({ user: state.auth.user }),
+  state => ({
+    user: state.auth.user,
+    loginFail: state.auth.loginFail
+  }),
   authActions)
 export default class LoginForm extends Component {
   static propTypes = {
     user: PropTypes.object,
     login: PropTypes.func,
-    logout: PropTypes.func
+    logout: PropTypes.func,
+    loginFail: PropTypes.bool
   };
 
   handleSubmit = (event) => {
@@ -28,7 +32,7 @@ export default class LoginForm extends Component {
 
 
   render() {
-    //  const {user, logout} = this.props;
+    const {loginFail} = this.props;
     const styles = require('./LoginForm.scss');
     return (
       <div className={styles.loginPage + 'container'}>
@@ -39,7 +43,7 @@ export default class LoginForm extends Component {
           <form className="login-form form-horizontal" onSubmit={this.handleSubmit}>
             <div className="form-group">
               <div>
-                <input type="text" ref="login" placeholder="Login" className="form-control" required/>
+                <input type="text" ref="login" placeholder="Login - your email" className="form-control" required/>
               </div>
             </div>
             <div className="form-group">
@@ -51,6 +55,7 @@ export default class LoginForm extends Component {
             <button className="btn btn-success" onClick={this.handleSubmit}><i className="fa fa-sign-in" />{' '}Login
             </button>
           </form>
+          {loginFail && <p style={{color: 'red'}}>Wrong email or password!</p> }
           <p>Log in, if you already registered.</p>
         </div>
       </div>

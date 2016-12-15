@@ -19,6 +19,7 @@ const SIGNUP_FAIL = '/signUp/SAVE_FAIL';
 const initialState = {
   loaded: false,
   saveError: null,
+  loginFail: false,
   data: []
 };
 
@@ -52,6 +53,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loggingIn: true,
+        loginFail: false,
         user: action.result.user
       };
     case LOGIN_FAIL:
@@ -59,6 +61,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         loggingIn: false,
         user: null,
+        loginFail: true,
         loginError: action.error
       };
     case LOGOUT:

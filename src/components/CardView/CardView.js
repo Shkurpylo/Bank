@@ -37,7 +37,6 @@ const numberFormat = (number) => {
 })
 export default class CardView extends Component {
   static propTypes = {
-    // card: PropTypes.object.isRequired,
     getCard: PropTypes.func.isRequired,
     closeCardView: PropTypes.func.isRequired,
     deleteCard: PropTypes.func,
