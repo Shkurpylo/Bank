@@ -91,8 +91,21 @@ export default class TransactionConfirm extends Component {
                      </div>
                   </div>
                   <div className="modal-footer">
-                    <button type="button" className="btn btn-default" data-dismiss="modal" onClick={()=>cancelTransaction()}>Close</button>
-                    <button type="button" className="btn btn-primary" onClick={() => (newTransaction(transactionData))} >Send</button>
+                    <button
+                      type="button"
+                      className="btn btn-default"
+                      data-dismiss="modal"
+                      disabled={loadingInfo || sendingTransaction}
+                      onClick={()=>cancelTransaction()}
+                      >Close
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={() => (newTransaction(transactionData))}
+                      disabled={loadingInfo || sendingTransaction}
+                      >Send
+                    </button>
                   </div>
                 </div>
               </div>

@@ -127,42 +127,39 @@ export function countBalance(card) {
   });
 }
 
-
 export function addTransaction(req) {
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const ownerId = req.session.passport.user._id;
-      const senderCardId = mongoose.Types.ObjectId(req.body.sender); // eslint-disable-line new-cap
-      const receiverCardNumber = req.body.receiver;
-      console.log('FIND MESSAGE HERE: ' + JSON.stringify(req.body));
-      Promise.all([User.findById(ownerId).findOne({ 'cards._id': req.body.sender }),
-          getCardByNumber(receiverCardNumber)
-        ])
-        .then(result => {
-          const senderCard = result[0].cards.id(senderCardId);
-          const receiverCard = result[1];
-          const transaction = new Transaction({
-            sender: {
-              userId: senderCard.owner,
-              cardId: senderCard._id,
-              cardNumber: senderCard.number
-            },
-            receiver: {
-              userId: receiverCard.owner,
-              cardId: receiverCard._id,
-              cardNumber: receiverCard.number
-            },
-            message: req.body.message,
-            amount: req.body.amount,
-            date: new Date(),
-          });
+    const ownerId = req.session.passport.user._id;
+    const senderCardId = mongoose.Types.ObjectId(req.body.sender); // eslint-disable-line new-cap
+    const receiverCardNumber = req.body.receiver;
+    console.log('FIND MESSAGE HERE: ' + JSON.stringify(req.body));
+    Promise.all([User.findById(ownerId).findOne({ 'cards._id': req.body.sender }),
+        getCardByNumber(receiverCardNumber)
+      ])
+      .then(result => {
+        const senderCard = result[0].cards.id(senderCardId);
+        const receiverCard = result[1];
+        const transaction = new Transaction({
+          sender: {
+            userId: senderCard.owner,
+            cardId: senderCard._id,
+            cardNumber: senderCard.number
+          },
+          receiver: {
+            userId: receiverCard.owner,
+            cardId: receiverCard._id,
+            cardNumber: receiverCard.number
+          },
+          message: req.body.message,
+          amount: req.body.amount,
+          date: new Date(),
+        });
 
-          transaction.save((err, doc) => {
-            if (err) reject(err);
-            else resolve(doc);
-          });
-        }, err => reject(err));
-    }, 1000);
+        transaction.save((err, doc) => {
+          if (err) reject(err);
+          else resolve(doc);
+        });
+      }, err => reject(err));
   });
 }
 

@@ -14,9 +14,10 @@ const IS_NUMBER_VALID = '/transaction/IS_NUMBER_VALID';
 const IS_NUMBER_VALID_SUCCESS = '/transaction/IS_NUMBER_VALID_SUCCESS';
 const IS_NUMBER_VALID_FAIL = '/transaction/IS_NUMBER_VALID_FAIL';
 
-const TRANSACTION_SHOW_CONFIRM_WINDOW = '/transaction/TRANSACTION_SHOW_CONFIRM_WINDOW';
+const TRANSACTION_HIDE_CONFIRM_WINDOW = '/transaction/TRANSACTION_HIDE_CONFIRM_WINDOW';
 const TRANSACTION_TOGGLE_FORMS = '/transaction/TRANSACTION_TOGGLE_FORMS';
 const TRANSACTION_HIDE_SUCCESS_ALERT = '/transaction/TRANSACTION_SHOW_SUCCESS_ALERT';
+const CHECK_BALANCE = '/transaction/CHECK_BALANCE';
 
 const initialState = {
   sendingTransaction: false,
@@ -30,15 +31,18 @@ const initialState = {
   loadingInfo: false,
   confirmInfo: {},
   balanceChanged: false,
-  alertSuccess: false
+  alertSuccess: false,
+  canConfirm: true
 };
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case TRANSACTION_SHOW_CONFIRM_WINDOW:
+    case TRANSACTION_HIDE_CONFIRM_WINDOW:
       return {
         ...state,
         showConfirmWindow: false,
+        loadingInfo: false,
+        sendingTransaction: false
       };
     case TRANSACTION_HIDE_SUCCESS_ALERT:
       return {
@@ -49,6 +53,11 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         showOwnForm: action.showOwnForm,
+      };
+    case CHECK_BALANCE:
+      return {
+        ...state,
+        canConfirm: action.isImposible
       };
     case TRANSACTION_LOAD:
       return {
@@ -90,13 +99,10 @@ export default function reducer(state = initialState, action = {}) {
         }
       };
     case TRANSACTION_SAVE_FAIL:
-      return typeof action.error === 'string' ? {
+      return {
+        error: action.error,
         ...state,
-        saveError: {
-          ...state.saveError,
-          // [action.id]: action.error
-        }
-      } : state;
+      };
     case TRANSACTION_LOAD_INFO:
       return {
         ...state,
@@ -190,7 +196,7 @@ export function switchForms(showOwnForm) {
 
 export function cancelTransaction() {
   return {
-    type: TRANSACTION_SHOW_CONFIRM_WINDOW,
+    type: TRANSACTION_HIDE_CONFIRM_WINDOW,
   };
 }
 
@@ -215,5 +221,22 @@ export function isValidNumber(cardNumber) {
     promise: (client) => client.post('/isValidNumber', {
       data: cardNumber
     })
+  };
+}
+
+export function checkBalance(amount, card) {
+  console.log(JSON.stringify(amount));
+  console.log(JSON.stringify(card));
+  const query = 'balance';
+  const balance = JSON.parse(card)[query];
+  const numBalance = parseFloat(balance);
+  console.log(balance);
+  let isImposible = false;
+  if (numBalance >= amount) {
+    isImposible = true;
+  }
+  return {
+    type: CHECK_BALANCE,
+    isImposible
   };
 }
