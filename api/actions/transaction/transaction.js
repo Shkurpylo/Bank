@@ -10,17 +10,24 @@ export function getTransactions(req) {
   let after = {};
   console.log(JSON.stringify(body));
 
-  let direction = {};
+  let direction = [];
+  let card = {};
 
   switch (body.direction) {
     case 'to':
       direction = [{ 'receiver.userId': userId }];
+      card = { '$and': body.cardID ? [{ 'receiver.cardId': body.cardID }] : {} };
       break;
     case 'from':
       direction = [{ 'sender.userId': userId }];
+      card = { '$and': body.cardID ? [{ 'sender.cardId': body.cardID }] : {} };
       break;
     default:
       direction = [{ 'receiver.userId': userId }, { 'sender.userId': userId }];
+      card = {'$or': [
+        body.cardID ? { 'receiver.cardId': body.cardID } : {},
+        body.cardID ? { 'sender.cardId': body.cardID } : {}
+      ]};
       break;
   }
 
@@ -41,25 +48,18 @@ export function getTransactions(req) {
     before = new Date(date.getFullYear(), date.getMonth(), 0);
   }
 
+  /* beautify ignore:start */
   const query = {
-    '$and': [{
-        '$or': direction
-      },
-      body.cardID === 'All cards' ? {} : {
-        '$or': [
-          body.cardID ? { 'sender.cardId': body.cardID } : {},
-          body.cardID ? { 'receiver.cardId': body.cardID } : {},
-        ]
-      },
+    '$and': [{'$or': direction },
+      body.cardID === 'All cards' ? {}
+      : card,
       {
         date: {
           $gte: before,
-          $lt: after
-        }
-      }
-    ]
+          $lt: after }
+      }]
   };
-
+  /* beautify ignore:end */
   console.log('QUERY: ' + JSON.stringify(query));
 
   return new Promise((resolve, reject) => {
