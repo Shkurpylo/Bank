@@ -36,6 +36,12 @@ export function integer(value) {
   }
 }
 
+export function isNumeric(value) {
+  if (!/^\d+(?:\.\d{0,2})?$/.test(value)) {
+    return 'Wrong amount';
+  }
+}
+
 export function oneOf(enumeration) {
   return value => {
     if (!~enumeration.indexOf(value)) {

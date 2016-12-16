@@ -1,6 +1,6 @@
 {
   "javascript": {
-    "main": "http://localhost:3001/dist/main-554e80d19a328f7cab0b.js"
+    "main": "http://localhost:3001/dist/main-8c72a1d8b5dda949697b.js"
   },
   "styles": {},
   "assets": {
@@ -51,7 +51,8 @@
     },
     "./src/components/TransactionForm/TransactionForm.scss": {
       "errorText": "errorText___2cgV4",
-      "_style": ".errorText___2cgV4 {\n  text-align: right;\n}\n"
+      "cog": "cog___3ZDH_",
+      "_style": ".errorText___2cgV4 {\n  text-align: right;\n}\n\n.cog___3ZDH_ {\n  float: right;\n}\n"
     },
     "./src/components/TransactionConfirm/TransactionConfirm.scss": {
       "arrow": "arrow___1kPVe",

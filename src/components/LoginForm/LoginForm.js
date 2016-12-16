@@ -43,7 +43,7 @@ export default class LoginForm extends Component {
           <form className="login-form form-horizontal" onSubmit={this.handleSubmit}>
             <div className="form-group">
               <div>
-                <input type="text" ref="login" placeholder="Login - your email" className="form-control" required/>
+                <input type="text" ref="login" placeholder="Email" className="form-control" required/>
               </div>
             </div>
             <div className="form-group">

@@ -96,15 +96,20 @@ export default class TransactionForm extends Component {
                        {sender.error && sender.touched ? <div className={styles.errorText + ' text-danger'}>{sender.error}</div> :
                        <div><p></p></div>}
                        <div className="input-group">
-                       {asyncValidating && <i className={'fa fa-cog fa-spin ' + styles.cog}/>}
-                         <label htmlFor="cardName">Input card number of recipient:</label>
+
+                           {asyncValidating && <i className={'fa fa-cog fa-spin ' + styles.cog}/>}
+                         <label htmlFor="cardName">
+                           Input card number of recipient:
+                         </label>
                          <input type="text" className="col-xs-3 form-control"
                          id="cardName" placeholder="0000 0000 0000 0000" {...receiver} />
                        </div>
                        {receiver.error && receiver.touched ? <div className={styles.errorText + ' text-danger'}>{receiver.error}</div> :
                        <div><p></p></div>}
                        <div className="input-group">
-                         <label htmlFor="message">Input message for transaction:</label>
+                         <label htmlFor="message">
+                           Input message for transaction:
+                         </label>
                          <input type="text" className="form-control"
                          id="message" placeholder="purpose of payment" {...mess} />
                        </div>
