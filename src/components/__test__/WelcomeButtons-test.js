@@ -31,11 +31,12 @@ describe('WelcomeButtons', () => {
 
   it('should render with a login button', () => {
     const text = dom.getElementsByTagName('button')[0].textContent;
-    expect(text).to.equals('Log In');
-    // expect(text).to.be.a('string');
+    expect(text).to.equals('Log In ');
+    expect(text).to.be.a('string');
   });
   it('should render with a signup button', () => {
     const text = dom.getElementsByTagName('button')[1].textContent;
     expect(text).to.be.a('string');
+    expect(text).to.equals('Sign Up ');
   });
 });

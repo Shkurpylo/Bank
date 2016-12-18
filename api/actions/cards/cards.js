@@ -6,8 +6,6 @@ import { getUserById } from '../user';
 
 
 export function getCards(req) {
-  console.log('IN GET CARDS!!!');
-  // const userId = mongoose.Types.ObjectId(req.body.cardId);
   const userId = mongoose.Types.ObjectId(req.session.passport.user._id); // eslint-disable-line new-cap
   return new Promise((resolve, reject) => {
     User.aggregate([
@@ -44,12 +42,10 @@ export function getCards(req) {
 export function getCardById(req) { // get
   const userId = req.session.passport.user._id;
   return new Promise((resolve, reject) => {
-    console.log('in getCardById');
     Promise.all([User.findById(userId),
         countBalance(req.query.id)
       ])
       .then(results => {
-        console.log(results[1]);
         const card = results[0].cards.id(req.query.id);
         const cardObj = {
           balance: results[1].toFixed(2),
@@ -61,7 +57,6 @@ export function getCardById(req) { // get
           name: card.name
         };
         card.balance = results[1].toFixed(2);
-        console.log(cardObj);
         resolve(cardObj);
       })
       .catch(err => reject(err));
@@ -70,10 +65,8 @@ export function getCardById(req) { // get
 
 export function getCardByNumber(number) { // get
   return new Promise((resolve, reject) => {
-    console.log('in getCardById');
     User.findOne({ 'cards.number': number }, { cards: { $elemMatch: { number: number } } })
       .then(user => {
-        console.log(user);
         if (user.cards[0]) resolve(user.cards[0]);
       })
       .catch(err => reject(err));
@@ -82,7 +75,6 @@ export function getCardByNumber(number) { // get
 
 export function getReceiverInfo(req) {
   return new Promise((resolve, reject) => {
-    console.log('HERE IS PARAMS: ' + JSON.stringify(req.query));
     const receiverCardNumber = req.query.cardNumber;
     User.findOne({ 'cards.number': receiverCardNumber })
       .then(user => {
@@ -117,7 +109,6 @@ function createCard(ownerId, cardName, cardType) {
 export function addNewCard(req) { // post
   return new Promise((resolve, reject) => {
     const ownerId = req.session.passport.user._id;
-    console.log('starting addNewCard');
     Promise.all([getUserById(ownerId),
         createCard(ownerId, req.body.cardName, req.body.cardType)
       ])
@@ -138,7 +129,6 @@ export function addNewCard(req) { // post
 export function updateCard(req) { // post
   return new Promise((resolve, reject) => {
     const ownerId = req.session.passport.user._id;
-    console.log('in updateCard: ' + JSON.stringify(req.body) + ' user: ' + ownerId);
     User.update({
       '_id': ownerId,
       'cards._id': req.body.id

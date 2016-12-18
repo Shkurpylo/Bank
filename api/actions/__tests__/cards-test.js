@@ -30,7 +30,6 @@ after(function(done) {
 describe('check cards actions', function() {
   it('get cards should return all active user cards', async() => {
     const result = await getCards({ session: { passport: { user: { _id: '58554b515f67b510b966dc36' } } } });
-    // console.log(JSON.stringify(result));
     expect(result).to.be.instanceof(Array);
     expect(result.length).to.be.above(2);
   });
@@ -66,7 +65,6 @@ describe('check cards actions', function() {
       session: { passport: { user: { _id: '58554b515f67b510b966dc36' } } },
       body: { cardName: '', cardType: 'VISA' }
     });
-    console.log('HERE IS RESULT BIYCH: ' + JSON.stringify(result));
     expect(result).to.be.equals('card successfuly added');
   });
 
