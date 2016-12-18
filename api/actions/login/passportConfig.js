@@ -25,7 +25,7 @@ export default function configPassport(passport) {
       done(null, user);
       return null;
     }).catch((err) => {
-      done(err, user);
+      done(err);
       return null;
     });
   });
