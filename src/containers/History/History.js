@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-async-connect';
 import Helmet from 'react-helmet';
-import DatePicker from 'react-bootstrap-date-picker';
+// import DatePicker from 'react-bootstrap-date-picker';
 import { initializeWithKey } from 'redux-form';
 import * as transactionsActions from 'redux/modules/transaction';
 import { isLoaded as isLoadedCards, getCards as loadCards } from 'redux/modules/cards';
@@ -87,7 +87,7 @@ export default class History extends Component {
   render() {
     const styles = require('./History.scss');
     const {
-      fields: { cardID, direction, dateBefore, dateAfter },
+      fields: { cardID, direction },
       values,
       transactions,
       cards,
@@ -133,10 +133,10 @@ export default class History extends Component {
           <p></p>
           <p><b>Select period:</b></p>
             <div>
-              <DatePicker {...dateBefore} placeholder="MM/DD/YYYY" dateForm="MM/DD/YYYY" id="dateBefore-datepicker" />
+
             </div>
             <div style={{marginTop: 15}}>
-              <DatePicker {...dateAfter} placeholder="MM/DD/YYYY" dateForm="MM/DD/YYYY" id="example-dateAfter" />
+
             </div>
           </div>
         </div>
