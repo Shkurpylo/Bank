@@ -44,7 +44,8 @@ export function getUserId(req) {
   return new Promise((resolve, reject) => {
     const email = req.body.email || reject('wrong request! \'email\' paramether is not define');
     const password = req.body.password + '' || reject('wrong request! \'password\' paramether is not define');
-    User.findOne({ 'email': email }, (err, user) => {
+    User.findOne({ 'email': email })
+    .then( user => {
       if (!user) {
         reject('wrong email');
         return null;
@@ -55,7 +56,8 @@ export function getUserId(req) {
       }
       resolve(user._id);
       return null;
-    });
+    })
+    .catch(err => reject(err));
   });
 }
 

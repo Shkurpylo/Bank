@@ -69,9 +69,6 @@ export default class CardView extends Component {
       getCards,
       editing,
       updateCard,
-      // saveError: {
-      //   [card._id]: saveError
-      // },
       values
     } = this.props;
 

@@ -3,14 +3,11 @@ import { Transaction, User } from '../../models';
 import { getCardByNumber } from '../cards';
 
 export function getTransactions(req) {
-  console.log('PASSPORT IN TRANSACTION' + JSON.stringify(req.session.passport));
   const userId = req.session.passport.user._id;
   const body = req.body;
   let before = {};
   let after = {};
-  console.log(JSON.stringify(body));
-
-  let direction = [];
+  let direction = {};
   let card = {};
 
   switch (body.direction) {

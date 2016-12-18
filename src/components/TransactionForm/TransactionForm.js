@@ -94,6 +94,10 @@ export default class TransactionForm extends Component {
                      </label>
                     { !loadingCard ?
                      <select
+                       onChangeCapture={() => checkBalance(formValue.transaction.amount.value,
+                         formValue.transaction.sender.value)}
+                       onBlurCapture={() => checkBalance(formValue.transaction.amount.value,
+                         formValue.transaction.sender.value)}
                        name="myCard"
                        className="form-control"
                        id="cardSelector"
@@ -157,6 +161,8 @@ export default class TransactionForm extends Component {
                          <input
                            onChangeCapture={() => checkBalance(formValue.transaction.amount.value,
                              formValue.transaction.sender.value)}
+                           onBlurCapture={() => checkBalance(formValue.transaction.amount.value,
+                             formValue.transaction.sender.value)}
                            type="name"
                            className="col-xs-3 form-control"
                            id="amount"
@@ -169,7 +175,7 @@ export default class TransactionForm extends Component {
                        </div>
                        {amount.error && amount.touched   // eslint-disable-line no-nested-ternary
                          ? <div className={styles.errorText + ' text-danger'}>{amount.error}</div>
-                         : !canConfirm ? <div className={styles.errorText + ' text-danger'}>not enaugh money</div>
+                         : !canConfirm ? <div className={styles.errorText + ' text-danger'}>not enough money</div>
                          : <div><p></p></div>}
                         <div
                           className="form-group"
