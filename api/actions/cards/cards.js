@@ -122,12 +122,13 @@ export function addNewCard(req) { // post
         createCard(ownerId, req.body.cardName, req.body.cardType)
       ])
       .then(result => {
-        console.log(result);
         const user = result[0];
         const newCard = result[1];
         user.cards.push(newCard);
-        // user.save();
-        resolve(user.save());
+        user.save();
+      })
+      .then(() => {
+        resolve('card successfuly added');
       })
       .catch(err => reject(err));
   });
@@ -145,12 +146,9 @@ export function updateCard(req) { // post
       '$set': {
         'cards.$.name': req.body.name
       }
-    }, (err, ok) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(ok);
-    });
+    })
+    .then(() => resolve('card updated'))
+    .catch(() => reject('cannot update card'));
   });
 }
 
@@ -174,22 +172,3 @@ export function deleteCard(req) { // get
   });
 }
 
-// export function deleteCard(req) { // get
-//   return new Promise((resolve, reject) => {
-//     const id = req.query.id;
-//     User.update({}, {
-//       '$pull': {
-//         cards: {
-//           '_id': id
-//         }
-//       }
-//     }, {
-//       multi: true
-//     }, (err, ok) => {
-//       if (err) {
-//         reject(err);
-//       }
-//       resolve(ok);
-//     });
-//   });
-// }
