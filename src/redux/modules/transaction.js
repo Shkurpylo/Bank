@@ -30,7 +30,7 @@ const initialState = {
   transactionData: {},
   loadingInfo: false,
   confirmInfo: {},
-  balanceChanged: false,
+  // balanceChanged: false,
   alertSuccess: false,
   canConfirm: true
 };
@@ -92,7 +92,7 @@ export default function reducer(state = initialState, action = {}) {
         loaded: false,
         showConfirmWindow: false,
         sendingTransaction: false,
-        balanceChanged: true,
+        // balanceChanged: true,
         alertSuccess: true,
         saveError: {
           ...state.saveError,

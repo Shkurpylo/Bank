@@ -20,7 +20,7 @@ import { isLoaded, getCards as loadCards } from 'redux/modules/cards';
 @connect(state => ({
   cards: state.cards.cards,
   ...state.transaction,
-}), {switchForms, confirmButton})
+}), {switchForms, confirmButton, loadCards})
 
 export default class Transactions extends Component {
   static propTypes = {
@@ -51,7 +51,8 @@ export default class Transactions extends Component {
       </div>
         { showConfirmWindow ?
           <div>
-          <TransactionConfirm/>
+          <TransactionConfirm
+          />
           </div> :
         <div>
         <div className="row">
@@ -62,7 +63,8 @@ export default class Transactions extends Component {
         <div className="row">
          {showOwnForm ?
             <TransactionFormBetweenOwn/> :
-            <TransactionForm alertSuccessHide={() => this.alertSuccessHide().bind(this)}/>
+            <TransactionForm
+            alertSuccessHide={() => this.alertSuccessHide().bind(this)}/>
          }
     </div>
     </div>

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as transactionActions from 'redux/modules/transaction';
+import * as cardsAction from 'redux/modules/cards';
 
 
 @connect(state => ({
@@ -12,7 +13,8 @@ import * as transactionActions from 'redux/modules/transaction';
   loadingInfo: state.transaction.loadingInfo,
   sendingTransaction: state.transaction.sendingTransaction
 }),
-  dispatch => bindActionCreators(transactionActions, dispatch)
+  dispatch => bindActionCreators({ ...transactionActions, ...cardsAction }, dispatch)
+  // dispatch => bindActionCreators(transactionActions, dispatch)
 )
 
 export default class TransactionConfirm extends Component {
@@ -27,10 +29,12 @@ export default class TransactionConfirm extends Component {
     authUser: PropTypes.object,
     confirmInfo: PropTypes.object,
     cards: PropTypes.array,
-    cancelTransaction: PropTypes.func
+    cancelTransaction: PropTypes.func,
+    getCards: PropTypes.func
   };
   render() {
     const {
+      getCards,
       confirmInfo,
       authUser,
       transactionData,
@@ -39,6 +43,10 @@ export default class TransactionConfirm extends Component {
       newTransaction,
       cancelTransaction
     } = this.props;
+
+    const handleNewTransaction = (transaction) => {
+      return newTransaction(transaction).then(() => getCards());
+    };
 
     const styles = require('./TransactionConfirm.scss');
 
@@ -102,7 +110,7 @@ export default class TransactionConfirm extends Component {
                     <button
                       type="button"
                       className="btn btn-primary"
-                      onClick={() => (newTransaction(transactionData))}
+                      onClick={() => handleNewTransaction(transactionData)}
                       disabled={loadingInfo || sendingTransaction}
                       >Send
                     </button>
