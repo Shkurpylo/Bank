@@ -1,25 +1,50 @@
 .inputGroup {
-  position: relative;
+    position: relative;
 }
 
 .flags {
-  position: absolute;
-  right: 20px;
-  top: 7px;
-  & > * {
-    margin: 0 2px;
-    width: 20px;
-    height: 20px;
-    border-radius: 20px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
-    color: white;
-    float: right;
-    text-align: center;
-  }
+    position: absolute;
+    right: 20px;
+    top: 7px;
+    &>* {
+        margin: 0 2px;
+        width: 20px;
+        height: 20px;
+        border-radius: 20px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+        color: white;
+        float: right;
+        text-align: center;
+    }
 }
 
 .cog {
-  position: absolute;
-  left: 0;
-  top: 164px;
+    position: absolute;
+    left: 0;
+    top: 164px;
+}
+
+.textDanger {
+    text-align: left;
+    padding-left: 3px;
+    padding-top: 5px;
+    padding-right: 0px;
+}
+
+.form {
+    padding-left: 20px;
+    padding-right: 1px;
+}
+
+.buttons {
+    padding-left: 0px;
+    padding-right: 45px;
+}
+
+.titleSignUp {
+    padding-right: 100px;
+}
+
+.inputBox {
+    padding-right: 2px;
 }
