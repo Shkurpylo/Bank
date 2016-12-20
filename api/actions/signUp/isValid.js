@@ -8,8 +8,8 @@ export default function isValid(req) {
       User.findOne({ email: email }, (err, user) => {
         if (err) throw err;
         if (user) {
-          errorMassage.email = 'Email address already used';
-          errorMassage.status = 200;
+          errorMassage.email = 'Email is occupied';
+          errorMassage.status = 406;
           errorMassage.type = 'error';
           reject(errorMassage);
         } else {
