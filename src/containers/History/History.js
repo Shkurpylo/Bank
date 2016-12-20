@@ -9,7 +9,7 @@ import { isLoaded as isLoadedCards, getCards as loadCards } from 'redux/modules/
 import { isLoaded, getTransactions as loadTransactions } from 'redux/modules/transaction';
 import { reduxForm } from 'redux-form';
 
-import 'react-datepicker/dist/react-datepicker.css';
+// import 'react-datepicker/dist/react-datepicker.css';
 
 const hideHumber = (number) => {
   const stringCartNumber = number.toString();
