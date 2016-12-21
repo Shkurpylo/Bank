@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { TransactionForm } from 'components';
 import { TransactionFormBetweenOwn } from 'components';
 import { TransactionConfirm } from 'components';
-import { switchForms, confirmButton } from 'redux/modules/transaction';
+import { switchForms, confirmButton, alertSuccessShow } from 'redux/modules/transaction';
 
 import { asyncConnect } from 'redux-async-connect';
 import { isLoaded, getCards as loadCards } from 'redux/modules/cards';
@@ -20,7 +20,7 @@ import { isLoaded, getCards as loadCards } from 'redux/modules/cards';
 @connect(state => ({
   cards: state.cards.cards,
   ...state.transaction,
-}), {switchForms, confirmButton, loadCards})
+}), { switchForms, confirmButton, loadCards, alertSuccessShow})
 
 export default class Transactions extends Component {
   static propTypes = {
@@ -29,12 +29,23 @@ export default class Transactions extends Component {
     showConfirmWindow: PropTypes.bool,
     switchForms: PropTypes.func,
     alertSuccess: PropTypes.bool,
-    alertSuccessHide: PropTypes.func
+    alertSuccessHide: PropTypes.func,
+    alertSuccessShow: PropTypes.func
   };
+
+  constructor(props) {
+    super(props);
+    this.toggleAlert = this.toggleAlert.bind(this);
+  }
+
+  toggleAlert() {
+    // setTimeout(alertSuccessShow(true), 1500);
+    return alertSuccessShow(true);
+  }
 
   render() {
     const styles = require('./Transactions.scss');
-    const {showOwnForm, showConfirmWindow, alertSuccess} = this.props;  // eslint-disable-line no-shadow
+    const { showOwnForm, showConfirmWindow, alertSuccess } = this.props; // eslint-disable-line no-shadow
     return (
       <div className={styles.transaction + ' container'}>
       <div className={styles.title + ' col-sm-3'}>
@@ -43,7 +54,8 @@ export default class Transactions extends Component {
         </h1>
       </div>
       <div className="col-sm-5">
-        { alertSuccess && <div className="alert alert-success"
+        { alertSuccess &&
+        <div className="alert alert-success"
         style={{marginTop: 10}}
         role="alert">
         Transaction sent success!</div>
@@ -51,7 +63,7 @@ export default class Transactions extends Component {
       </div>
         { showConfirmWindow ?
           <div>
-          <TransactionConfirm
+          <TransactionConfirm toggleAlert = {this.toggleAlert}
           />
           </div> :
         <div>
@@ -64,7 +76,7 @@ export default class Transactions extends Component {
          {showOwnForm ?
             <TransactionFormBetweenOwn/> :
             <TransactionForm
-            alertSuccessHide={() => this.alertSuccessHide().bind(this)}/>
+            toggleAlert/>
          }
     </div>
     </div>

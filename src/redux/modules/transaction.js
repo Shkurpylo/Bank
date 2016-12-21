@@ -16,7 +16,7 @@ const IS_NUMBER_VALID_FAIL = '/transaction/IS_NUMBER_VALID_FAIL';
 
 const TRANSACTION_HIDE_CONFIRM_WINDOW = '/transaction/TRANSACTION_HIDE_CONFIRM_WINDOW';
 const TRANSACTION_TOGGLE_FORMS = '/transaction/TRANSACTION_TOGGLE_FORMS';
-const TRANSACTION_HIDE_SUCCESS_ALERT = '/transaction/TRANSACTION_SHOW_SUCCESS_ALERT';
+const TRANSACTION_TOGGLE_SUCCESS_ALERT = '/transaction/TRANSACTION_TOGGLE_SUCCESS_ALERT';
 const CHECK_BALANCE = '/transaction/CHECK_BALANCE';
 
 const initialState = {
@@ -43,11 +43,6 @@ export default function reducer(state = initialState, action = {}) {
         showConfirmWindow: false,
         loadingInfo: false,
         sendingTransaction: false
-      };
-    case TRANSACTION_HIDE_SUCCESS_ALERT:
-      return {
-        ...state,
-        alertSuccess: false,
       };
     case TRANSACTION_TOGGLE_FORMS:
       return {
@@ -93,7 +88,6 @@ export default function reducer(state = initialState, action = {}) {
         showConfirmWindow: false,
         sendingTransaction: false,
         // balanceChanged: true,
-        alertSuccess: true,
         saveError: {
           ...state.saveError,
         }
@@ -137,6 +131,11 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         saveError: action.error
       } : state;
+    case TRANSACTION_TOGGLE_SUCCESS_ALERT:
+      return {
+        ...state,
+        alertSuccess: action.status
+      };
     default:
       return state;
   }
@@ -179,13 +178,19 @@ export function newTransaction(transaction) {
   };
 }
 
-export function alertSuccessHide() {
-  // setTimeout(() => {
+export function alertSuccessShow(status) {
   return {
-    type: TRANSACTION_HIDE_SUCCESS_ALERT,
+    type: TRANSACTION_TOGGLE_SUCCESS_ALERT,
+    status
   };
-  // }, 2000);
 }
+
+// export function alertSuccessHide() {
+//   return {
+//     type: TRANSACTION_TOGGLE_SUCCESS_ALERT,
+//     result: false
+//   };
+// }
 
 export function switchForms(showOwnForm) {
   return {

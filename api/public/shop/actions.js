@@ -16,25 +16,25 @@ export function getUserCards(req) {
         { $unwind: '$cards' },
         { $match: { 'cards.active': true } },
         { $project: { _id: 0, 'cards.name': 1, 'cards.number': 1, 'cards._id': 1 } },
-      ])
+    ])
       .then(cards => {
         let current = Promise.resolve();
         Promise.all(cards.map((elem) => {
-            current = current
-              .then(() => {
-                return countBalance(elem.cards._id);
-              })
-              .then((result) => {
-                const cardObj = {
-                  balance: result.toFixed(2),
-                  number: hideNumber(elem.cards.number),
-                  _id: elem.cards._id,
-                  name: elem.cards.name
-                };
-                return (cardObj);
-              });
-            return current;
-          }))
+          current = current
+            .then(() => {
+              return countBalance(elem.cards._id);
+            })
+            .then((result) => {
+              const cardObj = {
+                balance: result.toFixed(2),
+                number: hideNumber(elem.cards.number),
+                _id: elem.cards._id,
+                name: elem.cards.name
+              };
+              return (cardObj);
+            });
+          return current;
+        }))
           .then(results => resolve(results))
           .catch(err => reject(err));
       });

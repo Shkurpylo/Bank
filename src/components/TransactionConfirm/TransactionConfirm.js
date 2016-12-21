@@ -30,7 +30,8 @@ export default class TransactionConfirm extends Component {
     confirmInfo: PropTypes.object,
     cards: PropTypes.array,
     cancelTransaction: PropTypes.func,
-    getCards: PropTypes.func
+    getCards: PropTypes.func,
+    toggleAlert: PropTypes.func.isRequired
   };
   render() {
     const {
@@ -41,11 +42,16 @@ export default class TransactionConfirm extends Component {
       sendingTransaction,
       loadingInfo,
       newTransaction,
-      cancelTransaction
+      cancelTransaction,
+      toggleAlert
     } = this.props;
 
     const handleNewTransaction = (transaction) => {
-      return newTransaction(transaction).then(() => getCards());
+      return newTransaction(transaction)
+      .then(() => getCards())
+      .then(()=> {
+        toggleAlert();
+      });
     };
 
     const styles = require('./TransactionConfirm.scss');

@@ -26,19 +26,15 @@ const isVisa = (number) => {
     cards: state.cards.cards,
     review: state.cards.review,
     error: state.cards.error,
-    // loadedCards: state.cards.loadedCards,
     loadingCardsList: state.cards.loadingCardsList,
     showAddForm: state.cards.showAddForm,
     showCardView: state.cards.showCardView,
     addButton: state.cards.addButton,
     createCard: state.cards.createCard,
-    // editing: state.cards.editing
   }), {...cardsActions, initializeWithKey })
 export default class Cards extends Component {
   static propTypes = {
-    // initialize: PropTypes.func.isRequired,
     cards: PropTypes.array,
-    // reviewCard: PropTypes.func,
     showAddForm: PropTypes.bool,
     showCardView: PropTypes.bool,
     createCard: PropTypes.func,
@@ -49,7 +45,6 @@ export default class Cards extends Component {
     loadingCardsList: PropTypes.bool,
     error: PropTypes.string,
     user: PropTypes.object,
-    // submitting: PropTypes.bool.isRequired,
   };
 
   render() {
@@ -58,11 +53,9 @@ export default class Cards extends Component {
       cards,
       addButton,
       getCard,
-      // closeCardView,
       showAddForm,
       showCardView,
       loadingCardsList,
-      // submitting
     } = this.props;
     return (
       <div className={' container'}>
