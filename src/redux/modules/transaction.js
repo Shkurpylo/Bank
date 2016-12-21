@@ -16,7 +16,6 @@ const IS_NUMBER_VALID_FAIL = '/transaction/IS_NUMBER_VALID_FAIL';
 
 const TRANSACTION_HIDE_CONFIRM_WINDOW = '/transaction/TRANSACTION_HIDE_CONFIRM_WINDOW';
 const TRANSACTION_TOGGLE_FORMS = '/transaction/TRANSACTION_TOGGLE_FORMS';
-const TRANSACTION_TOGGLE_SUCCESS_ALERT = '/transaction/TRANSACTION_TOGGLE_SUCCESS_ALERT';
 const CHECK_BALANCE = '/transaction/CHECK_BALANCE';
 
 const initialState = {
@@ -30,8 +29,6 @@ const initialState = {
   transactionData: {},
   loadingInfo: false,
   confirmInfo: {},
-  // balanceChanged: false,
-  alertSuccess: false,
   canConfirm: true
 };
 
@@ -131,11 +128,6 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         saveError: action.error
       } : state;
-    case TRANSACTION_TOGGLE_SUCCESS_ALERT:
-      return {
-        ...state,
-        alertSuccess: action.status
-      };
     default:
       return state;
   }
@@ -177,20 +169,6 @@ export function newTransaction(transaction) {
     }),
   };
 }
-
-export function alertSuccessShow(status) {
-  return {
-    type: TRANSACTION_TOGGLE_SUCCESS_ALERT,
-    status
-  };
-}
-
-// export function alertSuccessHide() {
-//   return {
-//     type: TRANSACTION_TOGGLE_SUCCESS_ALERT,
-//     result: false
-//   };
-// }
 
 export function switchForms(showOwnForm) {
   return {

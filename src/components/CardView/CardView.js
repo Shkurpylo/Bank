@@ -69,7 +69,6 @@ export default class CardView extends Component {
       pristine,
       cardForView,
       submitting,
-      // deleteCard,
       getCards,
       editing,
       updateCard,
@@ -82,10 +81,7 @@ export default class CardView extends Component {
       const { editStart } = this.props; // eslint-disable-line no-shadow
       return () => editStart(String(handleCard._id));
     };
-    // const handleDelete = (cardId) => {
-    //   return deleteCard(cardId)
-    //     .then(getCards());
-    // };
+
     const handleUpdate = (newValue, cardId) => {
       return updateCard(newValue, cardId)
         .then(result => {

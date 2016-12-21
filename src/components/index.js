@@ -14,4 +14,5 @@ export TransactionForm from './TransactionForm/TransactionForm';
 export TransactionFormBetweenOwn from './TransactionFormBetweenOwn/TransactionFormBetweenOwn';
 export TransactionConfirm from './TransactionConfirm/TransactionConfirm';
 export ConfirmDeleting from './ConfirmDeleting/ConfirmDeleting';
+export HomeCarousel from './HomeCarousel/HomeCarousel';
 

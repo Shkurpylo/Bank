@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-// import Helmet from 'react-helmet';
+import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { TransactionForm } from 'components';
 import { TransactionFormBetweenOwn } from 'components';
@@ -28,7 +28,6 @@ export default class Transactions extends Component {
     showOwnForm: PropTypes.bool,
     showConfirmWindow: PropTypes.bool,
     switchForms: PropTypes.func,
-    alertSuccess: PropTypes.bool,
     alertSuccessHide: PropTypes.func,
     alertSuccessShow: PropTypes.func
   };
@@ -45,21 +44,16 @@ export default class Transactions extends Component {
 
   render() {
     const styles = require('./Transactions.scss');
-    const { showOwnForm, showConfirmWindow, alertSuccess } = this.props; // eslint-disable-line no-shadow
+    const { showOwnForm, showConfirmWindow } = this.props; // eslint-disable-line no-shadow
     return (
       <div className={styles.transaction + ' container'}>
+      <Helmet title="Transaction"/>
       <div className={styles.title + ' col-sm-3'}>
         <h1>
           Transactions
         </h1>
       </div>
       <div className="col-sm-5">
-        { alertSuccess &&
-        <div className="alert alert-success"
-        style={{marginTop: 10}}
-        role="alert">
-        Transaction sent success!</div>
-        }
       </div>
         { showConfirmWindow ?
           <div>

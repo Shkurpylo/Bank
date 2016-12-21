@@ -43,15 +43,11 @@ export default class TransactionConfirm extends Component {
       loadingInfo,
       newTransaction,
       cancelTransaction,
-      toggleAlert
     } = this.props;
 
     const handleNewTransaction = (transaction) => {
       return newTransaction(transaction)
-      .then(() => getCards())
-      .then(()=> {
-        toggleAlert();
-      });
+      .then(() => getCards());
     };
 
     const styles = require('./TransactionConfirm.scss');

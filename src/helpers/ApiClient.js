@@ -19,10 +19,6 @@ export default class ApiClient {
         this[method] = (path, { params, data } = {}) => new Promise((resolve, reject) => {
           const request = superagent[method](formatUrl(path));
 
-          // if (req.session.passport.user) {
-        //  request.set({ Authorization: 'Bearer multipassport' });
-          // }
-
           if (params) {
             request.query(params);
           }

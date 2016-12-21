@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import config from '../../config';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
-import { SignUpForm, LoginForm, WelcomeButtons } from 'components';
+import { SignUpForm, LoginForm, WelcomeButtons, HomeCarousel } from 'components';
 
 @connect(
   (state) => ({
@@ -55,13 +55,8 @@ export default class Home extends Component {
             <div className="container">
             <h1>Welcome, {user.name} !</h1>
 
-            <div>
-              <h2> Some nice animation will be here soon</h2>
-            </div>
-            <div>
-              <h3> Did you seen this site? </h3>
-              <h3> It is amazing! </h3>
-            </div>
+            <HomeCarousel/>
+
           </div>}
 
         </div>

@@ -1,0 +1,44 @@
+.imgOne {
+    background-image: url('./pics/bender.jpg');
+    background-repeat: no-repeat;
+    height: 700px;
+    width: 700px;
+    overflow: hidden;
+    background-size: contain;
+    margin: auto;
+}
+
+.imgTwo {
+    background-image: url('./pics/fry.jpg');
+    background-repeat: no-repeat;
+    height: 700px;
+    width: 700px;
+    overflow: hidden;
+    background-size: contain;
+    margin: auto;
+}
+
+.imgThree {
+    background-image: url('./pics/hermes.jpg');
+    background-repeat: no-repeat;
+    height: 700px;
+    width: 700px;
+    overflow: hidden;
+    background-size: contain;
+    margin: auto;
+}
+
+.imgFour {
+    background-image: url('./pics/bender2.jpg');
+    background-repeat: no-repeat;
+    height: 700px;
+    width: 700px;
+    overflow: hidden;
+    background-size: contain;
+    margin: auto;
+}
+
+.pages{
+    display: table;
+    margin: 0 auto;
+}
