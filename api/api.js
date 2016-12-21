@@ -13,6 +13,7 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import { login, configPassport } from './actions/login';
 import passportBearer from 'passport-http-bearer';
+import { checkCustomerToken } from './actions/customer';
 import util from 'util';
 
 const pretty = new PrettyError();
@@ -39,7 +40,7 @@ app.use(session({
   secret: 'react and redux rule!!!!',
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 60000 }
+  cookie: { maxAge: 6000000 }
 }));
 
 app.use(bodyParser.json());
@@ -56,14 +57,17 @@ if (process.env.NODE_ENV === 'public_api') {
   passport.use(
     new BearerStrategy(
       (token, done) => {
-        if (token === 'multipassport') {
-          return done(null, true, { scope: 'all' });
-        }
-        return done(null, false);
+        checkCustomerToken(token)
+          .then(res => {
+            console.log('is token valid:' + res);
+            if (res) {
+              return done(null, true, { scope: 'all' });
+            }
+            return done(null, false);
+          });
       }
     )
   );
-
 
   app.use(
     passport.authenticate('bearer', { session: false }),
