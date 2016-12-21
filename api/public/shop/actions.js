@@ -8,7 +8,8 @@ import { hideNumber } from './helpers';
 
 export function getUserCards(req) {
   return new Promise((resolve, reject) => {
-    const ownerIdString = req.body.id || reject({ body: 'wrong request! ownerId is not defined', status: 400 });
+    const ownerIdString = req.body.id + '' || reject({ body: 'wrong request! ownerId is not defined', status: 400 });
+    if (ownerIdString.length !== 24) reject({ body: 'wrong request! ownerId has wrong format', status: 400 });
     const ownerId = mongoose.Types.ObjectId(ownerIdString); // eslint-disable-line new-cap
     User.aggregate([
         { $match: { '_id': ownerId } },
@@ -72,6 +73,7 @@ export function paymentOfBuying(req) {
   return new Promise((resolve, reject) => {
     const cardId = req.body.cardId
       || reject({ body: 'wrong request, \'cardId\' is not defined', status: 400 });
+    if (cardId.length !== 24) reject({ body: 'wrong request! cardId has wrong format', status: 400 });
     const amount = req.body.amount
       || reject({ body: 'wrong request, \'amount\' is not defined', status: 400 });
     countBalance(cardId)
@@ -123,6 +125,7 @@ export function returnPayment(req) {
   return new Promise((resolve, reject) => {
     const cardId = req.body.cardId
       || reject({ body: 'wrong request, \'cardId\' is not defined', status: 400 });
+    if (cardId.length !== 24) reject({ body: 'wrong request! cardId has wrong format', status: 400 });
     const amount = req.body.amount
       || reject({ body: 'wrong request, \'amount\' is not defined', status: 400 });
     countBalance(cardId)
