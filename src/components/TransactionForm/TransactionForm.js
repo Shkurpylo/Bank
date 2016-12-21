@@ -73,6 +73,12 @@ export default class TransactionForm extends Component {
       formValue
     } = this.props;
 
+    const handleCountBalance = (transactionFormValue) => {
+      if (transactionFormValue.hasOwnProperty('amount') && transactionFormValue.hasOwnProperty('sender')) {
+        return checkBalance(transactionFormValue.amount.value, transactionFormValue.sender.value);
+      }
+    };
+
     const styles = require('./TransactionForm.scss');
 
     return (
@@ -94,10 +100,8 @@ export default class TransactionForm extends Component {
                      </label>
                     { !loadingCard ?
                      <select
-                       onChangeCapture={() => checkBalance(formValue.transaction.amount.value,
-                         formValue.transaction.sender.value)}
-                       onBlurCapture={() => checkBalance(formValue.transaction.amount.value,
-                         formValue.transaction.sender.value)}
+                       onChangeCapture={() => handleCountBalance(formValue.transaction)}
+                       onBlurCapture={() => handleCountBalance(formValue.transaction)}
                        name="myCard"
                        className="form-control"
                        id="cardSelector"
@@ -159,10 +163,8 @@ export default class TransactionForm extends Component {
                        <div
                          className="input-group">
                          <input
-                           onChangeCapture={() => checkBalance(formValue.transaction.amount.value,
-                             formValue.transaction.sender.value)}
-                           onBlurCapture={() => checkBalance(formValue.transaction.amount.value,
-                             formValue.transaction.sender.value)}
+                           onChangeCapture={() => handleCountBalance(formValue.transaction)}
+                           onBlurCapture={() => handleCountBalance(formValue.transaction)}
                            type="name"
                            className="col-xs-3 form-control"
                            id="amount"

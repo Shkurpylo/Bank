@@ -57,7 +57,7 @@ export default class SignUpForm extends Component {
               {...field}/>
           </div>
           <div className={styles.textDanger + ' col-md-3'}>
-          {field.error && field.touched && <div className={' text-danger'}>{field.error}</div>}
+          {field.error && field.touched && <div className={styles.textOnly + ' text-danger'}>{field.error}</div>}
           </div>
         </div>
       </div>;
