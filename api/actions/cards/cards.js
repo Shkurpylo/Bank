@@ -1,58 +1,101 @@
 import mongoose from 'mongoose';
 import { User, Card } from '../../models';
-import { numberGenerator, getPin, getCVV, getExplDate } from './cardsHelpers';
-import { getIncomingSum, getOutgoingSum } from '../transaction';
+import { numberGenerator, getPin, getCVV, getExplDate, hideHumber } from './cardsHelpers';
+import { countBalance } from '../transaction';
+import { getUserById } from '../user';
 
 
-function getUserById(id) {
+export function getCards(req) {
+  const userId = mongoose.Types.ObjectId(req.session.passport.user._id); // eslint-disable-line new-cap
   return new Promise((resolve, reject) => {
-    User.findById(id, (err, user) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(user);
+    User.aggregate([
+        { $match: { '_id': userId } },
+        { $unwind: '$cards' },
+        { $match: { 'cards.active': true } },
+        { $project: {_id: 0, 'cards.name': 1, 'cards.number': 1, 'cards._id': 1}},
+    ])
+    .then(cards => {
+      let current = Promise.resolve();
+      Promise.all(cards.map((elem) => {
+        current = current
+          .then(() => {
+            return countBalance(elem.cards._id);
+          })
+          .then((result) => {
+            const cardObj = {
+              balance: result.toFixed(2),
+              number: hideHumber(elem.cards.number),
+              _id: elem.cards._id,
+              name: elem.cards.name
+            };
+            return (cardObj);
+          });
+        return current;
+      }))
+     .then(results => resolve(results))
+     .catch(err => reject(err));
     });
   });
 }
 
-export function getCards(req) { // get
-  // const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
-  const ownerId = req.session.passport.user;
+
+export function getCardById(req) { // get
+  const userId = req.session.passport.user._id;
   return new Promise((resolve, reject) => {
-    const cards = req.session.cards;
-    if (!cards) {
-      req.session.cards = cards;
-      User.findById(ownerId).distinct('cards', (err, result) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(result);
-      });
-    }
+    Promise.all([User.findById(userId),
+        countBalance(req.query.id)
+      ])
+      .then(results => {
+        const card = results[0].cards.id(req.query.id);
+        const cardObj = {
+          balance: results[1].toFixed(2),
+          active: card.active,
+          explDate: card.explDate,
+          cvv: card.cvv,
+          number: card.number,
+          _id: card._id,
+          name: card.name
+        };
+        card.balance = results[1].toFixed(2);
+        resolve(cardObj);
+      })
+      .catch(err => reject(err));
   });
 }
 
-
-export function getCardByNumber(req) { // get
-  // const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1');
-  const ownerId = req.session.passport.user;
+export function getCardByNumber(number) { // get
   return new Promise((resolve, reject) => {
-    const number = req.query.num;
-    User.findById(ownerId).findOne({ 'cards.number': number }, (err, card) => {
-      if (err) { reject(err); }
-      resolve(card);
-    });
+    User.findOne({ 'cards.number': number }, { cards: { $elemMatch: { number: number } } })
+      .then(user => {
+        if (user.cards[0]) resolve(user.cards[0]);
+      })
+      .catch(err => reject(err));
+  });
+}
+
+export function getReceiverInfo(req) {
+  return new Promise((resolve, reject) => {
+    const receiverCardNumber = req.query.cardNumber;
+    User.findOne({ 'cards.number': receiverCardNumber })
+      .then(user => {
+        const receiverInfo = {
+          receiverName: user.firstName,
+          receiverLastname: user.lastName,
+        };
+        resolve(receiverInfo);
+      })
+      .catch(err => reject(err));
   });
 }
 
 
 function createCard(ownerId, cardName, cardType) {
   return new Promise((resolve, reject) => {
-    const newCard = new Card();
-    newCard.owner = ownerId;
     if (!ownerId) {
       reject('smth wrong with id');
     }
+    const newCard = new Card();
+    newCard.owner = ownerId;
     newCard.name = cardName ? cardName : 'My ' + cardType;
     newCard.number = numberGenerator(cardType);
     newCard.pin = getPin();
@@ -65,56 +108,51 @@ function createCard(ownerId, cardName, cardType) {
 
 export function addNewCard(req) { // post
   return new Promise((resolve, reject) => {
-    // const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1'); // temporary
-    const ownerId = req.session.passport.user;
-    console.log('starting addNewCard');
-    Promise.all([
-      getUserById(ownerId),
-      createCard(ownerId, req.body.cardName, req.body.cardType)
-    ]).then(result => {
-      console.log(result);
-      const user = result[0];
-      const newCard = result[1];
-      user.cards.push(newCard);
-      // user.save();
-      resolve(user.save());
-    })
-    .catch(err => reject(err));
+    const ownerId = req.session.passport.user._id;
+    Promise.all([getUserById(ownerId),
+        createCard(ownerId, req.body.cardName, req.body.cardType)
+      ])
+      .then(result => {
+        const user = result[0];
+        const newCard = result[1];
+        user.cards.push(newCard);
+        user.save();
+      })
+      .then(() => {
+        resolve('card successfuly added');
+      })
+      .catch(err => reject(err));
   });
 }
 
 
 export function updateCard(req) { // post
   return new Promise((resolve, reject) => {
-    const ownerId = req.session.passport.user;
-    // const ownerId = mongoose.Types.ObjectId('582d63704852674bcde44df1'); // temporary
+    const ownerId = req.session.passport.user._id;
     User.update({
       '_id': ownerId,
-      'cards._id': req.body._id
+      'cards._id': req.body.id
     }, {
       '$set': {
-        'cards.name': req.body.cardName
+        'cards.$.name': req.body.name
       }
-    }, (err, ok) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(ok);
-    });
+    })
+    .then(() => resolve('card updated'))
+    .catch(() => reject('cannot update card'));
   });
 }
 
 export function deleteCard(req) { // get
   return new Promise((resolve, reject) => {
+    const ownerId = req.session.passport.user._id;
     const id = req.query.id;
-    User.update({}, {
-      '$pull': {
-        cards: {
-          '_id': id
-        }
-      }
+    User.update({
+      '_id': ownerId,
+      'cards._id': id
     }, {
-      multi: true
+      '$set': {
+        'cards.$.active': false
+      }
     }, (err, ok) => {
       if (err) {
         reject(err);
@@ -124,21 +162,3 @@ export function deleteCard(req) { // get
   });
 }
 
-export function countBalance(req) {
-  return new Promise((resolve, reject) => {
-    const cardId = mongoose.Types.ObjectId(req.query.id); // eslint-disable-line new-cap
-    let balance = 0;
-    getIncomingSum(cardId)
-      .then(result => {
-        console.log('result first: ' + result);
-        balance += result;
-      });
-    getOutgoingSum(cardId)
-      .then(result => {
-        console.log('resultSecond: ' + result);
-        balance -= result;
-        resolve({ cardId: balance });
-      })
-      .catch(err => reject(err));
-  });
-}

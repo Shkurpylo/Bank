@@ -8,8 +8,7 @@ import { hideNumber } from './helpers';
 
 export function getUserCards(req) {
   return new Promise((resolve, reject) => {
-    const ownerIdString = req.body.id
-      || reject({ body: 'wrong request! ownerId is not defined', status: 400 });
+    const ownerIdString = req.body.id || reject({ body: 'wrong request! ownerId is not defined', status: 400 });
     const ownerId = mongoose.Types.ObjectId(ownerIdString); // eslint-disable-line new-cap
     User.aggregate([
         { $match: { '_id': ownerId } },
@@ -45,16 +44,16 @@ export function getUserId(req) {
   return new Promise((resolve, reject) => {
     const email = req.body.email
       || reject({ body: 'wrong request! \'email\' paramether is not define', status: 400 });
-    const password = req.body.password + ''
+    const password = req.body.password
       || reject({ body: 'wrong request! \'password\' paramether is not define', status: 400 });
     User.findOne({ 'email': email })
       .then(user => {
         if (!user) {
-          reject('wrong email');
+          reject({body: 'wrong email', status: 403 });
           return null;
         }
         if (!user.validPassword(password)) {
-          reject('wrong pass');
+          reject({body: 'wrong pass', status: 403 });
           return null;
         }
         resolve(user._id);
