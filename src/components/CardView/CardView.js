@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { reduxForm } from 'redux-form';
 import renameValidation from './renameValidation';
 import * as cardsActions from 'redux/modules/cards';
+import { ConfirmDeleting } from 'components';
 
 const dateFormat = (date) => {
   const formatingDate = new Date(date);
@@ -27,6 +28,7 @@ const numberFormat = (number) => {
   editing: state.cards.editing,
   saveError: state.cards.saveError,
   updateCard: state.cards.updateCard,
+  showConfirmDelete: state.cards.showConfirmDelete
 }),
   dispatch => bindActionCreators(cardsActions, dispatch)
 )
@@ -52,7 +54,9 @@ export default class CardView extends Component {
     saveError: PropTypes.object,
     values: PropTypes.object.isRequired,
     updateCard: PropTypes.func,
-    cardForView: PropTypes.object
+    cardForView: PropTypes.object,
+    confirmDeleteButton: PropTypes.func,
+    showConfirmDelete: PropTypes.bool
   };
 
   render() {
@@ -65,21 +69,23 @@ export default class CardView extends Component {
       pristine,
       cardForView,
       submitting,
-      deleteCard,
+      // deleteCard,
       getCards,
       editing,
       updateCard,
-      values
+      values,
+      confirmDeleteButton,
+      showConfirmDelete
     } = this.props;
 
     const handleEdit = (handleCard) => {
       const { editStart } = this.props; // eslint-disable-line no-shadow
       return () => editStart(String(handleCard._id));
     };
-    const handleDelete = (cardId) => {
-      return deleteCard(cardId)
-        .then(getCards());
-    };
+    // const handleDelete = (cardId) => {
+    //   return deleteCard(cardId)
+    //     .then(getCards());
+    // };
     const handleUpdate = (newValue, cardId) => {
       return updateCard(newValue, cardId)
         .then(result => {
@@ -151,12 +157,16 @@ export default class CardView extends Component {
            <div className={styles.balance}>
              Balance: {cardForView.balance + '$'}
            </div>
-           <div className={styles.delButton}>
+           {showConfirmDelete ?
+           <ConfirmDeleting cardForView={cardForView}/>
+           : <div className={styles.delButton}>
             <button className="btn btn-danger"
-              onClick={() => handleDelete(cardForView._id)}>
+              onClick={() => confirmDeleteButton(true)}>
               <i className="fa fa-trash" aria-hidden="true">
               </i> Delete Card</button>
           </div>
+          }
+
          </div>
 
       </div>

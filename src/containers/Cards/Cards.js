@@ -7,11 +7,6 @@ import { isLoaded, getCards as loadCards } from 'redux/modules/cards';
 import * as cardsActions from 'redux/modules/cards';
 import { AddCardForm, CardView } from 'components';
 
-// const hideHumber = (number) => {
-//   const stringCartNumber = number.toString();
-//   return stringCartNumber.slice(0, 4) + '........' + stringCartNumber.slice(-4);
-// };
-
 const isVisa = (number) => {
   const firstDigit = (number + '')[0];
   return firstDigit === '4' ? true : false;

@@ -6,6 +6,8 @@ const LOAD_CARD = '/cards/LOAD_CARD';
 const LOAD_CARD_SUCCESS = '/cards/LOAD_CARD_SUCCESS';
 const LOAD_CARD_FAIL = '/cards/LOAD_CARD_FAIL';
 
+const CONFIRM_DELETE = '/cards/CONFIRM_DELETE';
+
 const DELETE = '/cards/DELETE';
 const DELETE_SUCCESS = '/cards/DELETE_SUCCESS';
 const DELETE_FAIL = '/cards/DELETE_FAIL';
@@ -34,6 +36,7 @@ const initialState = {
   saveError: {},
   showAddForm: false,
   showCardView: false,
+  showConfirmDelete: false
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -76,8 +79,7 @@ export default function reducer(state = initialState, action = {}) {
     case LOAD_CARD:
       return {
         ...state,
-        // showCardView: true,
-        // showAddForm: false,
+        showConfirmDelete: false,
         loadingCard: true,
       };
     case LOAD_CARD_SUCCESS:
@@ -98,6 +100,11 @@ export default function reducer(state = initialState, action = {}) {
         cardForView: null,
         error: action.error
       };
+    case CONFIRM_DELETE:
+      return {
+        ...state,
+        showConfirmDelete: action.values
+      };
     case DELETE:
       return {
         ...state,
@@ -111,6 +118,7 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         showCardView: false,
         loadedCards: false,
+        showConfirmDelete: false,
         editing: {
           ...state.review,
           [action.id]: false,
@@ -137,7 +145,6 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         saveError: {
           ...state.saveError,
-          // [action.id]: action.error
         }
       } : state;
     case EDIT_START:
@@ -180,10 +187,6 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export function isLoaded(globalState) {
-  // if (globalState.transaction.balanceChanged === true) {
-  //   globalState.cards.loadedCards = false;
-  //   globalState.transaction.balanceChanged = false;
-  // }
   return globalState.cards && globalState.cards.loadedCards;
 }
 
@@ -202,7 +205,6 @@ export function getCardByNumber(number) {
 }
 
 export function createCard(card) {
-  console.log('In modules/createCard');
   return {
     types: [SAVE, SAVE_SUCCESS, SAVE_FAIL],
     promise: (client) => client.post('/addNewCard', {
@@ -222,7 +224,6 @@ export function deleteCard(cardId) {
 }
 
 export function getCard(cardId) {
-  console.log('card id is: ' + cardId);
   return {
     types: [LOAD_CARD, LOAD_CARD_SUCCESS, LOAD_CARD_FAIL],
     promise: (client) => client.get('/getCardById?id=' + cardId)
@@ -230,7 +231,6 @@ export function getCard(cardId) {
 }
 
 export function updateCard(card, id) {
-  console.log(JSON.stringify(card) + ' id: ' + id);
   return {
     types: [UPDATE, UPDATE_SUCCESS, UPDATE_FAIL],
     promise: (client) => client.post('/updateCard', {
@@ -263,4 +263,9 @@ export function editStop(id) {
   return { type: EDIT_STOP, id };
 }
 
-
+export function confirmDeleteButton(values) {
+  return {
+    type: CONFIRM_DELETE,
+    values
+  };
+}

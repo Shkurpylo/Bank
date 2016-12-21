@@ -120,7 +120,7 @@ export function countBalance(card) {
         balance += result[0];
         balance -= result[1];
         resolve(balance);
-      }).catch(err => reject(err));
+      }).catch(err => reject(err.message));
   });
 }
 
