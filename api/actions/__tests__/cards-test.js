@@ -31,7 +31,7 @@ describe('check cards actions', function() {
   it('get cards should return all active user cards', async() => {
     const result = await getCards({ session: { passport: { user: { _id: '58554b515f67b510b966dc36' } } } });
     expect(result).to.be.instanceof(Array);
-    expect(result.length).to.be.above(2);
+    expect(result.length).to.be.above(1);
   });
 
   it('getCardById should return one card', async() => {
