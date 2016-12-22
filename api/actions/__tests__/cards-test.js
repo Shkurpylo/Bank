@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import config from '../../../src/config';
 import util from 'util';
 import {
-  getCards,
+  // getCards,
   getCardById,
   getCardByNumber,
   getReceiverInfo,
