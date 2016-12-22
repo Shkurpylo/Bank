@@ -32,16 +32,6 @@ export default class Transactions extends Component {
     alertSuccessShow: PropTypes.func
   };
 
-  constructor(props) {
-    super(props);
-    this.toggleAlert = this.toggleAlert.bind(this);
-  }
-
-  toggleAlert() {
-    // setTimeout(alertSuccessShow(true), 1500);
-    return alertSuccessShow(true);
-  }
-
   render() {
     const styles = require('./Transactions.scss');
     const { showOwnForm, showConfirmWindow } = this.props; // eslint-disable-line no-shadow
@@ -57,7 +47,7 @@ export default class Transactions extends Component {
       </div>
         { showConfirmWindow ?
           <div>
-          <TransactionConfirm toggleAlert = {this.toggleAlert}
+          <TransactionConfirm
           />
           </div> :
         <div>
@@ -70,7 +60,7 @@ export default class Transactions extends Component {
          {showOwnForm ?
             <TransactionFormBetweenOwn/> :
             <TransactionForm
-            toggleAlert/>
+            />
          }
     </div>
     </div>

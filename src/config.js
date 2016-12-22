@@ -25,7 +25,7 @@ module.exports = Object.assign({
 
   app: {
     title: 'TRUE Bank',
-    description: 'eliftech',
+    description: 'ElifTech',
     head: {
       titleTemplate: 'Bank: %s',
       meta: [

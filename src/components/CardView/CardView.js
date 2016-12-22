@@ -90,7 +90,7 @@ export default class CardView extends Component {
             return Promise.reject(result.error);
           }
         })
-        .then(getCards())
+        .then(() => getCards())
         .then(getCard(cardForView._id))
         .then(editStop(String(cardForView._id)));
     };
@@ -120,6 +120,7 @@ export default class CardView extends Component {
                  Cancel
             </button>
               <button
+                style={{marginLeft: 15}}
                 className="btn btn-success"
                 onClick={() => handleUpdate(values, cardForView._id)}
                 disabled={pristine || invalid || submitting}>

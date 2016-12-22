@@ -8,15 +8,18 @@ import { hideNumber } from './helpers';
 
 export function getUserCards(req) {
   return new Promise((resolve, reject) => {
+    /* validate of request data  */
     const ownerIdString = req.body.id
       || reject({ body: 'wrong request! ownerId is not defined', status: 400 });
     const ownerId = mongoose.Types.ObjectId(ownerIdString); // eslint-disable-line new-cap
+    /* aggregate user cards and return in array  */
     User.aggregate([
         { $match: { '_id': ownerId } },
         { $unwind: '$cards' },
         { $match: { 'cards.active': true } },
         { $project: { _id: 0, 'cards.name': 1, 'cards.number': 1, 'cards._id': 1 } },
     ])
+    /* attach balance to each card */
       .then(cards => {
         let current = Promise.resolve();
         Promise.all(cards.map((elem) => {
@@ -41,8 +44,10 @@ export function getUserCards(req) {
   });
 }
 
+
 export function getUserId(req) {
   return new Promise((resolve, reject) => {
+    /* validate of request data  */
     const email = req.body.email
       || reject({ body: 'wrong request! \'email\' paramether is not define', status: 400 });
     const password = req.body.password + ''
@@ -51,30 +56,33 @@ export function getUserId(req) {
       .then(user => {
         if (!user) {
           reject('wrong email');
-          return null;
         }
         if (!user.validPassword(password)) {
           reject('wrong pass');
-          return null;
         }
         resolve(user._id);
-        return null;
       })
       .catch(err => reject(err));
   });
 }
 
+
 export function paymentOfBuying(req) {
+  /* get user token for searching him data in future */
   const token = req.headers.authorization.split(' ')[1];
+
   let receiverId = '';
   let receiverCardId = '';
   let receiverCardNumber = '';
   let receiverName = '';
+
   return new Promise((resolve, reject) => {
+    /* validate of request data */
     const cardId = req.body.cardId
       || reject({ body: 'wrong request, \'cardId\' is not defined', status: 400 });
     const amount = req.body.amount
       || reject({ body: 'wrong request, \'amount\' is not defined', status: 400 });
+    /* check if balance is enough */
     countBalance(cardId)
       .then(balance => {
         if (balance < amount) {
@@ -90,6 +98,7 @@ export function paymentOfBuying(req) {
         receiverName = customer.name;
         return User.findOne({ 'cards._id': cardId });
       })
+     /* modeling transaction body */
       .then(user => {
         const card = user.cards.id(cardId);
         const transaction = new Transaction({
@@ -116,16 +125,20 @@ export function paymentOfBuying(req) {
 
 
 export function returnPayment(req) {
+  /* validate of request data */
   const token = req.headers.authorization.split(' ')[1];
+
   let returnerId = '';
   let returnerCardId = '';
   let returnerCardNumber = '';
   let returnerName = '';
   return new Promise((resolve, reject) => {
+    /* validate of request data */
     const cardId = req.body.cardId
       || reject({ body: 'wrong request, \'cardId\' is not defined', status: 400 });
     const amount = req.body.amount
       || reject({ body: 'wrong request, \'amount\' is not defined', status: 400 });
+    /* check if balance is enough */
     countBalance(cardId)
       .then(balance => {
         if (balance < amount) {
@@ -147,6 +160,7 @@ export function returnPayment(req) {
         returnerName = customer.name;
         return User.findOne({ 'cards._id': cardId });
       })
+      /* modeling transaction body */
       .then(user => {
         const card = user.cards.id(cardId);
         const transaction = new Transaction({

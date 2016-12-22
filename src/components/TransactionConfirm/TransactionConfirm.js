@@ -31,7 +31,6 @@ export default class TransactionConfirm extends Component {
     cards: PropTypes.array,
     cancelTransaction: PropTypes.func,
     getCards: PropTypes.func,
-    toggleAlert: PropTypes.func.isRequired
   };
   render() {
     const {
