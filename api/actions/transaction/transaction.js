@@ -7,17 +7,17 @@ export function getTransactions(req) {
   const body = req.body;
   let before = {};
   let after = {};
-  let direction = {};
+  let direction = [];
   let card = {};
 
   switch (body.direction) {
     case 'to':
       direction = [{ 'receiver.userId': userId }];
-      card = { '$and': body.cardID ? [{ 'receiver.cardId': body.cardID }] : {} };
+      card = { '$and': body.cardID ? [{ 'receiver.cardId': body.cardID }] : [{}] };
       break;
     case 'from':
       direction = [{ 'sender.userId': userId }];
-      card = { '$and': body.cardID ? [{ 'sender.cardId': body.cardID }] : {} };
+      card = { '$and': body.cardID ? [{ 'sender.cardId': body.cardID }] : [{}] };
       break;
     default:
       direction = [{ 'receiver.userId': userId }, { 'sender.userId': userId }];
