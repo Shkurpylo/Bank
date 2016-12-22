@@ -5,17 +5,9 @@ const LocalStrategy = passportLocal.Strategy;
 
 export default function configPassport(passport) {
   passport.serializeUser((user, done) => {
-    console.log('!!!IN SERIALIZE USER ' + JSON.stringify(user));
     const userSerialized = {};
     userSerialized._id = user._id;
     userSerialized.name = user.firstName;
-    // const userSerialized = user._id;
-    // const userSerialized = {
-    //   name: user.firstName,
-    //   lastName: user.lastName,
-    //   email: user.email,
-    //   id: user._id
-    // };
     done(null, userSerialized);
     return null;
   });
@@ -33,7 +25,6 @@ export default function configPassport(passport) {
   passport.use('local-login', new LocalStrategy({ usernameField: 'email', passwordField: 'password', passReqToCallback: true },
     (req, email, password, done) => {
       User.findOne({ email: email }).then(user => {
-        console.log('========> here is user:  ' + JSON.stringify(user));
         if (!user) {
           done(null, false);
           return null;

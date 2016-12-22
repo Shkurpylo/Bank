@@ -85,7 +85,6 @@ export default class CardView extends Component {
     const handleUpdate = (newValue, cardId) => {
       return updateCard(newValue, cardId)
         .then(result => {
-          console.log('in handleSubmit: ' + values.name);
           if (result && typeof result.error === 'object') {
             return Promise.reject(result.error);
           }

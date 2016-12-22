@@ -59,7 +59,7 @@ if (process.env.NODE_ENV === 'public_api') {
       (token, done) => {
         checkCustomerToken(token)
           .then(res => {
-            console.log('is token valid:' + res);
+            console.log('is token valid: ' + res);
             if (res) {
               return done(null, true, { scope: 'all' });
             }

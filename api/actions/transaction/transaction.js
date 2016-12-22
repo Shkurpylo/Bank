@@ -40,7 +40,6 @@ export function getTransactions(req) {
     before = new Date(body.dateBefore);
     before.setHours(0);
   } else {
-    console.log('in else');
     const date = new Date();
     before = new Date(date.getFullYear(), date.getMonth(), 0);
   }
@@ -129,7 +128,6 @@ export function addTransaction(req) {
     const ownerId = req.session.passport.user._id;
     const senderCardId = mongoose.Types.ObjectId(req.body.sender); // eslint-disable-line new-cap
     const receiverCardNumber = req.body.receiver;
-    console.log('FIND MESSAGE HERE: ' + JSON.stringify(req.body));
     Promise.all([User.findById(ownerId).findOne({ 'cards._id': req.body.sender }),
         getCardByNumber(receiverCardNumber)
       ])

@@ -5,8 +5,6 @@ export default function login(app, passport) {
       console.log(`User ${req.user.firstName} logged in`);
       const authUser = {
         name: req.user.firstName,
-        // lastName: req.user.lastName,
-        // email: req.user.email,
         _id: req.user._id
       };
       res.json({

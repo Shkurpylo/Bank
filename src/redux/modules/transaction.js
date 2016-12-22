@@ -139,7 +139,6 @@ export function isLoaded(globalState) {
 }
 
 export function getTransactions(history) {
-  console.log(history);
   const queryParams = history || {};
   return {
     types: [TRANSACTION_LOAD, TRANSACTION_LOAD_SUCCESS, TRANSACTION_LOAD_FAIL],
@@ -156,7 +155,6 @@ export function getTransactions(history) {
 
 
 export function newTransaction(transaction) {
-  console.log('transaction data:' + JSON.stringify(transaction));
   return {
     types: [TRANSACTION_SAVE, TRANSACTION_SAVE_SUCCESS, TRANSACTION_SAVE_FAIL],
     promise: (client) => client.post('/addTransaction', {
@@ -184,7 +182,6 @@ export function cancelTransaction() {
 }
 
 export function confirmButton(values) {
-  console.log('HERE IS SENDER+++>>> ' + JSON.stringify(values));
   return {
     types: [TRANSACTION_LOAD_INFO, TRANSACTION_LOAD_INFO_SUCCESS, TRANSACTION_LOAD_INFO_FAIL],
     promise: (client) => client.get('/getReceiverInfo?cardNumber=' + values.receiver),
@@ -198,7 +195,6 @@ export function confirmButton(values) {
 }
 
 export function isValidNumber(cardNumber) {
-  console.log(' in reducer, req is: ' + JSON.stringify(cardNumber));
   return {
     types: [IS_NUMBER_VALID, IS_NUMBER_VALID_SUCCESS, IS_NUMBER_VALID_FAIL],
     promise: (client) => client.post('/isValidNumber', {
@@ -208,12 +204,9 @@ export function isValidNumber(cardNumber) {
 }
 
 export function checkBalance(amount, card) {
-  console.log(JSON.stringify(amount));
-  console.log(JSON.stringify(card));
   const query = 'balance';
   const balance = JSON.parse(card)[query];
   const numBalance = parseFloat(balance);
-  console.log(balance);
   let isImposible = false;
   if (numBalance >= amount) {
     isImposible = true;
