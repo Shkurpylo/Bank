@@ -15,6 +15,7 @@ import { login, configPassport } from './actions/login';
 import passportBearer from 'passport-http-bearer';
 import { checkCustomerToken } from './actions/customer';
 import util from 'util';
+import { ping } from 'express-ping';
 
 const pretty = new PrettyError();
 const app = express();
@@ -34,7 +35,7 @@ mongoose.connect(mLab, err => {
 
 const io = new SocketIo(server);
 io.path('/ws');
-
+app.use(ping);
 app.use(cookieParser());
 app.use(session({
   secret: 'react and redux rule!!!!',
