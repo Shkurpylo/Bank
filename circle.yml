@@ -1,6 +1,6 @@
 machine:
   node:
-    version: 4.0
+    version: "stable"
   environment:
     CONTINUOUS_INTEGRATION: true
 
@@ -15,3 +15,9 @@ test:
     - npm run lint
     - npm test
     - npm run test-node
+
+deployment:
+  prod:
+    branch: master
+    heroku:
+      appname: tbank

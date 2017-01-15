@@ -120,7 +120,6 @@
     "cookie-parser": "^1.4.3",
     "creditcard-generator": "0.0.7",
     "express": "^4.13.3",
-    "express-ping": "^1.2.0",
     "express-session": "^1.12.1",
     "file-loader": "^0.8.5",
     "hoist-non-react-statics": "^1.0.3",
