@@ -7,7 +7,7 @@ sudo: false
 
 before_script:
   - composer self-update -q
-  - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com ${GH_TOKEN}; fi;
+  - if [ -n "$GH_TOKEN" ]; then composer config github-oauth.github.com 750f096e73bd29bd191ec553398a825f5836f726; fi;
   - composer show -i
 
 script:
